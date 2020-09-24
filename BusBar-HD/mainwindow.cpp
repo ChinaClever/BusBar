@@ -250,7 +250,9 @@ void MainWindow::dialogClosed(bool ret)
 
 void MainWindow::on_timeBtn_clicked()
 {
+#if 0
     BeepThread::bulid()->beep();
     TimeSettingDlg dlg(this);
     dlg.exec();
+#endif
 }

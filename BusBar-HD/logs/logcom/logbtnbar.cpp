@@ -19,6 +19,7 @@ LogBtnBar::LogBtnBar(QWidget *parent) :
     connect(ui->refreshBtn, SIGNAL(clicked()),this,SIGNAL(refreshSig()));
     connect(LogSignal::get(), SIGNAL(logTypeSig(int)), ui->comboBox,SLOT(setCurrentIndex(int)));
 
+    ui->exportBtn->setHidden(true);
     mExportDlg = new LogExportModelDlg(this);
     connect(mExportDlg, SIGNAL(exportSig(int)),this,SIGNAL(exportSig(int))); // 导出信号
 }

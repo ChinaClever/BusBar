@@ -20,6 +20,9 @@ OtherSettingDlg::OtherSettingDlg(QWidget *parent) :
     ui(new Ui::OtherSettingDlg)
 {
     ui->setupUi(this);
+
+    ui->timeSetBtn->setHidden(true);
+    ui->updateBtn->setHidden(true);
 }
 
 OtherSettingDlg::~OtherSettingDlg()

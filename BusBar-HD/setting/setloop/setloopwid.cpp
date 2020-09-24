@@ -34,10 +34,10 @@ void SetLoopWid::initWid()
 
 void SetLoopWid::checkBus(int index)
 {
-    if(mBus != index) {
-        mBus = index;
+//    if(mBus != index) {
+//        mBus = index;
     mPacket = &(get_share_mem()->data[index]);
-    }
+//    }
 
     int dc = mPacket ? mPacket->box[0].dc : 0;
     if(mDc != dc ) {

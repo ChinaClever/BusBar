@@ -31,11 +31,11 @@ void ThdMainDlg::initBus(int id)
 
 void ThdMainDlg::timeoutDone()
 {
-//    QString str = QString::number((*mLineThd/100.0),'f', 2) + " %";
-//    ui->thdLab->setText(str);
+    QString str = QString::number((*mLineThd/100.0),'f', 2) + " %";
+    ui->thdLab->setText(str);
 
-//    mChartWid->updateData(mThd, 30);
-//    mTableWid->updateData(mThd, 30);
+    mChartWid->updateData(mThd, 30);
+    mTableWid->updateData(mThd, 30);
 }
 
 void ThdMainDlg::setLine(int i, int l)

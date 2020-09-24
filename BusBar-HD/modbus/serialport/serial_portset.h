@@ -21,11 +21,11 @@
 #define SERIAL_COM4     "ttymxc6"
 #define SERIAL_COM5     "ttymxc1"
 #else
-#define SERIAL_COM1     "ttys0"
-#define SERIAL_COM2     "ttys2"
-#define SERIAL_COM3     "ttys3"
-#define SERIAL_COM4     "ttys4"
-#define SERIAL_COM5     "ttys1"
+#define SERIAL_COM1     "ttyS0"
+#define SERIAL_COM2     "ttyS2"
+#define SERIAL_COM3     "ttyS3"
+#define SERIAL_COM4     "ttyS4"
+#define SERIAL_COM5     "ttyUSB0"
 #endif
 
 #define SERIAL_BAUDRATE    "B9600"

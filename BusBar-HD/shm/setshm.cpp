@@ -150,7 +150,7 @@ void SetShm::setName(DbNameItem &item)
         QByteArray ba = item.name.toLatin1();
         char *mm = ba.data();
         strcpy(name,mm);
-       // DbDevName::bulid()->saveItem(item);
+        DbDevName::bulid()->saveItem(item);
     }
 }
 

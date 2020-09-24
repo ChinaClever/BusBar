@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QTimer::singleShot(1000,this,SLOT(initFunSLot())); //延时初始化
     on_comboBox_currentIndexChanged(0);
-    //BeepThread::bulid()->longBeep(); // 线程 -- 'bi~'
+    BeepThread::bulid()->longBeep(); // 线程 -- 'bi~'
 
     for(int i=0; i < 4; i++) rtu[i] = NULL;
 }
@@ -101,9 +101,9 @@ void MainWindow::setBusName(int index)
 
     mIndex = index;
 
-    //sBusData *busData = &(shm->data[index]);
-    //double rateCur = busData->box[0].ratedCur/COM_RATE_CUR;
-    //ui->ratedLab->setText(QString::number(rateCur));
+    sBusData *busData = &(shm->data[index]);
+    double rateCur = busData->box[0].ratedCur/COM_RATE_CUR;
+    ui->ratedLab->setText(QString::number(rateCur));
     ui->ratedLab->setText("V2.0.0");
 }
 

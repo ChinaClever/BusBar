@@ -23,7 +23,7 @@ void HomeWid::initFun()
 {
     busChangedSlot(0);
     connect(this, SIGNAL(busChangedSig(int)), this, SLOT(busChangedSlot(int))); //修改当前母线
-    //mMaxNum = mBusData->boxNum;
+    mMaxNum = mBusData->boxNum;
 
     timer = new QTimer(this);
     timer->start(2*1000);
@@ -37,19 +37,19 @@ void HomeWid::initWidget()
     int id=0;
     mBaseNum = 0;
 
-//    QObjectList list = children();
-//    foreach (QObject *obj1, list)
-//    {
-//        if(id >= 10) break; //前10
-//        if (obj1->inherits("QWidget")){
-//            QWidget *b = qobject_cast<QWidget*>(obj1);
-//            mBoxWid[id] = new HomeBoxWid(b);
-//            HomeBoxWid *boxWid = mBoxWid[id];
-//            boxWid->initFun(mBaseNum, id++);
-//            connect(this, SIGNAL(busChangedSig(int)), boxWid, SLOT(busChangeSlot(int))); //修改母线
-//        }
-//    }
-//    checkBoxBaseNum();
+    QObjectList list = children();
+    foreach (QObject *obj1, list)
+    {
+        if(id >= 10) break; //前10
+        if (obj1->inherits("QWidget")){
+            QWidget *b = qobject_cast<QWidget*>(obj1);
+            mBoxWid[id] = new HomeBoxWid(b);
+            HomeBoxWid *boxWid = mBoxWid[id];
+            boxWid->initFun(mBaseNum, id++);
+            connect(this, SIGNAL(busChangedSig(int)), boxWid, SLOT(busChangeSlot(int))); //修改母线
+        }
+    }
+    checkBoxBaseNum();
 
     /* 考虑到不可相加 故隐藏 */
     ui->label->hide();
@@ -72,23 +72,23 @@ void HomeWid::interfaceChangedSlot(int id)
 void HomeWid::timeoutDone()
 {
     if(isRun) { //节省CPU的考虑
-//        ui->curLcd->display(mBusData->box[0].tgBox.cur/COM_RATE_CUR); //A
-//        ui->powLcd->display(mBusData->box[0].tgBox.pow/COM_RATE_POW); //W
+        ui->curLcd->display(mBusData->box[0].tgBox.cur/COM_RATE_CUR); //A
+        ui->powLcd->display(mBusData->box[0].tgBox.pow/COM_RATE_POW); //W
 
-//        //------------[交直流区分]-------------------By_MW 2018.3.30
-//        QString name;
-//        if(mBusData->box[0].dc){ //交流
-//            name = "交";
-//        }else{
-//            name = "直";
-//        }
-//        ui->name1->setText(name);
-//        //-----------------------------------------
+        //------------[交直流区分]-------------------By_MW 2018.3.30
+        QString name;
+        if(mBusData->box[0].dc){ //交流
+            name = "交";
+        }else{
+            name = "直";
+        }
+        ui->name1->setText(name);
+        //-----------------------------------------
 
-//        if(mMaxNum != mBusData->boxNum) {
-//            checkBoxBaseNum();
-//            mMaxNum = mBusData->boxNum;
-//        }
+        if(mMaxNum != mBusData->boxNum) {
+            checkBoxBaseNum();
+            mMaxNum = mBusData->boxNum;
+        }
     }
 }
 
@@ -107,15 +107,15 @@ bool HomeWid::checkBoxBaseNum()
     }
     ui->upBtn->setEnabled(enable);
 
-//    int maxNum = (mBaseNum + 1) *10;
-//    if(maxNum >= mBusData->boxNum) {
-//        enable = false;
-//    }else {
-//        enable = true;
-//    }
-//    ui->downBtn->setEnabled(enable);
+    int maxNum = (mBaseNum + 1) *10;
+    if(maxNum >= mBusData->boxNum) {
+        enable = false;
+    }else {
+        enable = true;
+    }
+    ui->downBtn->setEnabled(enable);
 
-//    setBoxBaseNum();
+    setBoxBaseNum();
     return enable;
 }
 
@@ -140,6 +140,6 @@ void HomeWid::on_downBtn_clicked()
 
 void HomeWid::busChangedSlot(int id)
 {
-//    sDataPacket *shm = get_share_mem();
-//    mBusData = &(shm->data[id]);
+    sDataPacket *shm = get_share_mem();
+    mBusData = &(shm->data[id]);
 }

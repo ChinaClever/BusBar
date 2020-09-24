@@ -103,8 +103,8 @@ void LineWid::timeoutDone()
         QString version = QString("V%1.%2").arg(mData->box[0].version/10).arg(mData->box[0].version%10);
         ui->version->setText(version);
 
-        updateTotalWid();
-        updatePlot();
+//        updateTotalWid();
+//        updatePlot();
     }
 }
 

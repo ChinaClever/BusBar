@@ -103,7 +103,7 @@ void SetNamesWid::checkBus()
  */
 void SetNamesWid::indexChanged(int index)
 {
-    if(mIndex == index)  return;
+//    if(mIndex == index)  return;
 
     mIndex = index;
     mPacket = &(get_share_mem()->data[index]);
@@ -112,7 +112,7 @@ void SetNamesWid::indexChanged(int index)
 
 void SetNamesWid::updateWid()
 {
-   // checkBus();
+    checkBus();
 
     int row = ui->tableWidget->rowCount();
     for(int i = 0 ; i < row ; i++)

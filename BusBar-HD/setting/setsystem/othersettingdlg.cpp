@@ -85,6 +85,7 @@ void OtherSettingDlg::on_resetBtn_clicked()
 
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this, tr("信息提示"), tr("是否重启系统?"));
+    //reply.exec();
     if (reply == QMessageBox::Yes) {
         system("reboot");
     }

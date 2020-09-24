@@ -10,8 +10,8 @@ extern void com_setBackColour(const QString &str,QWidget *target);
 
 QuMsgBox::QuMsgBox(QWidget *parent,QString strContext) : QMessageBox(parent)
 {
-    //    setWindowFlags(Qt::WindowStaysOnTopHint);
-    //    setWindowTitle(tr("提示信息"));
+    setWindowFlags(Qt::WindowStaysOnTopHint);
+    setWindowTitle(tr("提示信息"));
     com_setBackColour(tr("提示信息"),this);
     setWindowIcon(QIcon(":/images/logo.jpg"));
     resize(600, 400);

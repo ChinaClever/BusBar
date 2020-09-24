@@ -52,7 +52,6 @@ QString cm_pathOfData(const QString& name)
     if(!dataDir.exists(dirName))
         dataDir.mkdir(dirName);
     dataDir.cd(dirName);
-    qDebug()<<"android"<<dataDir<<endl;
     return dataDir.absoluteFilePath(name);
 #endif
 }

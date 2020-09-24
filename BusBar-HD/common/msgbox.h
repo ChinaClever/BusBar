@@ -7,6 +7,16 @@
 #include <QPushButton>
 #include <QInputDialog>
 
+class MsgBox
+{
+public:
+    static bool critical(QWidget *parent = 0, const QString &str = "");
+    static bool information(QWidget *parent = 0, const QString &str = "");
+    static bool question(QWidget *parent = 0, const QString &str = "");
+    static bool warning(QWidget *parent = 0, const QString &str = "");
+};
+
+
 /*询问消息框*/
 class QuMsgBox : public QMessageBox
 {

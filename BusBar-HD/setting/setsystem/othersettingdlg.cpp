@@ -77,16 +77,9 @@ void OtherSettingDlg::on_updateBtn_clicked()
 
 void OtherSettingDlg::on_resetBtn_clicked()
 {
-    //BeepThread::bulid()->beep();
-    //QuMsgBox box(this, tr("是否重启系统?"));
-    //if(box.Exec()) {
-    //    system("reboot");
-    //}
-
-    QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, tr("信息提示"), tr("是否重启系统?"));
-    //reply.exec();
-    if (reply == QMessageBox::Yes) {
+    BeepThread::bulid()->beep();
+    bool ret = MsgBox::question(this, tr("是否重启系统?"));
+    if(ret) {
         system("reboot");
     }
 }

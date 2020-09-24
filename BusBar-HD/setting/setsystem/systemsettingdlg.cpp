@@ -16,6 +16,8 @@ SystemSettingDlg::SystemSettingDlg(QWidget *parent) :
 #endif
     mNetWid = new NetSettingDlg(ui->netWid);
     mOtherWid = new OtherSettingDlg(ui->otherWid);
+
+    ui->netWid->setHidden(true);
 }
 
 SystemSettingDlg::~SystemSettingDlg()

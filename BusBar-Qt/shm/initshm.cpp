@@ -84,6 +84,7 @@ void InitShm::initNameUnit(int bus, int type, int num, char *buf, const QString 
         DbDevName::bulid()->saveItem(item);
         str = name;
     }
+    msleep(50);
 
     QByteArray ba = str.toLatin1();
     char *mm = ba.data();

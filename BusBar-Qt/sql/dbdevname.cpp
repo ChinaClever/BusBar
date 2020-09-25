@@ -14,7 +14,7 @@ void DbDevName::createTable()
             "type           INTEGER,"
             "num          INTEGER,"
             "name          TEXT);";
-    QSqlQuery query;
+    QSqlQuery query(mDb);
     if(!query.exec(cmd.arg(tableName())))
     {
         throwError(query.lastError());
@@ -61,7 +61,7 @@ bool DbDevName::updateItem(const DbNameItem &item)
 bool DbDevName::modifyItem(const DbNameItem &item, const QString &cmd)
 {
     bool ret = false;
-    QSqlQuery query;
+    QSqlQuery query(mDb);
     query.prepare(cmd);
     query.bindValue(":id",item.id);
     query.bindValue(":bus",item.bus);

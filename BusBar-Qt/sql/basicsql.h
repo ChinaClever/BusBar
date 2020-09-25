@@ -41,6 +41,8 @@ public:
     bool clear(); // 清空 表
     virtual void createTable()=0;
 
+    QSqlDatabase mDb;
+
 signals:
     void itemChanged(int id,int type);
 protected:
@@ -48,7 +50,7 @@ protected:
     QString tableMarking();
     void setTableMarking(const QString& marking);
 private:
-    static void initDb();
+    static QSqlDatabase initDb();
     
 };
 
@@ -91,7 +93,7 @@ protected:
     QVector<T> selectItems(const QString &condition)
     {
         QVector<T> items;
-        QSqlQuery query;
+        QSqlQuery query(mDb);
         QString sql = QString("SELECT * from %1 %2").arg(tableName()).arg(condition);
         query.prepare(sql);
         if(query.exec()){

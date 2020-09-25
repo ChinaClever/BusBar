@@ -6,7 +6,7 @@
   */
 #include <QtCore>
 
-#define ARM_LINUX 2
+#define ARM_LINUX 3
 
 #if ARM_LINUX == 1
 #define SERIAL_COM1     "ttyS8"
@@ -21,10 +21,11 @@
 #define SERIAL_COM4     "ttymxc6"
 #define SERIAL_COM5     "ttymxc1"
 #else
-#define SERIAL_COM1     "ttyUSB0"
-#define SERIAL_COM2     "ttyUSB1"
-#define SERIAL_COM3     "ttyUSB2"
-#define SERIAL_COM4     "ttyUSB3"
+#define SERIAL_COM1     "ttyS0"
+#define SERIAL_COM2     "ttyS2"
+#define SERIAL_COM3     "ttyS3"
+#define SERIAL_COM4     "ttyS4"
+#define SERIAL_COM5     "ttyUSB0"
 #endif
 
 #define SERIAL_BAUDRATE    "B9600"

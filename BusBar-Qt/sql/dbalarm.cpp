@@ -22,7 +22,7 @@ void DbAlarm::createTable()
             "time           VCHAR,"
             "type           VCHAR,"
             "msg            TEXT);";
-    QSqlQuery query;
+    QSqlQuery query(mDb);
     if(!query.exec(cmd.arg(tableName())))
     {
         throwError(query.lastError());
@@ -45,7 +45,7 @@ bool DbAlarm::insertItem(DbAlarmItem& item)
 bool DbAlarm::modifyItem(const DbAlarmItem &item, const QString &cmd)
 {
     bool ret = false;
-    QSqlQuery query;
+    QSqlQuery query(mDb);
     query.prepare(cmd);
     query.bindValue(":id",item.id);
     query.bindValue(":date",item.date);

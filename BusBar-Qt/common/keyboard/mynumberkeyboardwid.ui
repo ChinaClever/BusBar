@@ -91,7 +91,7 @@
       <string>0</string>
      </property>
      <property name="icon">
-      <iconset resource="../images.qrc">
+      <iconset resource="../../images.qrc">
        <normaloff>:/new/prefix1/image/number/number20.png</normaloff>:/new/prefix1/image/number/number20.png</iconset>
      </property>
      <property name="iconSize">
@@ -125,7 +125,7 @@
       <string>3</string>
      </property>
      <property name="icon">
-      <iconset resource="../images.qrc">
+      <iconset resource="../../images.qrc">
        <normaloff>:/new/prefix1/image/number/number13.png</normaloff>:/new/prefix1/image/number/number13.png</iconset>
      </property>
      <property name="iconSize">
@@ -159,7 +159,7 @@
       <string>7</string>
      </property>
      <property name="icon">
-      <iconset resource="../images.qrc">
+      <iconset resource="../../images.qrc">
        <normaloff>:/new/prefix1/image/number/number17.png</normaloff>:/new/prefix1/image/number/number17.png</iconset>
      </property>
      <property name="iconSize">
@@ -193,7 +193,7 @@
       <string>4</string>
      </property>
      <property name="icon">
-      <iconset resource="../images.qrc">
+      <iconset resource="../../images.qrc">
        <normaloff>:/new/prefix1/image/number/number14.png</normaloff>:/new/prefix1/image/number/number14.png</iconset>
      </property>
      <property name="iconSize">
@@ -227,7 +227,7 @@
       <string>5</string>
      </property>
      <property name="icon">
-      <iconset resource="../images.qrc">
+      <iconset resource="../../images.qrc">
        <normaloff>:/new/prefix1/image/number/number15.png</normaloff>:/new/prefix1/image/number/number15.png</iconset>
      </property>
      <property name="iconSize">
@@ -261,7 +261,7 @@
       <string>9</string>
      </property>
      <property name="icon">
-      <iconset resource="../images.qrc">
+      <iconset resource="../../images.qrc">
        <normaloff>:/new/prefix1/image/number/number19.png</normaloff>:/new/prefix1/image/number/number19.png</iconset>
      </property>
      <property name="iconSize">
@@ -295,7 +295,7 @@
       <string>1</string>
      </property>
      <property name="icon">
-      <iconset resource="../images.qrc">
+      <iconset resource="../../images.qrc">
        <normaloff>:/new/prefix1/image/number/number11.png</normaloff>:/new/prefix1/image/number/number11.png</iconset>
      </property>
      <property name="iconSize">
@@ -338,7 +338,7 @@
       <string>2</string>
      </property>
      <property name="icon">
-      <iconset resource="../images.qrc">
+      <iconset resource="../../images.qrc">
        <normaloff>:/new/prefix1/image/number/number12.png</normaloff>:/new/prefix1/image/number/number12.png</iconset>
      </property>
      <property name="iconSize">
@@ -372,7 +372,7 @@
       <string>6</string>
      </property>
      <property name="icon">
-      <iconset resource="../images.qrc">
+      <iconset resource="../../images.qrc">
        <normaloff>:/new/prefix1/image/number/number16.png</normaloff>:/new/prefix1/image/number/number16.png</iconset>
      </property>
      <property name="iconSize">
@@ -406,7 +406,7 @@
       <string>8</string>
      </property>
      <property name="icon">
-      <iconset resource="../images.qrc">
+      <iconset resource="../../images.qrc">
        <normaloff>:/new/prefix1/image/number/number18.png</normaloff>:/new/prefix1/image/number/number18.png</iconset>
      </property>
      <property name="iconSize">
@@ -440,7 +440,7 @@
       <string>delate</string>
      </property>
      <property name="icon">
-      <iconset resource="../images.qrc">
+      <iconset resource="../../images.qrc">
        <normaloff>:/new/prefix1/image/number/backspace.png</normaloff>:/new/prefix1/image/number/backspace.png</iconset>
      </property>
      <property name="iconSize">
@@ -457,7 +457,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../images.qrc"/>
+  <include location="../../images.qrc"/>
  </resources>
  <connections/>
 </ui>

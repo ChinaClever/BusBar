@@ -7,11 +7,13 @@
  *      Author: Lzy
  */
 #include "sqltablemodel.h"
+#include "dbdevname.h"
 
 SqlTableModel::SqlTableModel(QWidget *parent) :
     QWidget(parent)
 {
-    model = new QSqlTableModel(this);
+    DbDevName* db = DbDevName::bulid();
+    model = new QSqlTableModel(this, db->mDb);
     model->setEditStrategy(QSqlTableModel::OnManualSubmit);
 
     model->setSort(0, Qt::AscendingOrder); //选择按照 第一列 排序

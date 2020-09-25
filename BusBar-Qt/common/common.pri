@@ -14,6 +14,7 @@ HEADERS += \
     $$PWD/qcustomplot.h \
     $$PWD/myprogressbar.h \
     $$PWD/comtablewid.h
+    #$$PWD/permissions.h
 	
 SOURCES += \	
     $$PWD/common.cpp \
@@ -23,6 +24,7 @@ SOURCES += \
     $$PWD/qcustomplot.cpp \
     $$PWD/myprogressbar.cpp \
     $$PWD/comtablewid.cpp
+    #$$PWD/permissions.cpp
 
 FORMS += \
     $$PWD/comtablewid.ui

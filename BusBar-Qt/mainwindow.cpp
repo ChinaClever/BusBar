@@ -119,7 +119,7 @@ void MainWindow::checkAlarm()
 
 void MainWindow::initFunSLot()
 {    
-    //initSerial(); //串口
+    initSerial(); //串口
     new DpThread(this); // 创建数据处理线程
     updateTime();
 

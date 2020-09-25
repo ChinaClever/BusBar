@@ -8,18 +8,17 @@
  */
 #include "sqltablemodel.h"
 #include "dbdevname.h"
+#include "QGridLayout"
 
 SqlTableModel::SqlTableModel(QWidget *parent) :
     QWidget(parent)
 {
+    this->setHidden(true);
     DbDevName* db = DbDevName::bulid();
     model = new QSqlTableModel(this, db->mDb);
     model->setEditStrategy(QSqlTableModel::OnManualSubmit);
-
     model->setSort(0, Qt::AscendingOrder); //选择按照 第一列 排序
 }
-
-
 
 void SqlTableModel::setHeaders(QStringList &head)
 {

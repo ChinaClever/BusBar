@@ -34,7 +34,7 @@ void DbBranchEle::createTable()
             "loop_9        DOUBLE,"
 
             "loop          DOUBLE);";
-    QSqlQuery query;
+    QSqlQuery query(mDb);
     if(!query.exec(cmd.arg(tableName())))
     {
         throwError(query.lastError());
@@ -57,7 +57,7 @@ bool DbBranchEle::insertItem(DbBranchEleItem& item)
 bool DbBranchEle::modifyItem(const DbBranchEleItem &item, const QString &cmd)
 {
     bool ret = false;
-    QSqlQuery query;
+    QSqlQuery query(mDb);
     query.prepare(cmd);
     query.bindValue(":id",item.id);
     query.bindValue(":date",item.date);

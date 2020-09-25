@@ -24,7 +24,7 @@ void DbMainEle::createTable()
             "line_2        DOUBLE,"
             "line_3        DOUBLE,"
             "line          DOUBLE);";
-    QSqlQuery query;
+    QSqlQuery query(mDb);
     if(!query.exec(cmd.arg(tableName())))
     {
         throwError(query.lastError());
@@ -48,7 +48,7 @@ bool DbMainEle::insertItem(DbMainEleItem& item)
 bool DbMainEle::modifyItem(const DbMainEleItem &item, const QString &cmd)
 {
     bool ret = false;
-    QSqlQuery query;
+    QSqlQuery query(mDb);
     query.prepare(cmd);
     query.bindValue(":id",item.id);
     query.bindValue(":date",item.date);

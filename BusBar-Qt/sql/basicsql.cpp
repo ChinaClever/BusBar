@@ -13,13 +13,13 @@
 BasicSql::BasicSql(QObject *parent) :
     QObject(parent)
 {
-    initDb();
+    mDb = initDb();
     //标记表
     QString cmd = "create table if not exists markingtable("
             "name TEXT primary key not null,"
             "marking TEXT not null"
             ");";
-    QSqlQuery query;
+    QSqlQuery query(mDb);
     if(!query.exec(cmd))
         throwError(query.lastError());
 }
@@ -30,7 +30,7 @@ BasicSql::BasicSql(QObject *parent) :
  */
 void BasicSql::remove(const QString &condition)
 {
-    QSqlQuery query;
+    QSqlQuery query(mDb);
     if(!query.exec(QString("DELETE FROM %1 WHERE %2").arg(tableName()).arg(condition))) {
         qDebug()<< "remove:" << query.lastError();
         throwError(query.lastError());
@@ -46,7 +46,7 @@ void BasicSql::remove(const QString &condition)
 int BasicSql::maxId(const QString &idName)
 {
     int max_id = 0;
-    QSqlQuery query;
+    QSqlQuery query(mDb);
     if(query.exec(QString("select max(%1) from %2").arg(idName).arg(tableName())))
     {
         if(query.next())
@@ -66,13 +66,13 @@ int BasicSql::maxId(const QString &idName)
 int BasicSql::maxId(const QString &idName, const QString &condition)
 {
     int max_id = 0;
-    QSqlQuery query;
+    QSqlQuery query(mDb);
     if(query.exec(QString("select max(%1) from %2 %3").arg(idName).arg(tableName()).arg(condition)))
     {
         if(query.next())
             max_id = query.value(0).toInt();
     } else
-        qDebug()<< "maxId:" << query.lastError();
+        qDebug() << tableName() << "maxId:" << query.lastError();
     return max_id;
 }
 
@@ -84,7 +84,7 @@ int BasicSql::maxId(const QString &idName, const QString &condition)
 int BasicSql::count(const QString &column_name, const QString &condition)
 {
     int count = -1;
-    QSqlQuery query;
+    QSqlQuery query(mDb);
     if(query.exec(QString("select count(DISTINCT %1) from %2 %3").arg(column_name).arg(tableName()).arg(condition))){
         if(query.next())
             count = query.value(0).toInt();
@@ -103,7 +103,7 @@ int BasicSql::count(const QString &column_name, const QString &condition)
 QStringList BasicSql::listColumn(const QString &column_name, const QString &condition)
 {
     QStringList list;
-    QSqlQuery query;
+    QSqlQuery query(mDb);
     if(query.exec(QString("select DISTINCT %1 from %2 %3").arg(column_name).arg(tableName()).arg(condition))){
         while(query.next())
             list << query.value(0).toString();
@@ -127,7 +127,7 @@ QVector<int> BasicSql::listColumnToInt(const QString &column_name, const QString
 bool BasicSql::updateColumn(const QString& column_name, double value, const QString &condition)
 {
     bool ret = false;
-    QSqlQuery query;
+    QSqlQuery query(mDb);
     ret = query.exec(QString("update  %1 set %2=%3 %4").arg(tableName()).arg(column_name).arg(value).arg(condition));
     if(!ret)
         qDebug()<< "sql updateColumn 1:" << query.lastError();
@@ -137,7 +137,7 @@ bool BasicSql::updateColumn(const QString& column_name, double value, const QStr
 bool BasicSql::updateColumn(const QString& column_name, const QString& value, const QString &condition)
 {
     bool ret = false;
-    QSqlQuery query;
+    QSqlQuery query(mDb);
     ret = query.exec(QString("update  %1 set %2=\"%3\" %4").arg(tableName()).arg(column_name).arg(value).arg(condition));
     if(!ret)
         qDebug()<< "sql updateColumn 2:" << query.lastError();
@@ -161,16 +161,16 @@ QVector<int> BasicSql::selectIds(const QString &condition)
  */
 void BasicSql::throwError(const QSqlError &err)
 {
-    qCritical() << "Sql_Error:" << err.text() << err.type();
+    qCritical() << tableName() <<"Sql_Error:" << err.text() << err.type();
 }
 
 bool BasicSql::clear()
 {
     QString cmd = QString("delete from %1").arg(tableName());
-    QSqlQuery query(cmd);
+    QSqlQuery query(mDb);
     bool ret = query.exec(cmd);
     if(!ret){
-        qDebug()<< "sql clear :" << query.lastError();
+        qDebug()<<"sql clear :" << query.lastError();
     } else {
         createTable();
     }
@@ -185,7 +185,7 @@ bool BasicSql::clear()
 QString BasicSql::tableMarking()
 {
     QString cmd = QString("SELECT * from markingtable where name = \"%1\"").arg(tableName());
-    QSqlQuery query(cmd);
+    QSqlQuery query(mDb);
     if(query.exec(cmd)){
         if(query.next())
             return query.value(1).toString();
@@ -203,7 +203,7 @@ void BasicSql::setTableMarking(const QString &marking)
 {
     QString ori = tableMarking();
     QString cmd = ori.isEmpty()?"insert into markingtable (name,marking) values(%1,%2)":"update markingtable set marking = %2 where name = \"%1\"";
-    QSqlQuery query;
+    QSqlQuery query(mDb);
     if(!query.exec(cmd.arg(tableName()).arg(marking)))
         throwError(query.lastError());
 }
@@ -211,15 +211,16 @@ void BasicSql::setTableMarking(const QString &marking)
 /**
  * @brief 数据库初始化
  */
-void BasicSql::initDb()
+QSqlDatabase BasicSql::initDb()
 {
-    static bool s_initDbFinshed = false;
-    if(s_initDbFinshed == false){
-        QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    static QSqlDatabase db;
+    if(!db.isOpen()){
+        db = QSqlDatabase::addDatabase("QSQLITE");
         db.setDatabaseName(cm_pathOfData("busbar.db"));
         if (!db.open()) { //打开数据库
             qDebug() << "init Db error !!!";
         }
-        s_initDbFinshed = true;
     }
+
+    return db;
 }

@@ -57,6 +57,9 @@
        <pointsize>1</pointsize>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
      <property name="text">
       <string>space</string>
      </property>
@@ -87,12 +90,11 @@
        <pointsize>1</pointsize>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: url(:/new/prefix1/image/number/number20.png);</string>
+     </property>
      <property name="text">
       <string>0</string>
-     </property>
-     <property name="icon">
-      <iconset resource="../../images.qrc">
-       <normaloff>:/new/prefix1/image/number/number20.png</normaloff>:/new/prefix1/image/number/number20.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -154,12 +156,11 @@
        <pointsize>1</pointsize>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: url(:/new/prefix1/image/number/number17.png);</string>
+     </property>
      <property name="text">
       <string>7</string>
-     </property>
-     <property name="icon">
-      <iconset resource="../../images.qrc">
-       <normaloff>:/new/prefix1/image/number/number17.png</normaloff>:/new/prefix1/image/number/number17.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -254,12 +255,11 @@
        <pointsize>1</pointsize>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: url(:/new/prefix1/image/number/number19.png);</string>
+     </property>
      <property name="text">
       <string>9</string>
-     </property>
-     <property name="icon">
-      <iconset resource="../../images.qrc">
-       <normaloff>:/new/prefix1/image/number/number19.png</normaloff>:/new/prefix1/image/number/number19.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -363,12 +363,11 @@
        <pointsize>1</pointsize>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: url(:/new/prefix1/image/number/number16.png);</string>
+     </property>
      <property name="text">
       <string>6</string>
-     </property>
-     <property name="icon">
-      <iconset resource="../../images.qrc">
-       <normaloff>:/new/prefix1/image/number/number16.png</normaloff>:/new/prefix1/image/number/number16.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -397,12 +396,11 @@
        <pointsize>1</pointsize>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: url(:/new/prefix1/image/number/number18.png);</string>
+     </property>
      <property name="text">
       <string>8</string>
-     </property>
-     <property name="icon">
-      <iconset resource="../../images.qrc">
-       <normaloff>:/new/prefix1/image/number/number18.png</normaloff>:/new/prefix1/image/number/number18.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -431,12 +429,11 @@
        <pointsize>1</pointsize>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: url(:/new/prefix1/image/number/backspace.png);</string>
+     </property>
      <property name="text">
       <string>delate</string>
-     </property>
-     <property name="icon">
-      <iconset resource="../../images.qrc">
-       <normaloff>:/new/prefix1/image/number/backspace.png</normaloff>:/new/prefix1/image/number/backspace.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -451,8 +448,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../../images.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

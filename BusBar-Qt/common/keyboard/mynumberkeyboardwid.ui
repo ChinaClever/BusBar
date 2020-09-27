@@ -121,12 +121,11 @@
        <pointsize>1</pointsize>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: url(:/new/prefix1/image/number/number13.png);</string>
+     </property>
      <property name="text">
       <string>3</string>
-     </property>
-     <property name="icon">
-      <iconset resource="../../images.qrc">
-       <normaloff>:/new/prefix1/image/number/number13.png</normaloff>:/new/prefix1/image/number/number13.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -189,12 +188,11 @@
        <pointsize>1</pointsize>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: url(:/new/prefix1/image/number/number14.png);</string>
+     </property>
      <property name="text">
       <string>4</string>
-     </property>
-     <property name="icon">
-      <iconset resource="../../images.qrc">
-       <normaloff>:/new/prefix1/image/number/number14.png</normaloff>:/new/prefix1/image/number/number14.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -223,12 +221,11 @@
        <pointsize>1</pointsize>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: url(:/new/prefix1/image/number/number15.png);</string>
+     </property>
      <property name="text">
       <string>5</string>
-     </property>
-     <property name="icon">
-      <iconset resource="../../images.qrc">
-       <normaloff>:/new/prefix1/image/number/number15.png</normaloff>:/new/prefix1/image/number/number15.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -291,12 +288,11 @@
        <pointsize>1</pointsize>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: url(:/new/prefix1/image/number/number11.png);</string>
+     </property>
      <property name="text">
       <string>1</string>
-     </property>
-     <property name="icon">
-      <iconset resource="../../images.qrc">
-       <normaloff>:/new/prefix1/image/number/number11.png</normaloff>:/new/prefix1/image/number/number11.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -334,12 +330,11 @@
      <property name="autoFillBackground">
       <bool>false</bool>
      </property>
+     <property name="styleSheet">
+      <string notr="true">border-image: url(:/new/prefix1/image/number/number12.png);</string>
+     </property>
      <property name="text">
       <string>2</string>
-     </property>
-     <property name="icon">
-      <iconset resource="../../images.qrc">
-       <normaloff>:/new/prefix1/image/number/number12.png</normaloff>:/new/prefix1/image/number/number12.png</iconset>
      </property>
      <property name="iconSize">
       <size>

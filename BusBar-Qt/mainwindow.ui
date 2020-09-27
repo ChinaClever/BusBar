@@ -187,14 +187,10 @@ color: rgb(255, 255, 255);</string>
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">background-color: transparent;</string>
+          <string notr="true">border-image: url(:/new/prefix1/image/alarm.png);</string>
          </property>
          <property name="text">
           <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="images.qrc">
-           <normaloff>:/new/prefix1/image/alarm.png</normaloff>:/new/prefix1/image/alarm.png</iconset>
          </property>
          <property name="iconSize">
           <size>

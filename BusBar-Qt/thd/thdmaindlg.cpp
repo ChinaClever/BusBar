@@ -6,6 +6,7 @@ ThdMainDlg::ThdMainDlg(QWidget *parent) :
     ui(new Ui::ThdMainDlg)
 {
     ui->setupUi(this);
+    com_setBackColour(tr("谐波分析"),this);
 
     mChartWid = new ThdChartWid(ui->chartwid);
     mTableWid = new ThdTableWid(ui->tablewid);

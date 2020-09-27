@@ -153,14 +153,10 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: transparent;</string>
+    <string notr="true">border-image: url(:/new/prefix1/image/next.png);</string>
    </property>
    <property name="text">
     <string/>
-   </property>
-   <property name="icon">
-    <iconset resource="../images.qrc">
-     <normaloff>:/new/prefix1/image/next.png</normaloff>:/new/prefix1/image/next.png</iconset>
    </property>
    <property name="iconSize">
     <size>
@@ -179,14 +175,10 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: transparent;</string>
+    <string notr="true">border-image: url(:/new/prefix1/image/last.png);</string>
    </property>
    <property name="text">
     <string/>
-   </property>
-   <property name="icon">
-    <iconset resource="../images.qrc">
-     <normaloff>:/new/prefix1/image/last.png</normaloff>:/new/prefix1/image/last.png</iconset>
    </property>
    <property name="iconSize">
     <size>
@@ -382,8 +374,6 @@
    </property>
   </widget>
  </widget>
- <resources>
-  <include location="../images.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

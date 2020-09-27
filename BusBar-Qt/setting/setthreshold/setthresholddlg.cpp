@@ -7,6 +7,7 @@ SetThresholdDlg::SetThresholdDlg(QWidget *parent) :
     ui(new Ui::SetThresholdDlg)
 {
     ui->setupUi(this);
+    com_setBackColour(tr("阈值设置"),this);
 }
 
 SetThresholdDlg::~SetThresholdDlg()

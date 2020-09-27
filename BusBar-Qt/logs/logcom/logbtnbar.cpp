@@ -15,6 +15,7 @@ LogBtnBar::LogBtnBar(QWidget *parent) :
     ui(new Ui::LogBtnBar)
 {
     ui->setupUi(this);
+    com_setBackColour(tr("日志操作"),this);
     ui->dateEdit->setDate(QDate::currentDate());
     connect(ui->refreshBtn, SIGNAL(clicked()),this,SIGNAL(refreshSig()));
     connect(LogSignal::get(), SIGNAL(logTypeSig(int)), ui->comboBox,SLOT(setCurrentIndex(int)));

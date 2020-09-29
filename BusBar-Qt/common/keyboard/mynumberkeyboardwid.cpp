@@ -40,6 +40,7 @@ void MyNumberKeyboardWid::initButton()
     ui->pushButton_9->setProperty("number",true);
     ui->pushButton_space->setProperty("nonnumber",true);
     ui->pushButton_delate->setProperty("nonnumber",true);
+    ui->pushButton_space->hide();
 }
 
 void MyNumberKeyboardWid::buttonClicked()

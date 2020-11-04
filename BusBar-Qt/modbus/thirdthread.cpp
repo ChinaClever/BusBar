@@ -7,16 +7,33 @@ ThirdThread::ThirdThread(QObject *parent)
     mBuf = (uchar *)malloc(RTU_BUF_SIZE); //申请内存  -- 随便用
     mSerial = new Serial_Trans(this); //串口线程
     mShm = get_share_mem(); // 获取共享内存
+    isOpen = false;
 }
 
 bool ThirdThread::init(const QString &name)
 {
-    bool ret = mSerial->openSerial(name); // 打开串口
-    if(ret)
+    timer = new QTimer(this);
+    timer->start(5000);
+    connect(timer, SIGNAL(timeout()),this, SLOT(timeoutDone()));
+    isOpen = mSerial->openSerial(name); // 打开串口
+    serialName = name;
+    if(isOpen)
     {
         QTimer::singleShot(3*1000,this,SLOT(start()));  // 启动线程
     }
-    return ret;
+    return isOpen;
+}
+
+ void ThirdThread::timeoutDone()
+{
+    if(!isOpen)
+    {
+        isOpen = mSerial->openSerial(serialName); // 打开串口
+        if(isOpen)
+        {
+            QTimer::singleShot(3*1000,this,SLOT(start()));  // 启动线程
+        }
+    }
 }
 
 void ThirdThread::run()
@@ -26,6 +43,14 @@ void ThirdThread::run()
     {
         transData();
         msleep(1);
+        if(256==system(QString("ls /dev/usb/tty1-1.3").toLatin1().data()))
+        {
+            sleep(1);
+            mSerial->closeSerial();
+            isOpen = false;
+            isRun = false;
+            return;
+        }
     }
 }
 

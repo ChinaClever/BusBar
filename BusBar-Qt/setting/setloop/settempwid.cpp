@@ -93,6 +93,7 @@ void SetTempWid::itemClicked(QTableWidgetItem *it)
         item.type = 3;
 
         SetThresholdDlg dlg(this);
+        dlg.move(0,0);
         dlg.set(item);
         dlg.exec();
 

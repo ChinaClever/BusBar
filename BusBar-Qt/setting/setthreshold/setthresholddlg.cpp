@@ -15,7 +15,6 @@ SetThresholdDlg::~SetThresholdDlg()
     delete ui;
 }
 
-
 void SetThresholdDlg::initSpinBox(sThresholdItem &item)
 {
     ui->minBox->setValue(item.min);

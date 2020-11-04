@@ -58,7 +58,7 @@ void HomeBoxWid::updateData()
 {
     QPalette pe;
     QString str =  QString::number(mData->tgBox.cur/COM_RATE_CUR,'f',1) + "A";
-    if(mData->offLine)   // 在线
+    if(mData->offLine > 0)   // 在线
     {
         if(mData->boxCurAlarm == 2)
             pe.setColor(QPalette::WindowText,Qt::red);
@@ -91,7 +91,7 @@ void HomeBoxWid::updateAlarmIcon(QLabel *lab,int volAlarm, int curALarm, int env
  */
 void HomeBoxWid::updateAlarmStatus()
 {
-    if(mData->offLine) {
+    if(mData->offLine > 0) {
         updateAlarmIcon(ui->iconLab_1,  mData->boxVolAlarm, mData->boxCurAlarm, mData->boxEnvAlarm);
         updateAlarmIcon(ui->iconLab_2,  mData->boxVolAlarm, mData->boxCurAlarm, mData->boxEnvAlarm);
         updateAlarmIcon(ui->iconLab_3,  mData->boxVolAlarm, mData->boxCurAlarm, mData->boxEnvAlarm);

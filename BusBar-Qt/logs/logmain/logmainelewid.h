@@ -5,6 +5,10 @@
 #include "logcom/logbtnbar.h"
 #include "sqltablemodel.h"
 
+#include <QScrollBar>
+#include <QPropertyAnimation>
+#include <QDateTime>
+
 namespace Ui {
 class LogMainEleWid;
 }
@@ -21,6 +25,8 @@ protected:
     void initBtnBar();
     QString getTableName(int id);
     bool refreshTable(const QString &table);
+    void initScrollArea();
+    bool eventFilter(QObject *obj, QEvent *event);
 
 public slots:
     void initTableSlot(int id);
@@ -40,6 +46,7 @@ private:
     QString m_table;
     QStringList mHeadList;
     int mCount;
+    QScrollBar *m_scrollBarV;
 };
 
 #endif // LOGMAINELEWID_H

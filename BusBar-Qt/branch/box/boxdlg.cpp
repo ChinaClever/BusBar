@@ -8,7 +8,7 @@ BoxDlg::BoxDlg(QWidget *parent) :
     ui->setupUi(this);
     com_setBackColour(tr("接插箱"), this);
 //    set_background_icon(this,":/new/prefix1/image/dialog.png",QSize(815,400));
-    this->setWindowFlags(Qt::WindowSystemMenuHint|Qt::WindowMinimizeButtonHint);
+//    this->setWindowFlags(Qt::WindowSystemMenuHint|Qt::WindowMinimizeButtonHint);// 打开注释时，Android不能全屏
 }
 
 BoxDlg::~BoxDlg()

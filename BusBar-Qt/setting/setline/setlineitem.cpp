@@ -95,6 +95,7 @@ void SetLineItem::curBarClicked()
     item.type = 2;
 
     SetThresholdDlg dlg(this);
+    dlg.move(0,0);
     dlg.set(item);
     dlg.exec();
 }
@@ -110,6 +111,7 @@ void SetLineItem::volBarClicked()
     item.type = 1;
 
     SetThresholdDlg dlg(this);
+    dlg.move(0,0);
     dlg.set(item);
     dlg.exec();
 }

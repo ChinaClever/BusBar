@@ -5,6 +5,10 @@
 #include "common.h"
 #include <QTableWidgetItem>
 
+#include <QScrollBar>
+#include <QPropertyAnimation>
+#include <QDateTime>
+
 namespace Ui {
 class BoxTableWidget;
 }
@@ -33,6 +37,8 @@ protected:
     void setCur(int id, int line, int column);
     void setEle(int id, int line, int column);
     void updateData();
+    void initScrollArea();
+    bool eventFilter(QObject *obj, QEvent *event);
 
 public slots:
     void busChangeSlot(int id);
@@ -50,6 +56,7 @@ private:
     sBusData *mBoxData;
     QTimer *timer;
     bool isRun;
+    QScrollBar *m_scrollBarV;
 };
 
 #endif // BOXTABLEWIDGET_H

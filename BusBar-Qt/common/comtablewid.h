@@ -5,6 +5,10 @@
 #include <QTableWidget>
 #include "common.h"
 
+#include <QScrollBar>
+#include <QPropertyAnimation>
+#include <QDateTime>
+
 namespace Ui {
 class ComTableWid;
 }
@@ -29,6 +33,8 @@ protected:
     void delTable();
     void setBackgroundColor(int id);
     void setItemColor(int id, int column, int alarm);
+    void initScrollArea();
+    bool eventFilter(QObject *obj, QEvent *event);
 
 protected slots:
     virtual void timeoutDone(){}
@@ -48,6 +54,7 @@ private:
 
 private:
     Ui::ComTableWid *ui;
+    QScrollBar *m_scrollBarV;
 };
 
 #endif // COMTABLEWID_H

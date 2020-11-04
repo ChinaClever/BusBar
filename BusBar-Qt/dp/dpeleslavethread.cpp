@@ -69,11 +69,8 @@ void DpEleSlaveThread::saveBus(int id)
     db_mainEle_obj(id)->insertItem(item);
     msleep(50);
 
-    static int count=0;
-    if(count++ % 24 == 0)  {
-        for(int i=1; i<=bus->boxNum; ++i)
-            saveBox(id, bus->box[i]);
-    }
+    for(int i=1; i<=bus->boxNum; ++i)
+        saveBox(id, bus->box[i]);
 }
 
 

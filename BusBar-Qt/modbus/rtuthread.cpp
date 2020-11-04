@@ -255,7 +255,7 @@ int RtuThread::transData(int addr)
         bool ret = rtu_recv_packet(buf, rtn, pkt); // 解析数据 data - len - it
         if(ret) {
             if(addr == pkt->addr) { //回收地址和发送地址同
-                offLine = 2;
+                offLine = 4;
                 loopData(box, pkt); //更新数据
                 envData(&(box->env), pkt);
                 box->rate = pkt->rate;

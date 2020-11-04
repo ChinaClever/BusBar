@@ -2,6 +2,9 @@
 #define CURRENTALARMSDLG_H
 
 #include <QDialog>
+#include <QScrollBar>
+#include <QPropertyAnimation>
+#include <QDateTime>
 
 namespace Ui {
 class CurrentAlarmsDlg;
@@ -20,6 +23,8 @@ protected:
     void addItemContent(int row, int column, const QString &content);
     void addRowContent(QStringList &list);
     void updateData();
+    void initScrollArea();
+    bool eventFilter(QObject *obj, QEvent *event);
 
 private slots:
     void on_refreshBtn_clicked();
@@ -28,6 +33,7 @@ private slots:
 
 private:
     Ui::CurrentAlarmsDlg *ui;
+    QScrollBar *m_scrollBarV;
 };
 
 #endif // CURRENTALARMSDLG_H

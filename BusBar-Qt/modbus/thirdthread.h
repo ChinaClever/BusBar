@@ -34,6 +34,9 @@ signals:
 
 public slots:
 
+protected slots:
+    void timeoutDone();
+
 protected:
     void run();
     void transData();
@@ -47,6 +50,9 @@ private:
     uchar *mBuf;
     ThrData *mThr;
     sDataPacket *mShm;
+    QTimer *timer;
+    QString serialName;
+    bool isOpen;
 };
 
 #endif // THIRDTHREAD_H

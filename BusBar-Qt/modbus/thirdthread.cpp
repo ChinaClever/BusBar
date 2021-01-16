@@ -10,16 +10,21 @@ ThirdThread::ThirdThread(QObject *parent)
     isOpen = false;
 }
 
-bool ThirdThread::init(const QString &name)
+bool ThirdThread::init(const QString &name1,const QString &name2)
 {
     timer = new QTimer(this);
     timer->start(5000);
     connect(timer, SIGNAL(timeout()),this, SLOT(timeoutDone()));
-    isOpen = mSerial->openSerial(name); // 打开串口
-    serialName = name;
-    if(isOpen)
-    {
+    isOpen = mSerial->openSerial(name1); // 打开串口
+    serialName1 = name1;
+    if(isOpen){
         QTimer::singleShot(3*1000,this,SLOT(start()));  // 启动线程
+    }else{
+        serialName2 = name2;
+        isOpen = mSerial->openSerial(name2); // 打开串口
+        if(isOpen){
+            QTimer::singleShot(3*1000,this,SLOT(start()));  // 启动线程
+        }
     }
     return isOpen;
 }
@@ -28,10 +33,15 @@ bool ThirdThread::init(const QString &name)
 {
     if(!isOpen)
     {
-        isOpen = mSerial->openSerial(serialName); // 打开串口
+        isOpen = mSerial->openSerial(serialName1); // 打开串口
         if(isOpen)
         {
             QTimer::singleShot(3*1000,this,SLOT(start()));  // 启动线程
+        }else{
+            isOpen = mSerial->openSerial(serialName2); // 打开串口
+            if(isOpen){
+                QTimer::singleShot(3*1000,this,SLOT(start()));  // 启动线程
+            }
         }
     }
 }
@@ -43,7 +53,7 @@ void ThirdThread::run()
     {
         transData();
         msleep(1);
-        if(256==system(QString("ls /dev/usb/tty1-1.3").toLatin1().data()))
+        if(256==system(QString("ls /dev/usb/tty1-1.3").toLatin1().data())&&256==system(QString("ls /dev/usb/tty1-1.2").toLatin1().data()))
         {
             sleep(1);
             mSerial->closeSerial();

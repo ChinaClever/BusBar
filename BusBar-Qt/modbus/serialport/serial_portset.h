@@ -26,6 +26,7 @@
 #define SERIAL_COM3     "ttyS3"
 #define SERIAL_COM4     "ttyS4"
 #define SERIAL_COM5     "usb/tty1-1.3"
+#define SERIAL_COM6     "usb/tty1-1.2"
 #endif
 
 #define SERIAL_BAUDRATE    "B9600"

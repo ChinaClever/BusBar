@@ -57,6 +57,7 @@ private:
     QTimer *timer;
     bool isRun;
     QScrollBar *m_scrollBarV;
+    QScrollBar *m_scrollBarH;
 };
 
 #endif // BOXTABLEWIDGET_H

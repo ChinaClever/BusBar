@@ -29,6 +29,7 @@ LogAlarmWid::~LogAlarmWid()
 void LogAlarmWid::initScrollArea()
 {
     m_scrollBarV = ui->tableView->verticalScrollBar();
+    m_scrollBarH = ui->tableView->horizontalScrollBar();
     QObjectList objectList = ui->tableView->children();
     for(int i = 0; i < objectList.count(); i++) {
         if(objectList.at(i)->objectName() == "qt_scrollarea_viewport") {
@@ -86,13 +87,18 @@ bool LogAlarmWid::eventFilter(QObject *obj, QEvent *event)
                 endValue = m_scrollBarV->value() + pageStep * (200.0 / mseconds);
                 if(endValue > scrollV_max) endValue = scrollV_max;
             }
+
             if(mseconds > limit) mseconds = 0;//滑动的时间大于某个值的时候，滚动距离变小，减小滑动的时间
             animation->setDuration(mseconds+550);
             animation->setEndValue(endValue);
+            if(m_scrollBarH != NULL)
+                m_scrollBarH->setValue(0);
             animation->setEasingCurve(QEasingCurve::OutQuad);
             animation->start();
             return true;
         }
+        if(m_scrollBarH != NULL)
+            m_scrollBarH->setValue(0);
     } else if(event->type() == QEvent::MouseMove && move_y >= 0) {   //窗口跟着鼠标移动
         int move_distance = QCursor::pos().y() - move_y;
         int endValue = m_scrollBarV->value() - move_distance;

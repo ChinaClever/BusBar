@@ -10,7 +10,6 @@ SetNamesWid::SetNamesWid(QWidget *parent) :
     mIndex = 0;
     mSetShm = new SetShm;
     mSetNameDlg = new SetNameDlg(this);
-    mIndex = 0;
     QTimer::singleShot(100,this,SLOT(initFunSLot()));
     initScrollArea(); // 开启滑动功能
 
@@ -19,6 +18,7 @@ SetNamesWid::SetNamesWid(QWidget *parent) :
 void SetNamesWid::initScrollArea()
 {
     m_scrollBarV = ui->tableWidget->verticalScrollBar();
+    m_scrollBarH = ui->tableWidget->horizontalScrollBar();
     QObjectList objectList = ui->tableWidget->children();
     for(int i = 0; i < objectList.count(); i++) {
         if(objectList.at(i)->objectName() == "qt_scrollarea_viewport") {
@@ -79,10 +79,15 @@ bool SetNamesWid::eventFilter(QObject *obj, QEvent *event)
             if(mseconds > limit) mseconds = 0;//滑动的时间大于某个值的时候，滚动距离变小，减小滑动的时间
             animation->setDuration(mseconds+550);
             animation->setEndValue(endValue);
+
+            if(m_scrollBarH != NULL)
+                m_scrollBarH->setValue(0);
             animation->setEasingCurve(QEasingCurve::OutQuad);
             animation->start();
             return true;
         }
+        if(m_scrollBarH != NULL)
+            m_scrollBarH->setValue(0);
     } else if(event->type() == QEvent::MouseMove && move_y >= 0) {   //窗口跟着鼠标移动
         int move_distance = QCursor::pos().y() - move_y;
         int endValue = m_scrollBarV->value() - move_distance;

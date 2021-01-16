@@ -34,6 +34,7 @@ private slots:
 private:
     Ui::CurrentAlarmsDlg *ui;
     QScrollBar *m_scrollBarV;
+    QScrollBar *m_scrollBarH;
 };
 
 #endif // CURRENTALARMSDLG_H

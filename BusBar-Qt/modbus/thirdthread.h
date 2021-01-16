@@ -28,7 +28,7 @@ class ThirdThread : public QThread
 public:
     explicit ThirdThread(QObject *parent = 0);
 
-     bool init(const QString& name);
+     bool init(const QString& name, const QString &name2);
 
 signals:
 
@@ -51,7 +51,8 @@ private:
     ThrData *mThr;
     sDataPacket *mShm;
     QTimer *timer;
-    QString serialName;
+    QString serialName1;
+    QString serialName2;
     bool isOpen;
 };
 

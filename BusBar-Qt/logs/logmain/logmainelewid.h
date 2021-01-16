@@ -47,6 +47,7 @@ private:
     QStringList mHeadList;
     int mCount;
     QScrollBar *m_scrollBarV;
+    QScrollBar *m_scrollBarH;
 };
 
 #endif // LOGMAINELEWID_H

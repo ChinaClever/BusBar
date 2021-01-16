@@ -63,7 +63,7 @@ void MainWindow::initSerial()
 #endif
 
     thr = new ThirdThread(this);
-    thr->init(SERIAL_COM5);
+    thr->init(SERIAL_COM5,SERIAL_COM6);
 }
 
 void MainWindow::updateTime()

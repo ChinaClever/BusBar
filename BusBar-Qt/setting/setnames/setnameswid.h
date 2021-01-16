@@ -54,6 +54,7 @@ private:
     sBusData *mPacket ;
     QTimer* mTimer;
     QScrollBar *m_scrollBarV;
+    QScrollBar *m_scrollBarH;
 };
 
 #endif // SETNAMESWID_H

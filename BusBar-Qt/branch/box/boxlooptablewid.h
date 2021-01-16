@@ -60,6 +60,7 @@ private:
     sEnvData *mEnvData;
     char mDc;
     QScrollBar *m_scrollBarV;
+    QScrollBar *m_scrollBarH;
 };
 
 #endif // BOXLOOPTABLEWID_H

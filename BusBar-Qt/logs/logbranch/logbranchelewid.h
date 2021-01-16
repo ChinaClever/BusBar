@@ -49,6 +49,7 @@ private:
     QStringList mHeadList;
     int mCount;
     QScrollBar *m_scrollBarV;
+    QScrollBar *m_scrollBarH;
 };
 
 #endif // LOGBRANCHELEWID_H

@@ -55,6 +55,7 @@ private:
 private:
     Ui::ComTableWid *ui;
     QScrollBar *m_scrollBarV;
+    QScrollBar *m_scrollBarH;
 };
 
 #endif // COMTABLEWID_H

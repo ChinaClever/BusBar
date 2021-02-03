@@ -54,6 +54,20 @@ border-radius:15px
          <string notr="true">QComboBox{
 border:2px solid rgb(15,80,232);
 border-radius:15px
+}
+QComboBox::drop-down{
+subcontrol-origin:padding;
+subcontrol-position:top right;
+width:30px;
+
+border-left-width:1px;
+border-left-color:darkgray;
+border-left-style:solid;
+border-top-right-radius:3px;
+border-bottom-right-radius:3px;
+}
+QComboBox::down-arrow{
+image: url(:/new/prefix1/image/down.png);
 }</string>
         </property>
         <item>
@@ -102,12 +116,22 @@ border-radius:15px
 {
 	width: 30px;
 	height: 25px;
+	border-left-width:1px;
+	border-left-color:darkgray;
+	border-left-style:solid;
+	border-top-right-radius:3px;
+	image: url(:/new/prefix1/image/up.png);
 }
 
 QDateEdit::down-button
 {
 	width: 30px;
 	height: 25px;
+	border-left-width:1px;
+	border-left-color:darkgray;
+	border-left-style:solid;	
+	border-bottom-right-radius:3px;
+	image: url(:/new/prefix1/image/down.png);
 }
 </string>
         </property>

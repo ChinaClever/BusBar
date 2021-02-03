@@ -140,12 +140,22 @@
 {
 	width: 35px;
 	height: 25px;
+	border-left-width:1px;
+	border-left-color:darkgray;
+	border-left-style:solid;
+	border-top-right-radius:3px;
+	image: url(:/new/prefix1/image/up.png);
 }
 
 QSpinBox::down-button
 {
 	width: 35px;
 	height: 25px;
+	border-left-width:1px;
+	border-left-color:darkgray;
+	border-left-style:solid;	
+	border-bottom-right-radius:3px;
+	image: url(:/new/prefix1/image/down.png);
 }
 QSpinBox{
 border:2px solid rgb(15,80,232);
@@ -219,12 +229,22 @@ border-radius:15px
 {
 	width: 35px;
 	height: 25px;
+	border-left-width:1px;
+	border-left-color:darkgray;
+	border-left-style:solid;
+	border-top-right-radius:3px;
+	image: url(:/new/prefix1/image/up.png);
 }
 
 QSpinBox::down-button
 {
 	width: 35px;
 	height: 25px;
+	border-left-width:1px;
+	border-left-color:darkgray;
+	border-left-style:solid;	
+	border-bottom-right-radius:3px;
+	image: url(:/new/prefix1/image/down.png);
 }
 QSpinBox{
 	border:2px solid rgb(15,80,232);

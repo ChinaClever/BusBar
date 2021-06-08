@@ -140,7 +140,7 @@ void SetShm::setName(DbNameItem &item)
         break;
 
     case 3:
-        boxNum = num / LINE_NUM + 1;
+        boxNum = num / LINE_NUM ;
         num = num % LINE_NUM ;
         name = bus->box[boxNum].loopName[num];
         break;

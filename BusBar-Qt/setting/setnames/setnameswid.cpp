@@ -247,6 +247,7 @@ void SetNamesWid::itemDoubleClicked(QTableWidgetItem *item)
     disconnect(ui->tableWidget,SIGNAL(itemClicked(QTableWidgetItem*)),this,SLOT(itemDoubleClicked(QTableWidgetItem*)));
     int boxNum = item->row() + 1 ;
     int column = item->column();
+
     mSetNameDlg->init(mIndex, boxNum, column, item->text());
     mSetNameDlg->show();
 

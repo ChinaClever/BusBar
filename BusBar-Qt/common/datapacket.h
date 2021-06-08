@@ -119,6 +119,7 @@ typedef struct _sBoxData {
     int rate; // 电压频率
     char dc; // 交直流标志位
     uchar lps; // 防雷开关
+    uchar lpsAlarm;//防雷开关告警值 0表示未告警 1表示已告警 2表示已记录
 
     uchar rtuLen;
     uchar rtuArray[SRC_DATA_LEN_MAX];

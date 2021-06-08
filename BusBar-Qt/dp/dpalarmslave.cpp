@@ -229,6 +229,24 @@ void DpAlarmSlave::busAlarm(int id)
         }
     }
 
+    if( busBox->lps != 0 )
+    {
+        if( busBox->lpsAlarm == 0 )
+        {
+            busBox->lpsAlarm = 2;
+            QString typeStr = tr("主路防雷");
+            QString str = tr("母线：%1").arg(bus->busName);
+            QString tempStr = typeStr + tr("告警");
+            str += tr("防雷装置损坏");
+            saveMsg( typeStr , str );
+            mAlarmStr << shm->data[mBusId].busName;
+            mAlarmStr << tempStr;
+            mAlarmStr << str;
+        }
+    }
+    else
+        busBox->lpsAlarm = 0;
+
     for(int i=1; i<=bus->boxNum; ++i) {
         boxAlarm(bus->box[i]);
     }

@@ -53,7 +53,7 @@ bool SetNameDlg::save()
     item.bus = mBusId;
     if(mLoop) {
         type = 3;
-        num = (mBox-1)*LINE_NUM + mLoop-1 ;
+        num = mBox*LINE_NUM + mLoop-1 ;
         saveToDev();//IP-BUSBAR设置loop名称
     }
 

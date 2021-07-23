@@ -269,6 +269,18 @@ int RtuThread::transData(int addr)
             for(int i = 0; i < rtn; i++){
                 box->rtuArray[i] = buf[i];
             }
+
+//            ////  有个客户定制需要添加0x00 V2.0.1
+//            for(int i = rtn - 1; i >= 2 ; i--){
+//                box->rtuArray[i+1] = box->rtuArray[i];
+//            }
+//            box->rtuArray[2] = 0x00;
+//            ushort crc = rtu_crc(box->rtuArray, rtn+1-2);
+//            box->rtuArray[rtn-1] = (0xff)&(crc); /*低8位*/
+//            box->rtuArray[rtn] = ((crc) >> 8); /*高8位*/
+//            box->rtuLen = rtn+1;
+//            //////
+
         }else{
             box->rtuLen = 0;  //数据出错清零
         }

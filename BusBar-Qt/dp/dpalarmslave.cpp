@@ -250,6 +250,7 @@ void DpAlarmSlave::busAlarm(int id)
     for(int i=1; i<=bus->boxNum; ++i) {
         boxAlarm(bus->box[i]);
     }
+
 }
 
 void DpAlarmSlave::checkAlarm()

@@ -271,6 +271,7 @@ int RtuThread::transData(int addr)
             for(int i = 0; i < rtn; i++){
                 box->rtuArray[i] = buf[i];
             }
+
         }else{
             box->rtuLen = 0;  //数据出错清零
         }

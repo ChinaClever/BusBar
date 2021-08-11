@@ -104,7 +104,7 @@ void MainWindow::setBusName(int index)
     sBusData *busData = &(shm->data[index]);
     double rateCur = busData->box[0].ratedCur/COM_RATE_CUR;
     ui->ratedLab->setText(QString::number(rateCur));
-    ui->ratedLab->setText("V2.0.0");
+    ui->ratedLab->setText("V2.1.0");
 }
 
 void MainWindow::checkAlarm()
@@ -130,8 +130,8 @@ void MainWindow::initFunSLot()
     mCheckDlg = new CheckPasswordDlg(this);
     connect(mCheckDlg,SIGNAL(dialogClosed(bool)),this,SLOT(dialogClosed(bool)));
 
-    mNetWork = new NetWork(this);
-    connect(ui->comboBox, SIGNAL(currentIndexChanged(int)),mNetWork,SIGNAL(sendNetBusSig(int)));
+    //mNetWork = new NetWork(this);
+    //connect(ui->comboBox, SIGNAL(currentIndexChanged(int)),mNetWork,SIGNAL(sendNetBusSig(int)));
 }
 
 void MainWindow::initWidget()

@@ -52,8 +52,8 @@ void LineWid::initWid()
         connect(this, SIGNAL(busChangedSig(int)), line, SLOT(busChangeSlot(int)));
     }
 
-    //ui->lpsLab->hide();
-    //ui->label_10->hide();
+    ui->lpsLab->hide();
+    ui->label_10->hide();
 }
 
 

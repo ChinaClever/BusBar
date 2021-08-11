@@ -44,6 +44,7 @@ void SetLoopWid::checkBus(int index)
         mDc = dc;
         initWid();
     }
+    clearTable();
 }
 
 
@@ -56,10 +57,12 @@ int SetLoopWid::updateDev(sBoxData *dev, int row)
 
         sDataUnit *unit = &(dev->data.cur);
         int line = dev->data.lineNum;
+        qDebug()<<"line  "<< line <<endl;
         for(int i=0; i<line; ++i)
         {
             double value = unit->value[i] / COM_RATE_CUR;
-            list << QString::number(value,'f', 1) + "A";
+//            list << QString::number(value,'f', 1) + "A";
+            list << QString::number(value,'f', 2) + "A";
             setItemColor(row, i+1, unit->alarm[i]);
         }
 
@@ -87,6 +90,7 @@ void SetLoopWid::updateData()
 
 void SetLoopWid::timeoutDone()
 {
+    qDebug()<<"mBus    "<<mBus<<endl;
     checkBus(mBus);
     updateData();
 }

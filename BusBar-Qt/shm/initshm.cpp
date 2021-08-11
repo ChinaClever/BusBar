@@ -40,7 +40,7 @@ void InitShm::initBoxThreshold()
             for(int k=0; k<LINE_NUM_MAX; ++k) //三相
             {
                 initThresholdUnit(k, box->data.cur, 3200);
-                initThresholdUnit(k, box->data.vol, 480);
+                initThresholdUnit(k, box->data.vol, 2750);//480
             }
 
             for(int k=0; k<SENSOR_NUM; ++k) //两个传感器
@@ -58,8 +58,8 @@ void InitShm::initBusThreshold()
         sBoxData *bus = &(shm->data[i].box[0]);
         for(int k=0; k<3; ++k)
         {
-            initThresholdUnit( k, bus->data.vol, 275);
-            initThresholdUnit( k, bus->data.cur, 6000);
+            initThresholdUnit( k, bus->data.vol, 2750);//275
+            initThresholdUnit( k, bus->data.cur, 60000);//600
             initThresholdUnit( k, bus->env.tem, 99);
         }
     }

@@ -83,7 +83,7 @@ static int rtu_recv_head(uchar *ptr,  Rtu_recv *pkt)
   * 功　能：读取电参数 数据
   * 入口参数：ptr -> 缓冲区
   * 出口参数：pkt -> 结构体
-  * 返回值：12 正确
+  * 返回值：22 正确
   */
 static int rtu_recv_data(uchar *ptr, RtuRecvLine *msg)
 {
@@ -106,6 +106,43 @@ static int rtu_recv_data(uchar *ptr, RtuRecvLine *msg)
     msg->apPow = msg->vol * msg->cur / 10.0; // 视在功率
 
     return 22;   ////============ 加上开关，功率因素之后，是为14
+}
+
+/**
+  * 功　能：读取电参数 数据
+  * 入口参数：ptr -> 缓冲区
+  * 出口参数：pkt -> 结构体
+  * 返回值：24 正确
+  */
+static int rtu_recv_new_data(uchar *ptr, RtuRecvLine *msg)
+{
+    msg->vol =  (*ptr) * 256 + *(ptr+1);  ptr += 2; // 读取电压
+    msg->maxVol =  (*ptr) * 256 + *(ptr+1);  ptr += 2;
+    msg->minVol =  (*ptr) * 256 + *(ptr+1);  ptr += 2;
+
+    msg->cur =  (*ptr) * 256 + *(ptr+1);  ptr += 2; // 读取电流
+    msg->maxCur =  (*ptr) * 256 + *(ptr+1);  ptr += 2;
+    msg->minCur =  (*ptr) * 256 + *(ptr+1);  ptr += 2;
+
+    msg->pow =  (*ptr) * 256 + *(ptr+1);  ptr += 2; // 读取功率
+    msg->maxPow = (*ptr) * 256 + *(ptr+1);  ptr += 2;
+    msg->minPow = (*ptr) * 256 + *(ptr+1);  ptr += 2;
+    msg->pf =  *(ptr++);// 功率因素
+
+    msg->ele =  (*ptr) * 256 + *(ptr+1);  ptr += 2; // 读取电能高8位
+    msg->ele <<= 16; // 左移8位
+    msg->ele +=  (*ptr) * 256 + *(ptr+1);  ptr += 2; // 读取电能底8位
+    msg->sw =  *(ptr++);// 开关状态
+
+
+
+    //msg->wave =  (*ptr) * 256 + *(ptr+1);  ptr += 2;    // 谐波值
+
+    unsigned long long vol = msg->vol;
+    unsigned long long cur = msg->cur;
+    msg->apPow = vol * cur / 1000.0; // 视在功率
+
+    return 24;   ////============ 加上开关，功率因素之后，是为14
 }
 
 /**
@@ -164,7 +201,39 @@ static int rtu_recv_thd(uchar *ptr, Rtu_recv *msg)
     return (1+3+1+6+len*2); //1.4版本
 }
 
+static int rtu_recv_new_thd(uchar *ptr, Rtu_recv *msg)
+{
+     // 读取负载百分比
+    for(int i=0; i<3; ++i) msg->pl[i] = *(ptr++);
+    msg->volUnbalance = *(ptr++);
+    msg->curUnbalance = *(ptr++);
+    msg->zeroLineCur = *(ptr) * 256 + *(ptr+1); ptr+=2;
 
+    if( msg->addr == 1 ) msg->lps = *(ptr++);// 防雷开关
+    else ptr++;
+
+    ptr++;//iOF触点
+    ptr+=2;//断路器开关状态
+    msg->buzzerStatus = *(ptr++);
+    if( msg->addr == 1 ) msg->hc = *(ptr++);
+    else ptr++;
+
+    int len = 32;
+    if( msg->addr != 1 ) len = 3;
+    for(int i=0; i<len; ++i){
+        msg->thd[i] =  (*ptr) * 256 + *(ptr+1);  ptr += 2;
+    }
+
+    return (3+1+1+2+6+len*2); //2.1版本
+}
+
+static int rtu_recv_rate(uchar *ptr , ushort *cur , ushort *min , ushort *max)
+{
+    *cur = (*ptr) * 256 + *(ptr+1); ptr+=2;
+    *max = (*ptr) * 256 + *(ptr+1); ptr+=2;
+    *min = (*ptr) * 256 + *(ptr+1); ptr+=2;
+    return 6;
+}
 
 /**
   * 功　能：还原数据包
@@ -181,22 +250,23 @@ bool rtu_recv_packet(uchar *buf, int len, Rtu_recv *pkt)
         ptr += rtu_recv_head(ptr, pkt); //指针偏移
 
         pkt->dc = *(ptr++);  //[交直流]
-        pkt->rate = *(ptr++);
+        pkt->type = *(ptr++);// 箱子类型
+        pkt->lineNum = *(ptr++); //[输出位]
+        pkt->proNum = *(ptr++);// 项目ID
+        pkt->version = *(ptr++); // 软件版本
 
         for(int i=0; i<RTU_TH_NUM; ++i) // 读取环境 数据
             ptr += rtu_recv_env(ptr, &(pkt->env[i].tem));
 
-        pkt->lineNum = *(ptr++); //[输出位]
-        pkt->version = *(ptr++); // 版本
-        ptr += 2;
+        ptr += rtu_recv_rate(ptr , &pkt->rate , &pkt->minrate , &pkt->maxrate);//  频率上下限
 
         int lineSum = pkt->lineNum; //交流
         if(!pkt->dc) lineSum = 4; //[暂时未加宏]
         for(int i=0; i<lineSum; ++i) // 读取电参数
-            ptr += rtu_recv_data(ptr, &(pkt->data[i]));
+            ptr += rtu_recv_new_data(ptr, &(pkt->data[i]));
 
         if(pkt->dc) { // 交流
-            ptr += rtu_recv_thd(ptr, pkt);
+            ptr += rtu_recv_new_thd(ptr, pkt);
         } else {
 
             ptr++; // 直流此字节没有用

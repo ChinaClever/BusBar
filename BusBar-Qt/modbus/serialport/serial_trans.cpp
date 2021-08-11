@@ -135,7 +135,7 @@ void Serial_Trans :: closeSerial()
         ::close(fd);
         fd = -1;
 
-        delete monitor;
+        //delete monitor;
         emit serialClosed();
     }
 }
@@ -172,7 +172,7 @@ int Serial_Trans::sendData(uchar *pBuff, int nCount)
 {
     if(fd >= 0)
     {
-        // QMutexLocker locker(&mutex);
+        //QMutexLocker locker(&mutex);
         int sendLen = write(fd, pBuff, nCount);
         fsync(fd);
         return sendLen;
@@ -187,13 +187,13 @@ int Serial_Trans::sendData(uchar *pBuff, int nCount)
   */
 int Serial_Trans::recvData(uchar *pBuf, int msecs)
 {
-    // QMutexLocker locker(&mutex);
+    //QMutexLocker locker(&mutex);
     int count=0, ret=0;
     if(fd >= 0)
     {
         do
         {
-            int rtn = read(fd, pBuf, 256);
+            int rtn = read(fd, pBuf, 270);
             #if (SI_RTUWIFI==1)
             msleep(90);
             #endif
@@ -204,13 +204,14 @@ int Serial_Trans::recvData(uchar *pBuf, int msecs)
             } else {
                 count++;
             }
-
-            if(ret > 250) {
-                read(fd, pBuf-250, 256);
-                ret = 0; break;
+            if(ret > 270) {
+               read(fd, pBuf-260, 270);
+               ret = 0;
+               break;
             }
 
         } while (count < msecs);
+
     }
     return ret;
 }
@@ -223,10 +224,11 @@ int Serial_Trans::recvData(uchar *pBuf, int msecs)
   */
 int Serial_Trans::transmit(uchar *sent, int len, uchar *recv)
 {
-    QMutexLocker locker(&mutex);
+    //QMutexLocker locker(&mutex);
     int ret = sendData(sent, len);
     if(ret > 0) {
-        ret = recvData(recv, 5);
+        usleep(10);
+        ret = recvData(recv, 10);
         //         if(ret <=0 ) qDebug() << "Serial Trans Err!!!" << ret;
     }
     return ret;

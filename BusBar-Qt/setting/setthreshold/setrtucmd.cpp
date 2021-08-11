@@ -31,9 +31,14 @@ void SetRtuCmd::sendReg(int reg, sThresholdItem &item)
 void SetRtuCmd::send(sThresholdItem &item)
 {
     int reg=0;
+//    switch (item.type) {
+//    case 1: reg = VoltageMAX_L1 + item.num*2; break;
+//    case 2: reg = CurrentMAX_L1 + item.num*2; item.max*=10; item.min*=10; break;
+//    case 3: reg = temperatureMAX_1 + item.num*2; break;
+//    }
     switch (item.type) {
-    case 1: reg = VoltageMAX_L1 + item.num*2; break;
-    case 2: reg = CurrentMAX_L1 + item.num*2; item.max*=10; item.min*=10; break;
+    case 1: reg = VoltageMAX_L1 + item.num*2; item.max*=10; item.min*=10; break;
+    case 2: reg = CurrentMAX_L1 + item.num*2; item.max*=100; item.min*=100; break;
     case 3: reg = temperatureMAX_1 + item.num*2; break;
     }
     sendReg(reg, item);

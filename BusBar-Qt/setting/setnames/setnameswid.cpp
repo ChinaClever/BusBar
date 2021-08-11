@@ -250,6 +250,7 @@ void SetNamesWid::itemDoubleClicked(QTableWidgetItem *item)
 
     mSetNameDlg->init(mIndex, boxNum, column, item->text());
     mSetNameDlg->show();
+    mSetNameDlg->move(0,0);
 
     connect(ui->tableWidget,SIGNAL(itemClicked(QTableWidgetItem*)),this,SLOT(itemDoubleClicked(QTableWidgetItem*)));
 }

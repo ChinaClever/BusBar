@@ -9,7 +9,7 @@
 #include "net/send/netsendthread.h"
 
 #include "modbus/thirdthread.h"
-
+#define MODBUSTCPPORT 11283
 RtuThread *rtu[4] = {NULL, NULL, NULL, NULL};
 ThirdThread *thr = NULL;
 extern int get_alarm_len();
@@ -105,7 +105,7 @@ void MainWindow::setBusName(int index)
     double rateCur = busData->box[0].ratedCur/COM_RATE_CUR;
     ui->ratedLab->setText(QString::number(rateCur));
 //    ui->ratedLab->setText("V2.0.2");//上海创建
-    ui->ratedLab->setText("V2.0.0");
+    ui->ratedLab->setText("V4.0.0");
 }
 
 void MainWindow::checkAlarm()
@@ -131,8 +131,19 @@ void MainWindow::initFunSLot()
     mCheckDlg = new CheckPasswordDlg(this);
     connect(mCheckDlg,SIGNAL(dialogClosed(bool)),this,SLOT(dialogClosed(bool)));
 
-    mNetWork = new NetWork(this);
-    connect(ui->comboBox, SIGNAL(currentIndexChanged(int)),mNetWork,SIGNAL(sendNetBusSig(int)));
+//    mNetWork = new NetWork(this);
+//    connect(ui->comboBox, SIGNAL(currentIndexChanged(int)),mNetWork,SIGNAL(sendNetBusSig(int)));
+
+    mTcpModbus = new QTcpModbus();
+    if( mTcpModbus->isOpen() )
+        mTcpModbus->disconnect();
+
+    mTcpModbus->init(  MODBUSTCPPORT , true );
+    if( mTcpModbus->isOpen() )
+    {
+        mTcpModbus->setTimeout(5000);
+    }
+
 }
 
 void MainWindow::initWidget()

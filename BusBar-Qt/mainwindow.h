@@ -9,6 +9,7 @@
 #include "logswid.h"
 #include "network.h"
 #include "setmainwid.h"
+#include "modbustcp/qtcpmodbus.h"
 
 namespace Ui {
 class MainWindow;
@@ -69,6 +70,7 @@ private:
     CheckPasswordDlg *mCheckDlg;
 
     NetWork *mNetWork;
+    QTcpModbus* mTcpModbus;
 
 };
 

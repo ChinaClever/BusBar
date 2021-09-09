@@ -33,6 +33,7 @@ void SetTempWid::checkBus(int index)
 //        mBus = index;
     mPacket = &(get_share_mem()->data[index]);
 //    }
+    clearTable();
 }
 
 

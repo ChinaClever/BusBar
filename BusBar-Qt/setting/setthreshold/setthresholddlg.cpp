@@ -100,6 +100,7 @@ void SetThresholdDlg::on_saveBtn_clicked()
         }
         SetThread::bulid()->append(mItem);
     }
+    this->close();
 }
 
 void SetThresholdDlg::on_cancelBtn_clicked()

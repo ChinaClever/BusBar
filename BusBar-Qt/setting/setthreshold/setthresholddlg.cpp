@@ -54,14 +54,14 @@ void SetThresholdDlg::setTitle(sThresholdItem &item)
 
 void SetThresholdDlg::set(sThresholdItem &item)
 {
-    int rate = 1;
+    int rate = 1;//int rate = 1;
     sBusData *busData = &(share_mem_get()->data[item.bus]);
     sObjData *obj = &(busData->box[item.box].data);
 
     sDataUnit  *unit = &(busData->box[item.box].env.tem);
     switch (item.type) {
-    case 1: unit = &(obj->vol); break;
-    case 2: unit = &(obj->cur); rate = 10; break;
+    case 1: unit = &(obj->vol); rate = 10; break;
+    case 2: unit = &(obj->cur); rate = 100; break;//rate = 10; break;
     }
     item.min = unit->min[item.num] / rate;
     item.max = unit->max[item.num] / rate;

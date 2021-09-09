@@ -14,6 +14,8 @@ struct RtuRecvLine {
     ushort maxVol; // 最大电压
     ushort minCur; // 最小电流
     ushort maxCur; // 最大电流
+    ushort minPow; // 最小功率
+    ushort maxPow; // 最大功率
 
     ushort wave; // 谐波值
     uchar pf; // 功率因素
@@ -40,13 +42,21 @@ struct Rtu_recv {
     RtuRecvLine data[RTU_LINE_NUM];
     RtuRecvEnv  env[RTU_TH_NUM];
     uchar lineNum;
-    uchar rate;
+    uchar proNum;//项目编号 0：标准 1：定制
+    ushort rate;
+    ushort minrate;
+    ushort maxrate;
+    uchar volUnbalance;
+    uchar curUnbalance;
+    ushort zeroLineCur;
+    uchar buzzerStatus;
     uchar dc; // 交直流标志位
+    uchar type;//箱子类型 0：插接箱 1： 始端箱
 
     uchar lps; // 防雷开关
     uchar pl[3]; // 负载百分比
     uchar hc; //谐波通道(00表示A路电压通道，01表示B路电压通道，02表示C路电压通道 03表示A路电流通道，04表示B路电流通道，05表示C路电流通道)
-    ushort thd[40]; // 庇波含量
+    ushort thd[40]; //   谐波含量
 
     ushort crc; // 检验码
 };

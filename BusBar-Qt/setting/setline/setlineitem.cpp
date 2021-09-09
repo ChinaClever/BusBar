@@ -45,8 +45,10 @@ void SetLineItem::updateWidget(int bus, int line)
     }
 
     sObjData  *objData = &(busData->box[0].data);
-    ui->curLab->setText(QString::number(objData ->cur.value[line]/COM_RATE_CUR,'f', 1)+"A");
-    ui->volLab->setText(QString::number(objData ->vol.value[line]/COM_RATE_VOL,'f', 0)+"V");
+//    ui->curLab->setText(QString::number(objData ->cur.value[line]/COM_RATE_CUR,'f', 1)+"A");
+//    ui->volLab->setText(QString::number(objData ->vol.value[line]/COM_RATE_VOL,'f', 0)+"V");
+    ui->curLab->setText(QString::number(objData ->cur.value[line]/COM_RATE_CUR,'f', 2)+"A");
+    ui->volLab->setText(QString::number(objData ->vol.value[line]/COM_RATE_VOL,'f', 1)+"V");
     ui->nameLab->setText(str+ QString::number(mLine+1));
 
     setProgressbarValue(ui->curBar,&(objData->cur),line);

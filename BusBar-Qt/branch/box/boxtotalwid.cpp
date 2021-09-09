@@ -40,15 +40,19 @@ void BoxTotalWid::updateAll()
     QString str= "---";
 
     if(mBox->offLine){
-        str = QString::number(mTgBox->vol) + "V";
+//        str = QString::number(mTgBox->vol) + "V";
+        str = QString::number(mTgBox->vol/COM_RATE_VOL, 'f',1) + "V";
         ui->volH->setText(str);
 
-        str= QString::number(mTgBox->cur/COM_RATE_CUR, 'f', 1) + "A";
+//        str= QString::number(mTgBox->cur/COM_RATE_CUR, 'f', 1) + "A";
+        str= QString::number(mTgBox->cur/COM_RATE_CUR, 'f', 2) + "A";
         ui->curH->setText(str);
 
-        str =  QString::number(mTgBox->pow/COM_RATE_POW, 'f', 3) + "kW";
+//        str =  QString::number(mTgBox->pow/COM_RATE_POW, 'f', 3) + "kW";
+        str =  QString::number(mTgBox->pow/COM_RATE_POW, 'f', 4) + "kW";
         ui->tPowH->setText(str);
 
+//        str =  QString::number(mTgBox->apPow/COM_RATE_POW, 'f', 3) + "kVA";
         str =  QString::number(mTgBox->apPow/COM_RATE_POW, 'f', 3) + "kVA";
         ui->tApPowH->setText(str);
 
@@ -91,22 +95,27 @@ void BoxTotalWid::updateData()
     for(int i=0; i<3; ++i) {
         QString str = "---";
         if(mBox->offLine){
-            str = QString::number(mLineTgBox->vol[i]) + "V";
+//            str = QString::number(mLineTgBox->vol[i]) + "V";
+            str = QString::number(mLineTgBox->vol[i]/COM_RATE_VOL, 'f',1) + "V";
             volLab[i]->setText(str);
 
-            str= QString::number(mLineTgBox->cur[i]/COM_RATE_CUR, 'f', 1) + "A";
+//            str= QString::number(mLineTgBox->cur[i]/COM_RATE_CUR, 'f', 1) + "A";
+            str= QString::number(mLineTgBox->cur[i]/COM_RATE_CUR, 'f', 2) + "A";
             curLab[i]->setText(str);
 
-            str= QString::number(mBox->data.pl[i]/COM_RATE_VOL, 'f', 1) ;
+//            str= QString::number(mBox->data.pl[i]/COM_RATE_VOL, 'f', 1) ;
+            str= QString::number(mBox->data.pl[i]/1.0, 'f', 1) ;
             plLab[i]->setText(str);
 
             str= QString::number(mBox->data.curThd[i]/100.0, 'f', 2) + "%";
             thdLab[i]->setText(str);
 
-            str =  QString::number(mLineTgBox->pow[i]/COM_RATE_POW, 'f', 3) + "kW";
+//            str =  QString::number(mLineTgBox->pow[i]/COM_RATE_POW, 'f', 3) + "kW";
+            str =  QString::number(mLineTgBox->pow[i]/COM_RATE_POW, 'f', 4) + "kW";
             powLab[i]->setText(str);
 
-            str =  QString::number(mLineTgBox->apPow[i]/COM_RATE_POW, 'f', 3) + "kVA";
+//            str =  QString::number(mLineTgBox->apPow[i]/COM_RATE_POW, 'f', 3) + "kVA";
+            str =  QString::number(mLineTgBox->apPow[i]/COM_RATE_POW, 'f', 4) + "kVA";
             tApPowLab[i]->setText(str);
 
             str =  QString::number(mLineTgBox->pf[i]/COM_RATE_PF, 'f', 2);

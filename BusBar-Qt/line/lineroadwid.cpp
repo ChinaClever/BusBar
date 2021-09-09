@@ -72,18 +72,22 @@ void LineRoadWid::updateWid(int id)
     sObjData *mData = &(mBox->data); //回路状态内带三相信息
     sEnvData  *mEnv = &(mBox->env); //环境状态
 
-    QString str = QString::number(mData->vol.value[id]) + "V";
+//    QString str = QString::number(mData->vol.value[id]) + "V";
+    QString str = QString::number(mData->vol.value[id]/COM_RATE_VOL , 'f',1) + "V";
     ui->volLab->setText(str);
     updateAlarmStatus(ui->volLab, mData->vol);
 
-    str =  QString::number(mData->cur.value[id]/COM_RATE_CUR,'f',1) + "A";
+//    str =  QString::number(mData->cur.value[id]/COM_RATE_CUR,'f',1) + "A";
+    str =  QString::number(mData->cur.value[id]/COM_RATE_CUR,'f',2) + "A";
     ui->curLab->setText(str);
     updateAlarmStatus(ui->curLab, mData->cur);
 
-    str =  QString::number(mData->cur.max[id]/COM_RATE_CUR,'f',1) + "A";
+    //str =  QString::number(mData->cur.max[id]/COM_RATE_CUR,'f',1) + "A";
+    str =  QString::number(mData->cur.max[id]/COM_RATE_CUR,'f',2) + "A";
     ui->maxCur->setText(str);
 
-    str =  QString::number(mData->pow[id]/COM_RATE_POW,'f',3) + "kW";
+    //str =  QString::number(mData->pow[id]/COM_RATE_POW,'f',3) + "kW";
+    str =  QString::number(mData->pow[id]/COM_RATE_POW,'f',4) + "kW";
     ui->powLab->setText(str);
 
     str =  QString::number(mData->pf[id]/COM_RATE_PF, 'f',2);

@@ -91,7 +91,7 @@ static void pdu_hash_objData(sObjData *obj,pdu_dev_data *data)
 
     case PDU_CMD_POW: // 功率
         sizeBit = 4;
-        iPtr = obj->pow;
+        iPtr = obj->pow.value;
         break;
 
     case PDU_CMD_ELE: // 电能

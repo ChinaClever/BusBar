@@ -258,7 +258,7 @@ bool rtu_recv_packet(uchar *buf, int len, Rtu_recv *pkt)
         for(int i=0; i<RTU_TH_NUM; ++i) // 读取环境 数据
             ptr += rtu_recv_env(ptr, &(pkt->env[i].tem));
 
-        ptr += rtu_recv_rate(ptr , &pkt->rate , &pkt->minrate , &pkt->maxrate);//  频率上下限
+        ptr += rtu_recv_rate(ptr , &pkt->rate , &pkt->minRate , &pkt->maxRate);//  频率上下限
 
         int lineSum = pkt->lineNum; //交流
         if(!pkt->dc) lineSum = 4; //[暂时未加宏]

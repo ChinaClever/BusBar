@@ -98,7 +98,20 @@ border-radius:15px
        <string notr="true"/>
       </property>
       <property name="text">
-       <string>支路设置</string>
+       <string>支路电流设置</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="powerBtn">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>功率设置</string>
       </property>
      </widget>
     </item>

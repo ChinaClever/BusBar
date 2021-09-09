@@ -23,8 +23,11 @@ void SetMainWid::initWidget()
     mSetLineWid = new SetLineWid(ui->stackedWidget); //主路
     ui->stackedWidget->addWidget(mSetLineWid);
 
-    mSetLoopWid = new SetLoopWid(ui->stackedWidget); //支路
+    mSetLoopWid = new SetLoopWid(ui->stackedWidget); //支路电流
     ui->stackedWidget->addWidget(mSetLoopWid);
+
+    mSetPowerMainWid = new SetPowMain(ui->stackedWidget); //支路功率
+    ui->stackedWidget->addWidget(mSetPowerMainWid);
 
     mSetTemWid = new SetTemMain(ui->stackedWidget); //温度
     ui->stackedWidget->addWidget(mSetTemWid);
@@ -50,6 +53,7 @@ void SetMainWid::setButtonColor(QPushButton *button)
     ui->loopBtn->setStyleSheet("");
     ui->temBtn->setStyleSheet("");
     ui->sysBtn->setStyleSheet("");
+    ui->powerBtn->setStyleSheet("");
 
     button->setStyleSheet("background-color: rgb(96,238,250);");
     BeepThread::bulid()->beep();
@@ -59,6 +63,7 @@ void SetMainWid::busChangedSlot(int index)
 {
     mSetLineWid->updateWid(index);
     mSetLoopWid->setBus(index);
+    mSetPowerMainWid->updateWid(index);
     mSetTemWid->updateWid(index);
     mSetNamesWid->indexChanged(index);
     #if (SI_RTUWIFI == 1 )
@@ -99,4 +104,10 @@ void SetMainWid::on_sysBtn_clicked()
 {
     setButtonColor(ui->sysBtn);
     ui->stackedWidget->setCurrentWidget(mSystemDlg);
+}
+
+void SetMainWid::on_powerBtn_clicked()
+{
+    setButtonColor(ui->powerBtn);
+    ui->stackedWidget->setCurrentWidget(mSetPowerMainWid);
 }

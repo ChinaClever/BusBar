@@ -1,19 +1,30 @@
 #include "setlineitem.h"
 #include "ui_setlineitem.h"
 
-SetLineItem::SetLineItem(QWidget *parent) :
+SetLineItem::SetLineItem(QWidget *parent, bool flag) :
     QWidget(parent),
     ui(new Ui::SetLineItem)
 {
     ui->setupUi(this);
     mBus = mLine = 0;
+    mFlag = flag;
     mPacket = get_share_mem();
 
     timer = new QTimer(this);
     timer->start(2000);
     connect(timer, SIGNAL(timeout()),this, SLOT(timeoutDone()));
     connect(ui->curBar,SIGNAL(clicked()),this,SLOT(curBarClicked()));
-    connect(ui->volBar,SIGNAL(clicked()),this,SLOT(volBarClicked()));
+    if(mFlag)
+        connect(ui->volBar,SIGNAL(clicked()),this,SLOT(volBarClicked()));
+    else
+    {
+        ui->label_2->hide();
+        ui->label_14->hide();
+        ui->volBar->hide();
+        ui->volLab->hide();
+        ui->label_11->setText(tr("频率"));
+        ui->nameLab->hide();
+    }
 }
 
 SetLineItem::~SetLineItem()
@@ -47,11 +58,33 @@ void SetLineItem::updateWidget(int bus, int line)
     sObjData  *objData = &(busData->box[0].data);
 //    ui->curLab->setText(QString::number(objData ->cur.value[line]/COM_RATE_CUR,'f', 1)+"A");
 //    ui->volLab->setText(QString::number(objData ->vol.value[line]/COM_RATE_VOL,'f', 0)+"V");
-    ui->curLab->setText(QString::number(objData ->cur.value[line]/COM_RATE_CUR,'f', 2)+"A");
+    if(mFlag)
+        ui->curLab->setText(QString::number(objData ->cur.value[line]/COM_RATE_CUR,'f', 2)+"A");
+    else
+        ui->curLab->setText(QString::number(busData->box[0].rate)+"Hz");
     ui->volLab->setText(QString::number(objData ->vol.value[line]/COM_RATE_VOL,'f', 1)+"V");
     ui->nameLab->setText(str+ QString::number(mLine+1));
 
-    setProgressbarValue(ui->curBar,&(objData->cur),line);
+    if(mFlag)
+        setProgressbarValue(ui->curBar,&(objData->cur),line);
+    else{
+        int max = busData->box[0].maxRate;
+        int min = busData->box[0].minRate;
+        int value = busData->box[0].rate;
+        if(max > 0 && min > 0 && max > min)
+        {
+            int ret = ((value-min)*100.0/(max-min));
+            if(ret > 100) ret = 100;
+            ui->curBar->setValue(ret);
+        }else
+            ui->curBar->setValue(0);
+
+        int alarm = busData->box[0].HzAlarm;
+        if(alarm >= 1)
+            setProcessBarColor(ui->curBar,"red"); //告警
+        else
+            setProcessBarColor(ui->curBar,"green"); //正常
+    }
     setProgressbarValue(ui->volBar,&(objData->vol),line);
 }
 
@@ -94,7 +127,10 @@ void SetLineItem::curBarClicked()
     item.bus = mBus;
     item.box = 0;
     item.num = mLine;
-    item.type = 2;
+    if(mFlag)
+        item.type = 2;
+    else
+        item.type = 5;
 
     SetThresholdDlg dlg(this);
     dlg.move(0,0);

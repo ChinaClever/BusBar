@@ -77,6 +77,46 @@ char DpAlarmThread::alarmFlag(sDataUnit &unit, int line, bool cr)
     return flag;
 }
 
+void DpAlarmThread::alarmDataUnit(sDataPowUnit &unit, int lineNum, bool cr)
+{
+    for(int i=0; i<lineNum; ++i)
+    {
+        if((unit.value[i] < unit.min[i]) || (unit.value[i] > unit.max[i]))
+        {
+            if(unit.alarm[i] == 0)
+                unit.alarm[i] = 1;
+        } else
+            unit.alarm[i] = 0;
+
+        if(cr) {
+            if((unit.value[i] < unit.crMin[i]) || (unit.value[i] > unit.crMax[i]))
+            {
+                if(unit.crAlarm[i] == 0)
+                    unit.crAlarm[i] = 1;
+            } else
+                unit.crAlarm[i] = 0;
+        }
+    }
+}
+
+
+char DpAlarmThread::alarmFlag(sDataPowUnit &unit, int line, bool cr)
+{
+    char flag=0;
+
+    for(int i=0; i<line; ++i) {
+        flag += unit.alarm[i];
+        if(flag) return 2;
+    }
+
+    for(int i=0; i<line; ++i) {
+        if(cr) flag += unit.crAlarm[i];
+        if(flag) return 1;
+    }
+
+    return flag;
+}
+
 void DpAlarmThread::boxAlarm(sBoxData &box)
 {
     if(box.offLine > 0) {
@@ -98,7 +138,19 @@ void DpAlarmThread::boxAlarm(sBoxData &box)
         alarmDataUnit(box.env.tem, lineNum);
         box.boxEnvAlarm =  alarmFlag(box.env.tem, lineNum);
 
-        box.boxAlarm = box.boxCurAlarm + box.boxVolAlarm + box.boxEnvAlarm;
+        alarmDataUnit(box.data.pow, lineNum);
+        box.boxPowerAlarm =  alarmFlag(box.data.pow, lineNum);
+
+        if((box.rate < box.minRate) || (box.rate > box.maxRate))
+        {
+            if(box.HzAlarm == 0)
+                box.HzAlarm = 1;
+            else
+                box.HzAlarm = 2;
+        } else
+            box.HzAlarm = 0;
+
+        box.boxAlarm = box.boxCurAlarm + box.boxVolAlarm + box.boxEnvAlarm + box.boxPowerAlarm + box.HzAlarm;
     } else {
         box.boxAlarm = 0;
     }

@@ -16,7 +16,9 @@ signals:
 protected:
     void run();
     void unitAlarm(QString &typeStr, QString &msg, sDataUnit &unit, double rate, const QString &sym);
+    void unitAlarm(QString &typeStr, QString &msg, sDataPowUnit &unit, double rate, const QString &sym);
     void unitAlarmVA(sBoxData &box, QString &typeStr, QString &msg, sDataUnit &unit, double rate, const QString &sym);
+    void unitAlarmW(sBoxData &box, QString &typeStr, QString &msg, sDataPowUnit &unit, double rate, const QString &sym);
 
     void boxAlarm(sBoxData &box);
     void busAlarm(int id);

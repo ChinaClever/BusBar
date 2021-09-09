@@ -1,21 +1,23 @@
-#include "setloopwid.h"
+#include "setlooppowerwid.h"
+#include <QGridLayout>
 
-SetLoopWid::SetLoopWid(QWidget *parent) : ComTableWid(parent)
+SetLoopPowerWid::SetLoopPowerWid(QWidget *parent): ComTableWid(parent)
 {
     mDc = 1;
     mBus = 0;
     mPacket =  &(get_share_mem()->data[mBus]);
     initWid();
+    QGridLayout *gridLayout = new QGridLayout(parent);//控制ToolBox自适应
+    gridLayout->addWidget(this);
 
     timer = new QTimer(this);
     timer->start(2000);
     connect(timer, SIGNAL(timeout()),this, SLOT(timeoutDone()));
 }
 
-
-void SetLoopWid::initWid()
+void SetLoopPowerWid::initWid()
 {
-    QString title = tr("回路电流");
+    QString title = tr("回路功率");
     QStringList header;
     header<< tr("插接箱");
 
@@ -32,7 +34,7 @@ void SetLoopWid::initWid()
 
 
 
-void SetLoopWid::checkBus(int index)
+void SetLoopPowerWid::checkBus(int index)
 {
 //    if(mBus != index) {
 //        mBus = index;
@@ -48,20 +50,20 @@ void SetLoopWid::checkBus(int index)
 }
 
 
-int SetLoopWid::updateDev(sBoxData *dev, int row)
+int SetLoopPowerWid::updateDev(sBoxData *dev, int row)
 {
     if(dev->offLine)
     {
         QStringList list;
         list << dev->boxName;
 
-        sDataUnit *unit = &(dev->data.cur);
+        sDataPowUnit *unit = &(dev->data.pow);
         int line = dev->data.lineNum;
         for(int i=0; i<line; ++i)
         {
-            double value = unit->value[i] / COM_RATE_CUR;
+            double value = unit->value[i]/COM_RATE_POW;
 //            list << QString::number(value,'f', 1) + "A";
-            list << QString::number(value,'f', 2) + "A";
+            list << QString::number(value ,'f', 3) + "kW";
             setItemColor(row, i+1, unit->alarm[i]);
         }
 
@@ -74,7 +76,7 @@ int SetLoopWid::updateDev(sBoxData *dev, int row)
 /**
  * @brief 数据更新入口函数
  */
-void SetLoopWid::updateData()
+void SetLoopPowerWid::updateData()
 {
     int row = 0;
 
@@ -87,14 +89,14 @@ void SetLoopWid::updateData()
     checkTableRow(row);
 }
 
-void SetLoopWid::timeoutDone()
+void SetLoopPowerWid::timeoutDone()
 {
     checkBus(mBus);
     updateData();
 }
 
 
-void SetLoopWid::itemClicked(QTableWidgetItem *it)
+void SetLoopPowerWid::itemClicked(QTableWidgetItem *it)
 {
     if(it->text().compare("---") == 0) return;  //为空不设置
     static int i = 0;//防止弹出多次对话框
@@ -110,7 +112,7 @@ void SetLoopWid::itemClicked(QTableWidgetItem *it)
             item.bus = mBus;
             item.box = it->row()+1;
             item.num = column-1;
-            item.type = 2;
+            item.type = 4;
 
             SetThresholdDlg dlg(this);
             dlg.move(0,0);

@@ -66,6 +66,20 @@ typedef struct _sDataUnit {
 }sDataUnit;
 
 /**
+ * 数据单元：包括当前值，阈值，临界值，告警状态等
+ */
+typedef struct _sDataPowUnit {
+    uint value[LINE_NUM_MAX]; // 值
+    uint min[LINE_NUM_MAX]; // 最小值
+    uint max[LINE_NUM_MAX]; // 最大值
+    uchar alarm[LINE_NUM_MAX]; // 告警值 0表示未告警  1表示已告警 2表示已记录
+
+    uint crMin[LINE_NUM_MAX]; // 临界最小值
+    uint crMax[LINE_NUM_MAX]; // 临界最大值
+    uchar crAlarm[LINE_NUM_MAX]; // 临界告警值
+}sDataPowUnit;
+
+/**
  * 插接位数据对象：包括电流，电压，功率，电能，开关状态，插接位名称
  */
 typedef struct _sObjData {
@@ -73,7 +87,7 @@ typedef struct _sObjData {
     sDataUnit vol; // 电压
     sDataUnit cur;  // 电流
 
-    uint pow[LINE_NUM_MAX]; // 功率
+    sDataPowUnit pow; // 功率
     uint ele[LINE_NUM_MAX]; // 电能
     ushort pf[LINE_NUM_MAX]; // 功率因素
     uchar sw[LINE_NUM_MAX]; // 开关状态
@@ -110,16 +124,19 @@ typedef struct _sBoxData {
 
     sTgObjData tgBox; // 插接箱统计信息
     sLineTgObjData lineTgBox;
-    char boxAlarm, boxVolAlarm, boxCurAlarm, boxEnvAlarm; // 插接箱告警
+    char boxAlarm, boxVolAlarm, boxCurAlarm, boxEnvAlarm , boxPowerAlarm; // 插接箱告警
     char boxStatus; // 插接箱状态
     char boxSpec; //  0 表示 SI  1 表示 IP
     char boxName[NAME_LEN]; // 插接箱名称
 
     int ratedCur; // 额定电流
     int rate; // 电压频率
+    int minRate;// 电压频率最小值
+    int maxRate;// 电压频率最大值
     char dc; // 交直流标志位
     uchar lps; // 防雷开关
     uchar lpsAlarm;//防雷开关告警值 0表示未告警 1表示已告警 2表示已记录
+    uchar HzAlarm;//频率告警值 0表示未告警 1表示已告警 2表示已记录
 
     uchar rtuLen;
     uchar rtuArray[SRC_DATA_LEN_MAX];
@@ -196,19 +213,31 @@ enum  sSetType{
     ,temperatureMIN_2  = 0x1035
     ,temperatureMAX_3  = 0x1036
     ,temperatureMIN_3  = 0x1037 
-    ,temperatureMAX_4  = 0x1038
-    ,temperatureMIN_4  = 0x1039
-    ,temperatureMAX_5  = 0x103A
-    ,temperatureMIN_5  = 0x103B
-    ,temperatureMAX_6  = 0x103C
-    ,temperatureMIN_6  = 0x103D
-    ,temperatureMAX_7  = 0x103E
-    ,temperatureMIN_7  = 0x103F
-    ,temperatureMAX_8  = 0x1041
-    ,temperatureMIN_8  = 0x1042
-    ,temperatureMAX_9  = 0x1043
-    ,temperatureMIN_9  = 0x1044
-    ,BaudRate          = 0x1045           //波特率
+    ,BaudRate          = 0x1038           //00:9600 01:4800 02:9600 03:19200 04:38400
+    ,ClearEle          = 0x1039
+    ,SetStartBoxAddr   = 0x1040           //设置始端箱地址1-31
+    ,SetBuzzer         = 0x1041           //1:开启 0:关闭
+    ,SetBreaker        = 0x1042           //断路器开关状态
+    ,PowerMAX_L1       = 0x1050           //功率上限
+    ,PowerMIN_L1       = 0x1051           //功率下限
+    ,PowerMAX_L2       = 0x1052
+    ,PowerMIN_L2       = 0x1053
+    ,PowerMAX_L3       = 0x1054
+    ,PowerMIN_L3       = 0x1055
+    ,PowerMAX_L4       = 0x1056
+    ,PowerMIN_L4       = 0x1057
+    ,PowerMAX_L5       = 0x1058
+    ,PowerMIN_L5       = 0x1059
+    ,PowerMAX_L6       = 0x105A
+    ,PowerMIN_L6       = 0x105B
+    ,PowerMAX_L7       = 0x105C
+    ,PowerMIN_L7       = 0x105D
+    ,PowerMAX_L8       = 0x105E
+    ,PowerMIN_L8       = 0x105F
+    ,PowerMAX_L9       = 0x1060
+    ,PowerMIN_L9       = 0x1061
+    ,SetHzMAX          = 0x1062
+    ,SetHzMIN          = 0x1063
 };
 
 sDataPacket *share_mem_get();

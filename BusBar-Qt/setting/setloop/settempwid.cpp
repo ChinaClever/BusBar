@@ -82,7 +82,7 @@ void SetTempWid::timeoutDone()
 
 void SetTempWid::itemClicked(QTableWidgetItem *it)
 {
-//    if(it->text().compare("---") == 0) return;  //为空不设置
+    if(it->text().compare("---") == 0) return;  //为空不设置
     int column = it->column();
     if(column > 0)
     {

@@ -290,7 +290,7 @@
           </size>
          </property>
          <property name="text">
-          <string>功率因素</string>
+          <string>功率因数</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>

@@ -8,11 +8,12 @@ SetLineWid::SetLineWid(QWidget *parent) :
     ui->setupUi(this);
 
     int id = 0;
-    mItem[id++] = new SetLineItem(ui->widget_1);
-    mItem[id++] = new SetLineItem(ui->widget_2);
-    mItem[id++] = new SetLineItem(ui->widget_3);
+    mItem[id++] = new SetLineItem(ui->widget_1 , true);
+    mItem[id++] = new SetLineItem(ui->widget_2 , true);
+    mItem[id++] = new SetLineItem(ui->widget_3 , true);
+    mItem[id++] = new SetLineItem(ui->widget_4 , false);
 
-    for(int i=0; i<3; ++i)
+    for(int i=0; i<4; ++i)
         mItem[i]->initLine(i);
 }
 
@@ -23,6 +24,6 @@ SetLineWid::~SetLineWid()
 
 void SetLineWid::updateWid(int index)
 {
-    for(int i=0; i<3; ++i)
+    for(int i=0; i<4; ++i)
         mItem[i]->updateBus(index);
 }

@@ -28,7 +28,7 @@ void DpBeepThread::timeoutDone()
 
 void DpBeepThread::boxAlarm(sBoxData &box)
 {
-    if((box.boxVolAlarm == 1)  || (box.boxCurAlarm == 1)  || (box.boxEnvAlarm ==1))
+    if((box.boxVolAlarm == 1)  || (box.boxCurAlarm == 1)  || (box.boxEnvAlarm ==1) ||(box.boxPowerAlarm == 1))
     {
         BeepThread::bulid()->beep();
     }

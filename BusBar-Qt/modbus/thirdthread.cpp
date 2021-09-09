@@ -86,24 +86,24 @@ void ThirdThread::transData()
         uchar id = mThr->addr / 0x20;
         uchar addr = mThr->addr % 0x20;
         if(id >=BUS_NUM || addr >= BOX_NUM) return;
-        sBoxData *box = &(mShm->data[id].box[addr]); //共享内存
-        //        if(addr-1 < 0) return;//上海创建
-        //        sBoxData *box = &(mShm->data[id].box[addr-1]);
+        //        sBoxData *box = &(mShm->data[id].box[addr]); //共享内存
+        if(addr-1 < 0) return;//上海创建
+        sBoxData *box = &(mShm->data[id].box[addr-1]);
         if(box->offLine < 1) return;
 
         if(mThr->fn == Fn_Get){ //获取数据 _ [未加长度位0时该回复数据]
             if(box->rtuLen > 0) {
-                box->rtuArray[0] = mThr->addr;//
-                setCrc(box->rtuArray, box->rtuLen);//
-                mSerial->sendData(box->rtuArray, box->rtuLen);
+                //                box->rtuArray[0] = mThr->addr;//
+                //                setCrc(box->rtuArray, box->rtuLen);//
+                //                mSerial->sendData(box->rtuArray, box->rtuLen);
 
-                //                int rtn = 0;//上海创建
-                //                if(addr == 1)
-                //                    rtn = rtu_sent_to_input_packet(box);
-                //                else if(addr > 1)
-                //                    rtn = rtu_sent_to_output_packet(box);
-                //                if(mThr->data*2 == rtn)
-                //                    mSerial->sendData(box->rtuArray, rtn+5);
+                int rtn = 0;//上海创建
+                if(addr == 1)
+                    rtn = rtu_sent_to_input_packet(box);
+                else if(addr > 1)
+                    rtn = rtu_sent_to_output_packet(box);
+                if(mThr->data*2 == rtn)
+                    mSerial->sendData(box->rtuArray, rtn+5);
 
             } else {
                 mSerial->sendData(buf, rtn);

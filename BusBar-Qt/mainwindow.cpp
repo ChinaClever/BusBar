@@ -86,11 +86,11 @@ void MainWindow::timeoutDone()
 
 void MainWindow::updateBusName(int index)
 {
-    sDataPacket *shm = get_share_mem();
-    char *name = shm->data[index].busName;
+     sDataPacket *shm = get_share_mem();
+     char *name = shm->data[index].busName;
 
-    QString str = "0" + QString::number(index+1) + " " + name;
-    ui->comboBox->setItemText(index, str);
+     QString str = "0" + QString::number(index+1) + " " + name;
+     ui->comboBox->setItemText(index, str);
 }
 
 void MainWindow::setBusName(int index)
@@ -108,6 +108,7 @@ void MainWindow::setBusName(int index)
     ui->ratedLab->setText(QString::number(rateCur));
     ui->ratedLab->setText("V2.1.0");
     //    ui->ratedLab->setText("V2.0.3");//上海创建
+
 }
 
 void MainWindow::checkAlarm()

@@ -44,6 +44,7 @@ void SetLoopWid::checkBus(int index)
         mDc = dc;
         initWid();
     }
+    clearTable();
 }
 
 

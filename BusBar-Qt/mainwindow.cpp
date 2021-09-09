@@ -137,14 +137,14 @@ void MainWindow::initFunSLot()
     //mNetWork = new NetWork(this);
     //connect(ui->comboBox, SIGNAL(currentIndexChanged(int)),mNetWork,SIGNAL(sendNetBusSig(int)));
 
-    mTcpModbus = new QTcpModbus();
-    if( mTcpModbus->isOpen() )
-        mTcpModbus->disconnect();
-    mTcpModbus->init(  MODBUSTCPPORT , true );
-    if( mTcpModbus->isOpen() )
-    {
-        mTcpModbus->setTimeout(5000);
-    }
+//    mTcpModbus = new QTcpModbus();
+//    if( mTcpModbus->isOpen() )
+//        mTcpModbus->disconnect();
+//    mTcpModbus->init(  MODBUSTCPPORT , true );
+//    if( mTcpModbus->isOpen() )
+//    {
+//        mTcpModbus->setTimeout(5000);
+//    }
 }
 
 void MainWindow::initWidget()

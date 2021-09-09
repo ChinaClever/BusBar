@@ -153,7 +153,9 @@ void RtuThread::loopObjData(sObjData *loop, int id, RtuRecvLine *data)
     loop->cur.crMin[id] = loop->cur.min[id] = data->minCur;
     loop->cur.crMax[id] = loop->cur.max[id] = data->maxCur;
 
-    loop->pow[id] = data->pow;
+    loop->pow.value[id] = data->pow;
+    loop->pow.crMin[id] = loop->pow.min[id] = data->minPow;
+    loop->pow.crMax[id] = loop->pow.max[id] = data->maxPow;
     loop->ele[id] = data->ele;
     loop->pf[id] = data->pf;
     loop->sw[id] = data->sw;
@@ -245,13 +247,13 @@ int RtuThread::transData(int addr)
     rtn = mSerial->transmit(buf, rtn, buf); // 传输数据，发送同时接收
     #endif
 
-    QByteArray array;
-    QString strArray;
-    array.append((char *)buf, rtn);
-    strArray = array.toHex(); // 十六进制
-    for(int i=0; i<array.size(); ++i)
-        strArray.insert(2+3*i, " "); // 插入空格
-    qDebug()<< "rtn  "<<rtn<<"  recv:" << strArray;
+//    QByteArray array;
+//    QString strArray;
+//    array.append((char *)buf, rtn);
+//    strArray = array.toHex(); // 十六进制
+//    for(int i=0; i<array.size(); ++i)
+//        strArray.insert(2+3*i, " "); // 插入空格
+//    qDebug()<< "rtn  "<<rtn<<"  recv:" << strArray;
 
     if(rtn > 0) {
         bool ret = rtu_recv_packet(buf, rtn, pkt); // 解析数据 data - len - it
@@ -261,6 +263,8 @@ int RtuThread::transData(int addr)
                 loopData(box, pkt); //更新数据
                 envData(&(box->env), pkt);
                 box->rate = pkt->rate;
+                box->minRate = pkt->minRate;
+                box->maxRate = pkt->maxRate;
                 box->dc = pkt->dc;
                 box->version = pkt->version;
 

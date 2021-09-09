@@ -14,7 +14,7 @@ class SetLineItem : public QWidget
     Q_OBJECT
 
 public:
-    explicit SetLineItem(QWidget *parent = 0);
+    explicit SetLineItem(QWidget *parent = 0 , bool flag = true);
     ~SetLineItem();
 
     void initLine(int line) {mLine = line;}
@@ -36,6 +36,7 @@ private:
     QTimer *timer;
     int mLine, mBus;
     sDataPacket *mPacket;
+    bool mFlag;
 };
 
 #endif // SETLINEITEM_H

@@ -119,7 +119,91 @@ void DpAlarmSlave::unitAlarm(QString &typeStr, QString &msg, sDataUnit &unit, do
     }
 }
 
+void DpAlarmSlave::unitAlarm(QString &typeStr, QString &msg, sDataPowUnit &unit, double rate, const QString &sym)
+{
+    for(int i=0; i<3; ++i)
+    {
+        QString str=msg, tempStr = typeStr;
+        if(unit.alarm[i])
+        {
+            tempStr = typeStr + tr("告警");
+            str += tr("%1，当前值：%2%3, 最小值：%4%5, 最大值：%6%7").arg(i+1)
+                    .arg(unit.value[i]/rate).arg(sym)
+                    .arg(unit.min[i]/rate).arg(sym)
+                    .arg(unit.max[i]/rate).arg(sym);
+
+            if(unit.alarm[i] == 1){
+                unit.alarm[i] = 2;
+                saveMsg(typeStr, str);
+            }
+        }
+        else if(unit.crAlarm[i])
+        {
+            tempStr = typeStr +  tr("预警");
+            str += tr("%1，当前值：%2%3, 临界下限值：%4%5, 临界上限值：%6%7").arg(i+1)
+                    .arg(unit.value[i]/rate).arg(sym)
+                    .arg(unit.crMin[i]/rate).arg(sym)
+                    .arg(unit.crMax[i]/rate).arg(sym);
+        }
+
+        // 实时告警信息
+        if((unit.alarm[i]) || (unit.crAlarm[i])) {
+            mAlarmStr << shm->data[mBusId].busName;
+            mAlarmStr << tempStr;
+            mAlarmStr << str;
+        }
+    }
+}
+
 void DpAlarmSlave::unitAlarmVA(sBoxData &box, QString &typeStr, QString &msg, sDataUnit &unit, double rate, const QString &sym)
+{
+    for(int i=0; i<LINE_NUM_MAX; ++i)
+    {
+        //---------------------[区分日志关键字]-------------------
+        QString alarmStr = "Line";
+        int id = i;
+        if(box.dc){
+            int divisor   =  id/3; //除数
+            int remainder =  id%3;//余数
+            alarmStr = QString((char)('A' + remainder))+ QString("%1").arg(divisor + 1);
+        }else{
+            alarmStr = "D" + QString("%1").arg(id+1);
+        }
+        //---------------------------------------------------
+
+        QString str=msg, tempStr = typeStr;
+        if(unit.alarm[i])
+        {
+            tempStr = typeStr + tr("告警");
+            str += tr("%1，当前值：%2%3, 最小值：%4%5, 最大值：%6%7").arg(alarmStr)
+                    .arg(unit.value[i]/rate).arg(sym)
+                    .arg(unit.min[i]/rate).arg(sym)
+                    .arg(unit.max[i]/rate).arg(sym);
+
+            if(unit.alarm[i] == 1){
+                unit.alarm[i] = 2;
+                saveMsg(typeStr, str);
+            }
+        }
+        else if(unit.crAlarm[i])
+        {
+            tempStr = typeStr +  tr("预警");
+            str += tr("%1，当前值：%2%3, 临界下限值：%4%5, 临界上限值：%6%7").arg(alarmStr)
+                    .arg(unit.value[i]/rate).arg(sym)
+                    .arg(unit.crMin[i]/rate).arg(sym)
+                    .arg(unit.crMax[i]/rate).arg(sym);
+        }
+
+        // 实时告警信息
+        if((unit.alarm[i]) || (unit.crAlarm[i])) {
+            mAlarmStr << shm->data[mBusId].busName;
+            mAlarmStr << tempStr;
+            mAlarmStr << str;
+        }
+    }
+}
+
+void DpAlarmSlave::unitAlarmW(sBoxData &box, QString &typeStr, QString &msg, sDataPowUnit &unit, double rate, const QString &sym)
 {
     for(int i=0; i<LINE_NUM_MAX; ++i)
     {
@@ -184,6 +268,12 @@ void DpAlarmSlave::boxAlarm(sBoxData &box)
                 unitAlarmVA(box, typeStr, msg, box.data.vol, COM_RATE_VOL, "V");
             }
 
+            typeStr = tr("回路功率");
+            if(box.boxPowerAlarm) {
+                QString msg = tr("插接箱：%1，").arg(box.boxName);
+                unitAlarmW(box, typeStr, msg, box.data.pow, COM_RATE_POW , "kW");
+            }
+
             typeStr = tr("插接箱温度");
             if(box.boxEnvAlarm) {
                 QString msg = tr("插接箱：%1，温度").arg(box.boxName);
@@ -227,6 +317,27 @@ void DpAlarmSlave::busAlarm(int id)
             QString msg = tr("母线：%1，温度").arg(bus->busName);
             unitAlarm(typeStr, msg, busBox->env.tem, COM_RATE_TEM, "°C");
         }
+
+        if(busBox->boxPowerAlarm){
+            QString typeStr = tr("主路功率");
+            QString msg = tr("母线：%1，功率").arg(bus->busName);
+            unitAlarm(typeStr, msg, busBox->data.pow, COM_RATE_POW , "kW");
+        }
+
+        if( busBox->HzAlarm == 1) {
+            busBox->HzAlarm = 2;
+            QString typeStr = tr("主路频率");
+            QString str = tr("母线：%1").arg(bus->busName);
+            QString tempStr = typeStr + tr("告警");
+            str += tr(" 当前值：%2%3, 最小值：%4%5, 最大值：%6%7")
+                    .arg(busBox->rate).arg("Hz")
+                    .arg(busBox->minRate).arg("Hz")
+                    .arg(busBox->maxRate).arg("Hz");
+            saveMsg( typeStr , str );
+            mAlarmStr << shm->data[mBusId].busName;
+            mAlarmStr << tempStr;
+            mAlarmStr << str;
+        }
     }
 
 //    if( busBox->lps != 0 )
@@ -246,6 +357,8 @@ void DpAlarmSlave::busAlarm(int id)
 //    }
 //    else
 //        busBox->lpsAlarm = 0;
+
+
 
     for(int i=1; i<=bus->boxNum; ++i) {
         boxAlarm(bus->box[i]);

@@ -207,8 +207,8 @@ uchar ThirdThread::rtu_sent_to_input_packet(sBoxData *box)
     /*填入输入有功功率*/
     for(int i = 0 ; i < 3 ; i++)
     {
-        *(ptr++) = ((box->data.pow[i]) >> 8); /*高8位*/
-        *(ptr++) = (0xff)&(box->data.pow[i]); /*低8位*/
+        *(ptr++) = ((box->data.pow.value[i]) >> 8); /*高8位*/
+        *(ptr++) = (0xff)&(box->data.pow.value[i]); /*低8位*/
     }//6//26
 
     /*填入输入视在功率*/
@@ -276,8 +276,8 @@ uchar ThirdThread::rtu_sent_to_output_packet(sBoxData *box)
     for(int i = 0 ; i < 3 ; i++)
     {
         if(box->loopNum==3){
-            *(ptr++) = ((box->data.pow[i]) >> 8); /*高8位*/
-            *(ptr++) = (0xff)&(box->data.pow[i]); /*低8位*/
+            *(ptr++) = ((box->data.pow.value[i]) >> 8); /*高8位*/
+            *(ptr++) = (0xff)&(box->data.pow.value[i]); /*低8位*/
         }else{
             *(ptr++) = ((box->lineTgBox.pow[i]) >> 8); /*高8位*/
             *(ptr++) = (0xff)&(box->lineTgBox.pow[i]); /*低8位*/

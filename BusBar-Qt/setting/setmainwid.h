@@ -5,6 +5,8 @@
 #include "setloop/settemmain.h"
 #include "setsystem/systemsettingdlg.h"
 #include "setsystem/checkpassworddlg.h"
+#include "setloop/setpowmain.h"
+
 namespace Ui {
 class SetMainWid;
 }
@@ -36,6 +38,8 @@ signals:
     void busChangedSig(int);
 #endif
 
+    void on_powerBtn_clicked();
+
 private:
     Ui::SetMainWid *ui;
 
@@ -43,6 +47,7 @@ private:
     SetNamesWid *mSetNamesWid;
     SetLineWid *mSetLineWid;
     SetLoopWid *mSetLoopWid;
+    SetPowMain *mSetPowerMainWid;
     SystemSettingDlg *mSystemDlg;
 };
 

@@ -18,7 +18,7 @@ public:
 
 private:
     Ui::SetLineWid *ui;
-    SetLineItem *mItem[3];
+    SetLineItem *mItem[4];
 };
 
 #endif // SETLINEWID_H

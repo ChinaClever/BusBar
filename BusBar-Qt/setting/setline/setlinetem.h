@@ -12,7 +12,7 @@ class SetLineTem : public QWidget
     Q_OBJECT
 
 public:
-    explicit SetLineTem(QWidget *parent = 0);
+    explicit SetLineTem(QWidget *parent = 0 , bool flag = true);
     ~SetLineTem();
 
     void indexChanged(int index);
@@ -36,6 +36,8 @@ private:
     QTimer *timer;
     int mBus;
     sDataUnit *startBoxTem;
+    bool mFlag;
+    sDataPowUnit *startBoxPow;
 };
 
 #endif // SETLINETEM_H

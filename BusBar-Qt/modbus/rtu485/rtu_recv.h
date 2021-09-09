@@ -44,8 +44,8 @@ struct Rtu_recv {
     uchar lineNum;
     uchar proNum;//项目编号 0：标准 1：定制
     ushort rate;
-    ushort minrate;
-    ushort maxrate;
+    ushort minRate;
+    ushort maxRate;
     uchar volUnbalance;
     uchar curUnbalance;
     ushort zeroLineCur;

@@ -7,7 +7,7 @@
 
 struct sThresholdItem{
     int id;
-    int type; // 阈值类型 1 电压阈值  2 电流阈值   3温度
+    int type; // 阈值类型 1 电压阈值  2 电流阈值   3 温度   4 功率   5 频率
     int bus; // 母线编号 0~3
     int box; // 插接箱
     int num; // 编号

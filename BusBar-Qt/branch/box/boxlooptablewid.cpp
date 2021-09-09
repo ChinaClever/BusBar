@@ -134,7 +134,7 @@ void BoxLoopTableWid::initTableWidget()
     ui->tableWidget->setRowCount(0);        //设置行数/
 
     QStringList header;
-    header <<tr("回路") <<tr("名称") <<tr("断路器") << tr("电压") << tr("电流") << tr("功率") << tr("功率因素") << tr("电能");// << tr("温度");
+    header <<tr("回路") <<tr("名称") <<tr("断路器") << tr("电压") << tr("电流") << tr("功率") << tr("功率因数") << tr("电能");// << tr("温度");
     ui->tableWidget->setColumnCount(header.size());    //设置列数
     ui->tableWidget->setHorizontalHeaderLabels(header);
 
@@ -327,10 +327,10 @@ void BoxLoopTableWid::setPow(int id, int column)
 {
     QString str = "---";
 
-    double value = mData->pow[id] / COM_RATE_POW;
+    double value = mData->pow.value[id] / COM_RATE_POW;
     if(value >= 0)
 //        str = QString::number(value, 'f', 3) + "kW";
-        str = QString::number(value, 'f', 4) + "kW";
+        str = QString::number(value, 'f', 3) + "kW";
     setTableItem(id, column, str);
 }
 

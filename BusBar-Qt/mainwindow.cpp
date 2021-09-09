@@ -9,6 +9,8 @@
 #include "net/send/netsendthread.h"
 
 #include "modbus/thirdthread.h"
+//#define MODBUSTCPPORT 11283
+#define MODBUSTCPPORT 502
 
 RtuThread *rtu[4] = {NULL, NULL, NULL, NULL};
 ThirdThread *thr = NULL;
@@ -133,6 +135,15 @@ void MainWindow::initFunSLot()
 
     //mNetWork = new NetWork(this);
     //connect(ui->comboBox, SIGNAL(currentIndexChanged(int)),mNetWork,SIGNAL(sendNetBusSig(int)));
+
+    mTcpModbus = new QTcpModbus();
+    if( mTcpModbus->isOpen() )
+        mTcpModbus->disconnect();
+    mTcpModbus->init(  MODBUSTCPPORT , true );
+    if( mTcpModbus->isOpen() )
+    {
+        mTcpModbus->setTimeout(5000);
+    }
 }
 
 void MainWindow::initWidget()

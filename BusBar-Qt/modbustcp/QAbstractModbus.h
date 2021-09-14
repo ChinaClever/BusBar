@@ -5,7 +5,8 @@
 * Date   : 2009/07/14                                                                                                  *
 * Changes: -                                                                                                           *
 ***********************************************************************************************************************/
-#pragma once
+#ifndef QABSTRACTMODBUS_H
+#define QABSTRACTMODBUS_H
 
 
 /*** Qt includes & prototypes *****************************************************************************************/
@@ -203,10 +204,10 @@ public:
     *               status will not be reported at all.
     * \return True on success, false otherwise (Error number can be retrieved using the status pointer).
     */
-    virtual bool writeMultipleRegisters( const quint8 deviceAddress ,
-                                         const quint16 startingAddress ,
+    virtual bool writeMultipleRegisters( const quint16 rxQuantityOfRegisters ,
+                                         const quint16 rxTransactionId ,const quint8 rxDeviceAddress,const quint8 rxFunctionCode,
                                          const QList<quint16> & registersValues ,
-                                         quint8 *const status = NULL
+                                         bool  ret
                                        ) const = 0;
 
     /*!
@@ -301,3 +302,5 @@ public:
      */
     virtual QByteArray calculateCheckSum( QByteArray &data ) const = 0;
 };
+
+#endif // QABSTRACTMODBUS_H

@@ -5,22 +5,24 @@
 * Date   : 2009/07/14                                                                                                  *
 * Changes: -                                                                                                           *
 ***********************************************************************************************************************/
-#pragma once
+#ifndef QTCPMODBUS_H
+#define QTCPMODBUS_H
 
 
 /*** Base classes *****************************************************************************************************/
 #include <QtCore/QObject>
 #include "QAbstractModbus.h"
-
+#include "modbustcpserver.h"
 
 /*** Qt includes & prototypes *****************************************************************************************/
-#include <QtNetwork/QTcpServer>
+//#include <QtNetwork/QTcpServer>
 #include <QtCore/QString>
 #include <QtCore/QList>
 
 
 /*** System includes **************************************************************************************************/
 #include <time.h>
+#include "common.h"
 
 /*** QiTcpModbus class declaration and help ***************************************************************************/
 /*!
@@ -33,12 +35,14 @@ class QTcpModbus : public QObject , public QAbstractModbus
     Q_OBJECT;
 
 private:
-    mutable QTcpServer* _socket;     // Socket used for communication.
+    mutable ModbusTcpServer* _socket;     // Socket used for communication.
     int _timeout;                   // Timeout to use in TCP communication.
     int _connectTimeout;            // TCP connect timeout.
+
+    QMap<QString, ModbusTcpServer *> m_mapClient;
+    bool mIsConnect;
     QString mIP;
-    bool mIsConnect, mIsVerify;
-    QMap<QString, QTcpSocket *> m_mapClient;
+    sDataPacket *mShm;
 
 public:
     /*!
@@ -65,7 +69,7 @@ public:
     */
 //    bool connect( const QString &host , const quint16 port = 502 );
 
-    void init(int port, bool isVerify);
+    void init(int port);
 
     /*!
     * Returns true of the connection to the Modbus device or gateway is alive.
@@ -147,10 +151,10 @@ public:
                            ) const;
 
     // Interface implementation (QiAbstractModbus).
-    bool writeMultipleRegisters( const quint8 deviceAddress ,
-                                 const quint16 startingAddress ,
+    bool writeMultipleRegisters( const quint16 rxQuantityOfRegisters ,
+                                 const quint16 rxTransactionId ,const quint8 rxDeviceAddress,const quint8 rxFunctionCode,
                                  const QList<quint16> & registersValues ,
-                                 quint8 *const status ) const;
+                                 bool  ret ) const;
 
     // Interface implementation (QiAbstractModbus).
     bool maskWriteRegister( const quint8 deviceAddress ,
@@ -192,11 +196,9 @@ signals:
     */
     void connectionLost();
 
-private slots:
-    void newConnectSlot();
-
 public slots:
     // Interface implementation (QiAbstractModbus).
-    bool writeSlot();
-    void acceptErrorSlot(QAbstractSocket::SocketError socketError);
+    void writeSlot();
 };
+
+#endif // QTCPMODBUS_H

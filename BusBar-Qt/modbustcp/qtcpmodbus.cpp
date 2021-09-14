@@ -2,7 +2,7 @@
 * QTcpModbus imlpementation.                                                                                          *
 ***********************************************************************************************************************/
 #include "qtcpmodbus.h"
-#include <QtNetwork>
+//#include <QtNetwork>
 
 /*** Qt includes ******************************************************************************************************/
 #include <QtCore/QByteArray>
@@ -14,44 +14,28 @@ QTcpModbus::QTcpModbus() : _timeout( 500 ) , _connectTimeout( 5000 )
 {
     // Initialize random number generator to use for transaction ID generation.
     qsrand( time( NULL ) );
-    _socket = new QTcpServer();
-    // Connect the socket's connection lost signal to my connection lost signal.
-    QObject::connect(_socket,SIGNAL(newConnection()),this,SLOT(newConnectSlot()));
-    QObject::connect( _socket , SIGNAL( acceptError(QAbstractSocket::SocketError) ) , this , SLOT( acceptErrorSlot(QAbstractSocket::SocketError)));
+
+    mShm = get_share_mem(); // 获取共享内存
+    mIP = "";
+    mIsConnect = false;
+
 }
 
-void QTcpModbus::acceptErrorSlot(QAbstractSocket::SocketError socketError)
+
+
+void QTcpModbus::init(int port)
 {
-    qDebug()<<"Accept Error"<<socketError<< _socket->errorString()<<endl;
+    _socket = new ModbusTcpServer(port);
+//    if(_socket->listen(QHostAddress::Any, port)){
+//        qDebug() << "listen OK!"<<port;
+//    }else{
+//        qDebug() << "listen error!";
+//    }
+    _socket->run();
 }
 
-void QTcpModbus::init(int port, bool isVerify)
-{
-    if(_socket->listen(QHostAddress::Any, port)){
-        qDebug() << "listen OK!"<<port;
-    }else{
-        qDebug() << "listen error!";
-    }
-    mIsVerify = isVerify;
-}
 
-void QTcpModbus::newConnectSlot()
-{
-    QTcpSocket *tcp = _socket->nextPendingConnection();
-    if(mIsVerify) {
-        m_mapClient.insert(tcp->peerAddress().toString(), tcp);
-        QObject::connect(tcp,SIGNAL(readyRead()),this,SLOT(writeSlot()));
-        mIP = tcp->peerAddress().toString();
-        mIsConnect = true;
-    } else {
-        mIsConnect = false;
-    }
-
-
-    //    m_pMsgHandler->devOnline(tcp->peerAddress().toString());
-}
-
-bool QTcpModbus::writeSlot()
+void QTcpModbus::writeSlot()
 {
     QString str = "123456789012";
     QString str2 = str.replace(" ","");
@@ -59,16 +43,76 @@ bool QTcpModbus::writeSlot()
     QList<quint16> data;
     for(int i = 0 ;i < 20;i++)
     {
-       int j = 2*i;
-       QString str1 = str2.mid(j,2);
-       bool ok;
-       quint16 hex = str1.toInt(&ok,16);
-       qDebug("%d",hex);
-       data.push_back(hex);
+        int j = 2*i;
+        QString str1 = str2.mid(j,2);
+        bool ok;
+        quint16 hex = str1.toInt(&ok,16);
+//        qDebug("%d",hex);
+        data.push_back(hex);
     }
-    quint8* statue = nullptr;
-    bool flag = writeMultipleRegisters(1 , 0 , data , statue);
-    return flag ;
+    quint8* status = nullptr;
+    // Are we connected ?
+    if ( !isConnected() )
+    {
+        if ( status ) *status = NoConnection;
+        return ;
+    }
+
+    bool ret = false;
+    // Create a transaction number.
+    quint16 rxTransactionId , rxStartingAddress , rxQuantityOfRegisters;
+    quint8 rxDeviceAddress,rxFunctionCode;
+
+    // Create modbus write multiple registers pdu (Modbus uses Big Endian).
+    QByteArray pdu;
+    pdu.clear();
+    pdu = reinterpret_cast<QTcpSocket*>(sender())->readAll();
+    qDebug()<<"pdu.size() "<<pdu.size()<<endl;
+    // Check data and return them on success.
+    if ( pdu.size() == 12 )
+    {
+        // Read TCP fields and, device address and command ID and control them.
+        quint16 rxProtocolId, rxLength ;
+        QDataStream rxStream( pdu );
+        rxStream.setByteOrder( QDataStream::BigEndian );
+        rxStream >> rxTransactionId >> rxProtocolId >> rxLength >> rxDeviceAddress >> rxFunctionCode
+                >> rxStartingAddress >> rxQuantityOfRegisters;
+
+        qDebug()<<rxTransactionId << rxStartingAddress << rxQuantityOfRegisters << rxDeviceAddress << rxFunctionCode <<endl;
+        // Control values of the fields.
+        if ( rxProtocolId == 0 && rxLength == 6 && rxFunctionCode == 0x03 )
+        {
+            // Ok, done.
+            if ( status ) *status = Ok;
+            ret = true;
+        }
+        else
+        {
+            if ( status ) *status = UnknownError;
+        }
+    }
+    else
+    {
+        // What was wrong ?
+        if ( pdu.size() == 9 )
+        {
+            if ( status ) *status = pdu[8];
+        }
+        else
+        {
+            if ( status ) *status = Timeout;
+        }
+    }
+    bool flag = false;
+    if(ret){
+        uchar id = rxDeviceAddress / 0x20;
+        uchar addr = rxDeviceAddress % 0x20;
+        if(id >=BUS_NUM || addr >= BOX_NUM) return ;
+        sBoxData *box = &(mShm->data[id].box[addr-1]); //共享内存
+        //if(box->offLine < 1) return false;
+        flag= writeMultipleRegisters(rxQuantityOfRegisters ,rxTransactionId , rxDeviceAddress , rxFunctionCode, data , ret);
+    }
+    return ;
 }
 
 QAbstractModbus::~QAbstractModbus()
@@ -80,6 +124,7 @@ QTcpModbus::~QTcpModbus()
 {
     // Finaly disconnect.
     disconnect();
+    mIsConnect = false;
 }
 
 
@@ -89,7 +134,7 @@ bool QTcpModbus::isConnected( void ) const
     // Ask the socket if it is connected.
     bool ret = false;
     if(m_mapClient.contains(mIP))
-       ret = mIsConnect;
+        ret = mIsConnect;
     return ret;
 }
 
@@ -120,7 +165,7 @@ void QTcpModbus::setTimeout( const unsigned int timeout )
 }
 
 QList<bool> QTcpModbus::readCoils( const quint8 deviceAddress , const quint16 startingAddress ,
-                                    const quint16 quantityOfCoils , quint8 *const status ) const
+                                   const quint16 quantityOfCoils , quint8 *const status ) const
 {
     // Are we connected ?
     if ( !isConnected() )
@@ -145,7 +190,7 @@ QList<bool> QTcpModbus::readCoils( const quint8 deviceAddress , const quint16 st
 
 
     // Send the pdu.
-    m_mapClient.value(mIP)->write( pdu );
+    reinterpret_cast<QTcpSocket*>(sender())->write( pdu );
 
     // Await response.
     quint16 neededRxBytes = quantityOfCoils / 8;
@@ -205,7 +250,7 @@ QList<bool> QTcpModbus::readCoils( const quint8 deviceAddress , const quint16 st
 }
 
 QList<bool> QTcpModbus::readDiscreteInputs( const quint8 deviceAddress , const quint16 startingAddress ,
-                                             const quint16 quantityOfInputs , quint8 *const status ) const
+                                            const quint16 quantityOfInputs , quint8 *const status ) const
 {
     // Are we connected ?
     if ( !isConnected() )
@@ -229,7 +274,7 @@ QList<bool> QTcpModbus::readDiscreteInputs( const quint8 deviceAddress , const q
     socket->readAll();
 
     // Send the pdu.
-    m_mapClient.value(mIP)->write( pdu );
+    reinterpret_cast<QTcpSocket*>(sender())->write( pdu );
 
     // Await response.
     quint16 neededRxBytes = quantityOfInputs / 8;
@@ -288,7 +333,7 @@ QList<bool> QTcpModbus::readDiscreteInputs( const quint8 deviceAddress , const q
 }
 
 QList<quint16> QTcpModbus::readHoldingRegisters( const quint8 deviceAddress , const quint16 startingAddress ,
-                                                  const quint16 quantityOfRegisters , quint8 *const status ) const
+                                                 const quint16 quantityOfRegisters , quint8 *const status ) const
 {
     // Are we connected ?
     if ( !isConnected() )
@@ -311,8 +356,8 @@ QList<quint16> QTcpModbus::readHoldingRegisters( const quint8 deviceAddress , co
     QTcpSocket *socket = static_cast<QTcpSocket*>(sender());
     socket->readAll();
 
-     // Send the pdu.
-    m_mapClient.value(mIP)->write( pdu );
+    // Send the pdu.
+    socket->write( pdu );
 
     // Await response.
     quint16 neededRxBytes = quantityOfRegisters * 2;
@@ -370,7 +415,7 @@ QList<quint16> QTcpModbus::readHoldingRegisters( const quint8 deviceAddress , co
 }
 
 QList<quint16> QTcpModbus::readInputRegisters( const quint8 deviceAddress , const quint16 startingAddress ,
-                                                const quint16 quantityOfInputRegisters , quint8 *const status ) const
+                                               const quint16 quantityOfInputRegisters , quint8 *const status ) const
 {
     // Are we connected ?
     if ( !isConnected() )
@@ -394,7 +439,7 @@ QList<quint16> QTcpModbus::readInputRegisters( const quint8 deviceAddress , cons
     socket->readAll();
 
     // Send the pdu.
-    m_mapClient.value(mIP)->write( pdu );
+    socket->write( pdu );
 
     // Await response.
     quint16 neededRxBytes = quantityOfInputRegisters * 2;
@@ -452,7 +497,7 @@ QList<quint16> QTcpModbus::readInputRegisters( const quint8 deviceAddress , cons
 }
 
 bool QTcpModbus::writeSingleCoil( const quint8 deviceAddress , const quint16 outputAddress ,
-                                   const bool outputValue , quint8 *const status ) const
+                                  const bool outputValue , quint8 *const status ) const
 {
     // Are we connected ?
     if ( !isConnected() )
@@ -476,7 +521,7 @@ bool QTcpModbus::writeSingleCoil( const quint8 deviceAddress , const quint16 out
     socket->readAll();
 
     // Send the pdu.
-    m_mapClient.value(mIP)->write( pdu );
+    socket->write( pdu );
 
     // Await response.
     pdu.clear();
@@ -495,7 +540,7 @@ bool QTcpModbus::writeSingleCoil( const quint8 deviceAddress , const quint16 out
         QDataStream rxStream( pdu );
         rxStream.setByteOrder( QDataStream::BigEndian );
         rxStream >> rxTransactionId >> rxProtocolId >> rxLength >> rxDeviceAddress >> rxFunctionCode
-                 >> rxOutputAddress >> rxOutputValue;
+                >> rxOutputAddress >> rxOutputValue;
 
         // Control values of the fields.
         if ( rxTransactionId == transactionId && rxProtocolId == 0 && rxLength == 6 &&
@@ -528,7 +573,7 @@ bool QTcpModbus::writeSingleCoil( const quint8 deviceAddress , const quint16 out
 }
 
 bool QTcpModbus::writeSingleRegister( const quint8 deviceAddress , const quint16 outputAddress ,
-                                       const quint16 registerValue , quint8 *const status ) const
+                                      const quint16 registerValue , quint8 *const status ) const
 {
     // Are we connected ?
     if ( !isConnected() )
@@ -552,7 +597,7 @@ bool QTcpModbus::writeSingleRegister( const quint8 deviceAddress , const quint16
     socket->readAll();
 
     // Send the pdu.
-    m_mapClient.value(mIP)->write( pdu );
+    socket->write( pdu );
 
     // Await response.
     pdu.clear();
@@ -571,7 +616,7 @@ bool QTcpModbus::writeSingleRegister( const quint8 deviceAddress , const quint16
         QDataStream rxStream( pdu );
         rxStream.setByteOrder( QDataStream::BigEndian );
         rxStream >> rxTransactionId >> rxProtocolId >> rxLength >> rxDeviceAddress >> rxFunctionCode
-                 >> rxOutputAddress >> rxRegisterValue;
+                >> rxOutputAddress >> rxRegisterValue;
 
         // Control values of the fields.
         if ( rxTransactionId == transactionId && rxProtocolId == 0 && rxLength == 6 &&
@@ -604,7 +649,7 @@ bool QTcpModbus::writeSingleRegister( const quint8 deviceAddress , const quint16
 }
 
 bool QTcpModbus::writeMultipleCoils( const quint8 deviceAddress , const quint16 startingAddress ,
-                                      const QList<bool> & outputValues , quint8 *const status ) const
+                                     const QList<bool> & outputValues , quint8 *const status ) const
 {
     // Are we connected ?
     if ( !isConnected() )
@@ -643,7 +688,7 @@ bool QTcpModbus::writeMultipleCoils( const quint8 deviceAddress , const quint16 
     socket->readAll();
 
     // Send the pdu.
-    m_mapClient.value(mIP)->write( pdu );
+    socket->write( pdu );
 
     // Await response.
     pdu.clear();
@@ -662,7 +707,7 @@ bool QTcpModbus::writeMultipleCoils( const quint8 deviceAddress , const quint16 
         QDataStream rxStream( pdu );
         rxStream.setByteOrder( QDataStream::BigEndian );
         rxStream >> rxTransactionId >> rxProtocolId >> rxLength >> rxDeviceAddress >> rxFunctionCode
-                 >> rxStartingAddress >> rxQuantityOfOutputs;
+                >> rxStartingAddress >> rxQuantityOfOutputs;
 
         // Control values of the fields.
         if ( rxTransactionId == transactionId && rxProtocolId == 0 && rxLength == 6 &&
@@ -694,65 +739,12 @@ bool QTcpModbus::writeMultipleCoils( const quint8 deviceAddress , const quint16 
     return false;
 }
 
-bool QTcpModbus::writeMultipleRegisters( const quint8 deviceAddress , const quint16 startingAddress ,
-                                          const QList<quint16> & registersValues , quint8 *const status ) const
+bool QTcpModbus::writeMultipleRegisters( const quint16 rxQuantityOfRegisters ,
+                                         const quint16 rxTransactionId ,const quint8 rxDeviceAddress,const quint8 rxFunctionCode,
+                                         const QList<quint16> & registersValues ,
+                                         bool  ret) const
 {
-    // Are we connected ?
-    qDebug()<<"aaaaaaaaaaaaaaaaaaaaaaa"<<isConnected()<<endl;
-    if ( !isConnected() )
-    {
-        if ( status ) *status = NoConnection;
-        return false;
-    }
-
-    bool ret = false;
-    qDebug()<<"vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv"<<isConnected()<<mIP<<endl;
-    // Create a transaction number.
-    quint16 rxTransactionId = qrand() , rxStartingAddress , rxQuantityOfRegisters;
-    quint8 rxDeviceAddress,rxFunctionCode;
-
-    // Create modbus write multiple registers pdu (Modbus uses Big Endian).
     QByteArray pdu;
-    pdu.clear();
-    pdu = m_mapClient.value(mIP)->readAll();
-    qDebug()<< pdu << endl;
-    qDebug()<<"pdu.size() "<<pdu.size()<<endl;
-    // Check data and return them on success.
-    if ( pdu.size() == 12 )
-    {
-        // Read TCP fields and, device address and command ID and control them.
-        quint16 rxProtocolId, rxLength ;
-        QDataStream rxStream( pdu );
-        rxStream.setByteOrder( QDataStream::BigEndian );
-        rxStream >> rxTransactionId >> rxProtocolId >> rxLength >> rxDeviceAddress >> rxFunctionCode
-                 >> rxStartingAddress >> rxQuantityOfRegisters;
-
-        qDebug()<<rxTransactionId << rxStartingAddress << rxQuantityOfRegisters << rxDeviceAddress << rxFunctionCode <<endl;
-        // Control values of the fields.
-        if ( rxProtocolId == 0 && rxLength == 6 && rxFunctionCode == 0x03 )
-        {
-            // Ok, done.
-            if ( status ) *status = Ok;
-            ret = true;
-        }
-        else
-        {
-            if ( status ) *status = UnknownError;
-        }
-    }
-    else
-    {
-        // What was wrong ?
-        if ( pdu.size() == 9 )
-        {
-            if ( status ) *status = pdu[8];
-        }
-        else
-        {
-            if ( status ) *status = Timeout;
-        }
-    }
-    qDebug()<<"ret"<<ret<<endl;
     if(ret && registersValues.count() >= rxQuantityOfRegisters){
         pdu.clear();
         QDataStream pduStream( &pdu , QIODevice::WriteOnly );
@@ -772,7 +764,8 @@ bool QTcpModbus::writeMultipleRegisters( const quint8 deviceAddress , const quin
 
 
         // Send the pdu.
-        m_mapClient.value(mIP)->write( pdu );
+        reinterpret_cast<QTcpSocket*>(sender())->write( pdu );
+        reinterpret_cast<QTcpSocket*>(sender())->flush();
     }
 
     // Await response.
@@ -782,7 +775,7 @@ bool QTcpModbus::writeMultipleRegisters( const quint8 deviceAddress , const quin
 }
 
 bool QTcpModbus::maskWriteRegister( const quint8 deviceAddress , const quint16 referenceAddress ,
-                                     const quint16 andMask , const quint16 orMask , quint8 *const status ) const
+                                    const quint16 andMask , const quint16 orMask , quint8 *const status ) const
 {
     // Are we connected ?
     if ( !isConnected() )
@@ -806,7 +799,7 @@ bool QTcpModbus::maskWriteRegister( const quint8 deviceAddress , const quint16 r
     socket->readAll();
 
     // Send the pdu.
-    m_mapClient.value(mIP)->write( pdu );
+    socket->write( pdu );
 
     // Await response.
     pdu.clear();
@@ -825,7 +818,7 @@ bool QTcpModbus::maskWriteRegister( const quint8 deviceAddress , const quint16 r
         QDataStream rxStream( pdu );
         rxStream.setByteOrder( QDataStream::BigEndian );
         rxStream >> rxTransactionId >> rxProtocolId >> rxLength >> rxDeviceAddress >> rxFunctionCode
-                 >> rxReferenceAddress >> rxAndMask >> rxOrMask;
+                >> rxReferenceAddress >> rxAndMask >> rxOrMask;
 
         // Control values of the fields.
         if ( rxTransactionId == transactionId && rxProtocolId == 0 && rxLength == 8 &&
@@ -859,10 +852,10 @@ bool QTcpModbus::maskWriteRegister( const quint8 deviceAddress , const quint16 r
 
 
 QList<quint16> QTcpModbus::writeReadMultipleRegisters( const quint8 deviceAddress ,
-                                                        const quint16 writeStartingAddress ,
-                                                        const QList<quint16> & writeValues ,
-                                                        const quint16 readStartingAddress ,
-                                                        const quint16 quantityToRead , quint8 *const status ) const
+                                                       const quint16 writeStartingAddress ,
+                                                       const QList<quint16> & writeValues ,
+                                                       const quint16 readStartingAddress ,
+                                                       const quint16 quantityToRead , quint8 *const status ) const
 {
     // Are we connected ?
     if ( !isConnected() )
@@ -893,7 +886,7 @@ QList<quint16> QTcpModbus::writeReadMultipleRegisters( const quint8 deviceAddres
     socket->readAll();
 
     // Send the pdu.
-    m_mapClient.value(mIP)->write( pdu );
+    socket->write( pdu );
 
     // Await response.
     quint16 neededRxBytes = quantityToRead * 2;
@@ -951,7 +944,7 @@ QList<quint16> QTcpModbus::writeReadMultipleRegisters( const quint8 deviceAddres
 }
 
 QList<quint16> QTcpModbus::readFifoQueue( const quint8 deviceAddress , const quint16 fifoPointerAddress ,
-                                           quint8 *const status ) const
+                                          quint8 *const status ) const
 {
     // Are we connected ?
     if ( !isConnected() )
@@ -975,7 +968,7 @@ QList<quint16> QTcpModbus::readFifoQueue( const quint8 deviceAddress , const qui
     socket->readAll();
 
     // Send the pdu.
-    m_mapClient.value(mIP)->write( pdu );
+    socket->write( pdu );
 
     // Await response.
     pdu.clear();
@@ -995,7 +988,7 @@ QList<quint16> QTcpModbus::readFifoQueue( const quint8 deviceAddress , const qui
         QDataStream rxStream( pdu );
         rxStream.setByteOrder( QDataStream::BigEndian );
         rxStream >> rxTransactionId >> rxProtocolId >> rxLength >> rxDeviceAddress >> rxFunctionCode
-                 >> byteCount >> fifoCount;
+                >> byteCount >> fifoCount;
 
         // Control values of the fields.
         if ( rxTransactionId == transactionId && rxProtocolId == 0 && rxLength == byteCount - 2 &&
@@ -1035,7 +1028,7 @@ QList<quint16> QTcpModbus::readFifoQueue( const quint8 deviceAddress , const qui
 }
 
 QByteArray QTcpModbus::executeCustomFunction( const quint8 deviceAddress , const quint8 modbusFunction ,
-                                               QByteArray &data , quint8 *const status ) const
+                                              QByteArray &data , quint8 *const status ) const
 {
     // Are we connected ?
     if ( !isConnected() )
@@ -1060,7 +1053,7 @@ QByteArray QTcpModbus::executeCustomFunction( const quint8 deviceAddress , const
     socket->readAll();
 
     // Send the pdu.
-    m_mapClient.value(mIP)->write( pdu );
+    socket->write( pdu );
 
     // Await response.
     pdu.clear();
@@ -1123,7 +1116,7 @@ QByteArray QTcpModbus::executeRaw( QByteArray &data , quint8 *const status ) con
     socket->readAll();
 
     // Send the data.
-    m_mapClient.value(mIP)->write( data );
+    socket->write( data );
 
     // Await response.
     if ( !socket->waitForReadyRead( _timeout ) )

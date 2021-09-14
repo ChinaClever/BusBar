@@ -138,7 +138,7 @@ void MainWindow::initFunSLot()
     if( mTcpModbus->isOpen() )
         mTcpModbus->disconnect();
 
-    mTcpModbus->init(  MODBUSTCPPORT , true );
+    mTcpModbus->init( MODBUSTCPPORT );
     if( mTcpModbus->isOpen() )
     {
         mTcpModbus->setTimeout(5000);

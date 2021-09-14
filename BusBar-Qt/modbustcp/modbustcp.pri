@@ -2,12 +2,16 @@
 INCLUDEPATH += $$PWD
 
 HEADERS += \	
-    modbustcp/QAbstractModbus.h \
-    modbustcp/qtcpmodbus.h
+    $$PWD/QAbstractModbus.h \
+    $$PWD/qtcpmodbus.h \
+    $$PWD/tcpsocket.h \
+    $$PWD/modbustcpserver.h
    
 	
 SOURCES += \	
-    modbustcp/qtcpmodbus.cpp
+    $$PWD/qtcpmodbus.cpp \
+    $$PWD/tcpsocket.cpp \
+    $$PWD/modbustcpserver.cpp
     
 
 

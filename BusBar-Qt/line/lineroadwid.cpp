@@ -67,6 +67,21 @@ void LineRoadWid::updateAlarmStatus(QLabel *lab, sDataUnit &unit)
     lab->setPalette(pe);
 }
 
+void LineRoadWid::updateAlarmStatus(QLabel *lab, sDataPowUnit &unit)
+{
+    int id = mID;
+    QPalette pe;
+
+    if(unit.alarm[id])
+        pe.setColor(QPalette::WindowText,Qt::red);
+    else  if(unit.crAlarm[id])
+        pe.setColor(QPalette::WindowText,"#CD7E80");
+    else
+        pe.setColor(QPalette::WindowText,Qt::black);
+
+    lab->setPalette(pe);
+}
+
 void LineRoadWid::updateWid(int id)
 {
     sObjData *mData = &(mBox->data); //回路状态内带三相信息
@@ -89,6 +104,7 @@ void LineRoadWid::updateWid(int id)
     //str =  QString::number(mData->pow[id]/COM_RATE_POW,'f',3) + "kW";
     str =  QString::number(mData->pow.value[id]/COM_RATE_POW,'f',3) + "kW";
     ui->powLab->setText(str);
+    updateAlarmStatus(ui->powLab , mData->pow);
 
     str =  QString::number(mData->pf[id]/COM_RATE_PF, 'f',2);
     ui->pfLab->setText(str);

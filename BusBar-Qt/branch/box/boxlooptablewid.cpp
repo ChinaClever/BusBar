@@ -332,6 +332,7 @@ void BoxLoopTableWid::setPow(int id, int column)
 //        str = QString::number(value, 'f', 3) + "kW";
         str = QString::number(value, 'f', 3) + "kW";
     setTableItem(id, column, str);
+    setAlarmStatus(id, column,mData->pow.alarm[id], mData->pow.crAlarm[id]);
 }
 
 void BoxLoopTableWid::setPf(int id, int column)

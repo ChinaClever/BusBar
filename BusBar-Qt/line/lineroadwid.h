@@ -23,6 +23,7 @@ protected:
     void updateWid(int id);
     void initWid();
     void updateAlarmStatus(QLabel *lab, sDataUnit &unit);
+    void updateAlarmStatus(QLabel *lab, sDataPowUnit &unit);
 
 public slots:
     void busChangeSlot(int id);

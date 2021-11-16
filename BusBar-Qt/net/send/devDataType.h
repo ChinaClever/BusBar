@@ -36,7 +36,7 @@ typedef struct
     uchar 		*sw; //开关状态
 
     ushort 		*rate; //电压频率
-    ushort 		*apPow; // 视在功率
+    uint		*apPow; // 视在功率
 
     ushort		*pl; //
     ushort		*curThd; //

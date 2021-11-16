@@ -223,7 +223,7 @@ static void sent_object(_devDataObj *obj, uchar *buf, dev_data_packet *msg)
     fn += 1;
     msg->fn[1] = fn << 4;
     msg->data = buf;
-    msg->len = shortToChar(obj->apPow,len,buf);
+    msg->len = intToChar(obj->apPow,len,buf);
     sent_packet(msg);
 
     /*电压频率*/

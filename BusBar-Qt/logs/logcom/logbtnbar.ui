@@ -72,12 +72,12 @@ image: url(:/new/prefix1/image/down.png);
         </property>
         <item>
          <property name="text">
-          <string>主路电量</string>
+          <string>主路电能</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>支路电量</string>
+          <string>支路电能</string>
          </property>
         </item>
         <item>

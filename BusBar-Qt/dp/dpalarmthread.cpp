@@ -120,12 +120,15 @@ char DpAlarmThread::alarmFlag(sDataPowUnit &unit, int line, bool cr)
 void DpAlarmThread::boxAlarm(sBoxData &box)
 {
     if(box.offLine > 0) {
-        int lineNum = box.data.lineNum;
+        int lineNum = box.loopNum;
         alarmDataUnit(box.data.cur, lineNum); // 回路是否有告警
         box.boxCurAlarm = alarmFlag(box.data.cur, lineNum);
 
         alarmDataUnit(box.data.vol, lineNum); // 回路是否有告警
         box.boxVolAlarm = alarmFlag(box.data.vol, lineNum);
+
+        alarmDataUnit(box.data.pow, lineNum);
+        box.boxPowerAlarm =  alarmFlag(box.data.pow, lineNum);
 
         //--------------[限制存在才告警]----------------- By_MW 2018.3.23
         if(box.dc){ //交流
@@ -138,8 +141,7 @@ void DpAlarmThread::boxAlarm(sBoxData &box)
         alarmDataUnit(box.env.tem, lineNum);
         box.boxEnvAlarm =  alarmFlag(box.env.tem, lineNum);
 
-        alarmDataUnit(box.data.pow, lineNum);
-        box.boxPowerAlarm =  alarmFlag(box.data.pow, lineNum);
+
 
         if((box.rate < box.minRate) || (box.rate > box.maxRate))
         {

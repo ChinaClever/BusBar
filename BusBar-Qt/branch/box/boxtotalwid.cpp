@@ -56,7 +56,10 @@ void BoxTotalWid::updateAll()
         str =  QString::number(mTgBox->apPow/(COM_RATE_POW*100), 'f', 3) + "kVA";
         ui->tApPowH->setText(str);
 
-        str =  QString::number(mTgBox->pf/COM_RATE_PF, 'f', 2);
+        if(mTgBox->apPow == 0 )
+            str = QString::number(0, 'f', 2);
+        else
+            str = QString::number((mTgBox->pow*100)/mTgBox->apPow, 'f', 2);
         ui->tPfH->setText(str);
 
         str =  QString::number(mTgBox->ele/COM_RATE_ELE, 'f', 1);// + "kWh";
@@ -118,7 +121,14 @@ void BoxTotalWid::updateData()
             str =  QString::number(mLineTgBox->apPow[i]/(COM_RATE_POW*100), 'f', 3) + "kVA";
             tApPowLab[i]->setText(str);
 
-            str =  QString::number(mLineTgBox->pf[i]/COM_RATE_PF, 'f', 2);
+            if(mLineTgBox->apPow[i] == 0 )
+                str = QString::number(0, 'f', 2);
+            else
+            {
+                double pf = (mLineTgBox->pow[i]*100.0)/(mLineTgBox->apPow[i]);
+                if( pf > 0.99 ) str = "0.99";
+                else str =  QString::number(pf, 'f', 2);
+            }
             pfLab[i]->setText(str);
 
             str =  QString::number(mLineTgBox->ele[i]/COM_RATE_ELE, 'f', 1);// + "kWh";

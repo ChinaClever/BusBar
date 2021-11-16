@@ -7,7 +7,7 @@ struct RtuRecvLine {
     ushort vol; // 电压值
     ushort cur; // 电流值
     ushort pow; // 功率值
-    ushort apPow; // 视在功率
+    uint apPow; // 视在功率
     uint ele; // 电能值
 
     ushort minVol; // 最小电压

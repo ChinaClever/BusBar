@@ -47,7 +47,7 @@ typedef struct _sLineTgObjData {
     uint pow[3]; // 功率
     uint ele[3]; // 电能
     ushort pf[3]; // 功率因素
-    ushort apPow[3]; // 袖在功率
+    uint apPow[3]; // 袖在功率
     ushort tem[3];
 }sLineTgObjData;
 
@@ -91,7 +91,7 @@ typedef struct _sObjData {
     uint ele[LINE_NUM_MAX]; // 电能
     ushort pf[LINE_NUM_MAX]; // 功率因素
     uchar sw[LINE_NUM_MAX]; // 开关状态
-    ushort apPow[LINE_NUM_MAX]; // 视在功率
+    uint apPow[LINE_NUM_MAX]; // 视在功率
     ushort ratedCur[LINE_NUM_MAX]; // 额定电流
     ushort wave[LINE_NUM_MAX]; // 谐波值
 
@@ -138,7 +138,7 @@ typedef struct _sBoxData {
     uchar lpsAlarm;//防雷开关告警值 0表示未告警 1表示已告警 2表示已记录
     uchar HzAlarm;//频率告警值 0表示未告警 1表示已告警 2表示已记录
 
-    uchar rtuLen;
+    ushort rtuLen;
     uchar rtuArray[SRC_DATA_LEN_MAX];
 }sBoxData;
 

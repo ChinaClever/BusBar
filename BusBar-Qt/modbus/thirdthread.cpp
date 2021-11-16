@@ -86,10 +86,10 @@ void ThirdThread::transData()
         uchar id = mThr->addr / 0x20;
         uchar addr = mThr->addr % 0x20;
         if(id >=BUS_NUM || addr >= BOX_NUM) return;
-        sBoxData *box = &(mShm->data[id].box[addr]); //共享内存
-//        if(addr-1 < 0) return;//上海创建
-//        sBoxData *box = &(mShm->data[id].box[addr-1]);
-        if(box->offLine < 1) return;
+//        sBoxData *box = &(mShm->data[id].box[addr]); //共享内存
+        if(addr-1 < 0) return;//上海创建
+        sBoxData *box = &(mShm->data[id].box[addr-1]);
+        //if(box->offLine < 1) return;
 
         if(mThr->fn == Fn_Get){ //获取数据 _ [未加长度位0时该回复数据]
             if(box->rtuLen > 0) {

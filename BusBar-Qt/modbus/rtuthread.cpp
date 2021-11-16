@@ -272,7 +272,7 @@ int RtuThread::transData(int addr)
             }
 
             box->rtuLen = rtn;
-            for(int i = 0; i < rtn; i++){
+            for(int i = 0; i < box->rtuLen; i++){
                 box->rtuArray[i] = buf[i];
             }
 

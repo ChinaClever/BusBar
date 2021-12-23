@@ -47,5 +47,6 @@
         <file>image/close.png</file>
         <file>image/down.png</file>
         <file>image/up.png</file>
+        <file>image/startpage.jpg</file>
     </qresource>
 </RCC>

@@ -141,6 +141,8 @@ void InitShm::initName()
 void InitShm::run()
 {
     initBoxNum();  //统一ini 与共享内存的数组有效长度
+    sleep(5);
     initName(); //统一SQL 与功效内存内neme
+    sleep(5);
     initThreshold(); //统一数据标准
 }

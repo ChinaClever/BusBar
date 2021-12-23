@@ -9,6 +9,7 @@ QT      += widgets printsupport
 QT      += sql
 QT      += network
 QT      += androidextras
+QT      += testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

@@ -9,6 +9,9 @@
 #include "net/send/netsendthread.h"
 
 #include "modbus/thirdthread.h"
+#include <QTextEdit>
+#include <QSplashScreen>
+#include <QtTest>
 //#define MODBUSTCPPORT 11283
 #define MODBUSTCPPORT 502
 
@@ -23,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     mInitShm = new InitShm(this); //线程
     mInitShm->start(); //初始化共享内存 -- 单线程运行一次
-
+    //startPage();
 
     mIndex = 0;
     initWidget();
@@ -31,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QTimer::singleShot(1000,this,SLOT(initFunSLot())); //延时初始化
     on_comboBox_currentIndexChanged(0);
-    BeepThread::bulid()->longBeep(); // 线程 -- 'bi~'
+    //BeepThread::bulid()->longBeep(); // 线程 -- 'bi~'
 
     for(int i=0; i < 4; i++) rtu[i] = NULL;
 }
@@ -40,6 +43,26 @@ MainWindow::~MainWindow()
 {
     delete ui;
     share_mem_del();
+}
+
+void MainWindow::startPage()
+{
+    QSplashScreen *splash = new QSplashScreen;
+    splash->setPixmap(QPixmap(":/new/prefix1/image/startpage.jpg"));
+    splash->show();
+    Qt::Alignment topRight = Qt::AlignRight | Qt::AlignTop;
+    splash->showMessage(QObject::tr("Setting up the main Window..."),
+                        topRight,
+                        Qt::red);
+    QTest::qSleep(3000);
+    QTextEdit *textEdit = new QTextEdit;
+    splash->showMessage(QObject::tr("Loading modules..."),
+                        topRight,
+                        Qt::blue);
+    QTest::qSleep(3000);
+    textEdit->show();
+    splash->finish(textEdit);
+    delete splash;
 }
 
 /**
@@ -86,11 +109,11 @@ void MainWindow::timeoutDone()
 
 void MainWindow::updateBusName(int index)
 {
-     sDataPacket *shm = get_share_mem();
-     char *name = shm->data[index].busName;
+    sDataPacket *shm = get_share_mem();
+    char *name = shm->data[index].busName;
 
-     QString str = "0" + QString::number(index+1) + " " + name;
-     ui->comboBox->setItemText(index, str);
+    QString str = "0" + QString::number(index+1) + " " + name;
+    ui->comboBox->setItemText(index, str);
 }
 
 void MainWindow::setBusName(int index)
@@ -137,14 +160,14 @@ void MainWindow::initFunSLot()
     //mNetWork = new NetWork(this);
     //connect(ui->comboBox, SIGNAL(currentIndexChanged(int)),mNetWork,SIGNAL(sendNetBusSig(int)));
 
-//    mTcpModbus = new QTcpModbus();
-//    if( mTcpModbus->isOpen() )
-//        mTcpModbus->disconnect();
-//    mTcpModbus->init(  MODBUSTCPPORT , true );
-//    if( mTcpModbus->isOpen() )
-//    {
-//        mTcpModbus->setTimeout(5000);
-//    }
+    //    mTcpModbus = new QTcpModbus();
+    //    if( mTcpModbus->isOpen() )
+    //        mTcpModbus->disconnect();
+    //    mTcpModbus->init(  MODBUSTCPPORT , true );
+    //    if( mTcpModbus->isOpen() )
+    //    {
+    //        mTcpModbus->setTimeout(5000);
+    //    }
 }
 
 void MainWindow::initWidget()

@@ -87,7 +87,7 @@ void ThirdThread::transData()
         uchar addr = mThr->addr % 0x20;
         if(id >=BUS_NUM || addr >= BOX_NUM) return;
         sBoxData *box = &(mShm->data[id].box[addr]); //共享内存
-//        if(box->offLine < 1) return;
+        if(box->offLine < 1) return;
 
         if(mThr->fn == Fn_Get){ //获取数据 _ [未加长度位0时该回复数据]
             if(box->rtuLen > 0) {
@@ -122,10 +122,10 @@ bool ThirdThread::validateData(int rtn)
     ushort ll, hh;
     hh = *buf++;
     ll = *buf++;
-    mThr->position = hh<<8 + ll;
+    mThr->position = (hh<<8) + ll;
     hh = *buf++;
     ll = *buf++;
-    mThr->data = hh<<8 + ll;
+    mThr->data = (hh<<8) + ll;
     ll = *buf++;
     hh = *buf++;
     mThr->crc = (ll<<8) + hh;

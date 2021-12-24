@@ -181,14 +181,6 @@ void SetNamesWid::checkBus()
         clearWidget();
         resetWidget();
     }
-    if(ui->nameEdit->text().isEmpty()){
-        sBusData *busData = &(get_share_mem()->data[mIndex]);
-        ui->nameEdit->setText(busData->busName);
-        ui->boxNumSpin->setValue(busData->boxNum);
-
-        double rateCur = busData->box[0].ratedCur/COM_RATE_CUR;
-        ui->rateCurSpin->setValue(rateCur);
-    }
 }
 
 /**

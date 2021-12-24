@@ -41,9 +41,9 @@ static int rtu_recv_len(uchar *buf, int len)
     int ret = 0;
     int rtn = RTU_SENT_LEN+5;
 
-    if(0 == rtu_recv_len_dc(buf, len)){ //先判断是否是直流数据
-        return ret;
-    }
+//    if(0 == rtu_recv_len_dc(buf, len)){ //先判断是否是直流数据
+//        return ret;
+//    }
 
     if(len < rtn) {  //判断是否为交流数据
         ret = -1;
@@ -265,32 +265,32 @@ bool rtu_recv_packet(uchar *buf, int len, Rtu_recv *pkt)
         for(int i=0; i<lineSum; ++i) // 读取电参数
             ptr += rtu_recv_new_data(ptr, &(pkt->data[i]));
 
-        if(pkt->dc) { // 交流
+//        if(pkt->dc) { // 交流
             ptr += rtu_recv_new_thd(ptr, pkt);
-        } else {
+//        } else {
 
-            ptr++; // 直流此字节没有用
-             // 读取负载百分比
-            for(int i=0; i<2; ++i) pkt->pl[i] = *(ptr++);
-            ptr++; // 此字节没有用，直流只有两路负载百分比
-            ptr++; // 此字节没有用，直流谐波通道预留位
-            //----------------------[二分二路直流][显示]----------------------------
-            if(2 == pkt->rate && 2 == pkt->lineNum ){ //交换2-3数据
-                RtuRecvLine data;
-                data = pkt->data[1];
-                pkt->data[1] = pkt->data[2];
-                pkt->data[2] = data;
-                //swap(pkt->data[1], pkt->data[2]);
-            }
-            //---------------------------------------------------------------
-        }
+//            ptr++; // 直流此字节没有用
+//             // 读取负载百分比
+//            for(int i=0; i<2; ++i) pkt->pl[i] = *(ptr++);
+//            ptr++; // 此字节没有用，直流只有两路负载百分比
+//            ptr++; // 此字节没有用，直流谐波通道预留位
+//            //----------------------[二分二路直流][显示]----------------------------
+//            if(2 == pkt->rate && 2 == pkt->lineNum ){ //交换2-3数据
+//                RtuRecvLine data;
+//                data = pkt->data[1];
+//                pkt->data[1] = pkt->data[2];
+//                pkt->data[2] = data;
+//                //swap(pkt->data[1], pkt->data[2]);
+//            }
+//            //---------------------------------------------------------------
+//        }
 
 #if 1
-        if(pkt->dc) {
+//        if(pkt->dc) {
             pkt->crc = (buf[RTU_SENT_LEN+5-1]*256) + buf[RTU_SENT_LEN+5-2]; // 获取校验码RTU_SENT_LEN+5
-        }else{
-            pkt->crc = (ptr[1]*256) + ptr[0]; // 获取校验码RTU_SENT_LEN+5
-        }
+//        }else{
+//            pkt->crc = (ptr[1]*256) + ptr[0]; // 获取校验码RTU_SENT_LEN+5
+//        }
         ret = rtu_recv_crc(buf, len, pkt); //校验码
 #else
         ret = true;

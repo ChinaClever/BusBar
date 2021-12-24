@@ -53,6 +53,7 @@ void DpEleSlaveThread::saveBox(int bus, sBoxData  &box)
 
 void DpEleSlaveThread::saveBus(int id)
 {
+    DB_Tran tran;
     int line = 0;
     double rate = 10;
 

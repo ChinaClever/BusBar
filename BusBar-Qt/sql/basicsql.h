@@ -5,6 +5,13 @@
 #include <QObject>
 #include "common.h"
 
+class DB_Tran
+{
+    public:
+    DB_Tran() {QSqlDatabase::database().transaction();}
+    ~DB_Tran() {QSqlDatabase::database().commit();}
+};
+
 struct DbBasicItem{
     DbBasicItem():id(-1){
         QDateTime dateTime = QDateTime::currentDateTime();

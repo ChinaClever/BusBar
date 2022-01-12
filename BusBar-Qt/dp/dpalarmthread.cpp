@@ -80,6 +80,7 @@ char DpAlarmThread::alarmFlag(sDataUnit &unit, int line, bool cr)
 void DpAlarmThread::boxAlarm(sBoxData &box)
 {
     if(box.offLine > 0) {
+        box.offLineAlarm = 1;
         int lineNum = box.data.lineNum;
         alarmDataUnit(box.data.cur, lineNum); // 回路是否有告警
         box.boxCurAlarm = alarmFlag(box.data.cur, lineNum);
@@ -101,6 +102,7 @@ void DpAlarmThread::boxAlarm(sBoxData &box)
         box.boxAlarm = box.boxCurAlarm + box.boxVolAlarm + box.boxEnvAlarm;
     } else {
         box.boxAlarm = 0;
+        if(box.offLineAlarm == 1) box.offLineAlarm = 2;
     }
 }
 

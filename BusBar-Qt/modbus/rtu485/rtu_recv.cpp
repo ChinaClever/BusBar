@@ -41,9 +41,9 @@ static int rtu_recv_len(uchar *buf, int len)
     int ret = 0;
     int rtn = RTU_SENT_LEN+5;
 
-    if(0 == rtu_recv_len_dc(buf, len)){ //先判断是否是直流数据
-        return ret;
-    }
+//先把直流的屏蔽    if(0 == rtu_recv_len_dc(buf, len)){ //先判断是否是直流数据
+//        return ret;
+//    }
 
     if(len < rtn) {  //判断是否为交流数据
         ret = -1;

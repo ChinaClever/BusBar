@@ -194,6 +194,10 @@ void DpAlarmSlave::boxAlarm(sBoxData &box)
         mAlarmStr << shm->data[mBusId].busName;
         mAlarmStr << tr("插接箱离线");
         mAlarmStr << tr("插接箱：%1 已离线").arg(box.boxName);
+        if(box.offLineAlarm == 2){
+            box.offLineAlarm = 3;
+            saveMsg("插接箱离线", shm->data[mBusId].busName+tr("插接箱：%1 已离线").arg(box.boxName));
+        }
     }
 }
 

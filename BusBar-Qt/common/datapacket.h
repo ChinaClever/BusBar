@@ -101,6 +101,7 @@ typedef struct _sEnvData {
  */
 typedef struct _sBoxData {
     char offLine; // 离线标识
+    uchar offLineAlarm;//离线告警值 0表示未告警 1表示在线 2表示已告警 3表示已记录
     char loopNum; // 回路数量
     char version;
 

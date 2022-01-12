@@ -255,7 +255,7 @@ int RtuThread::transData(int addr)
         bool ret = rtu_recv_packet(buf, rtn, pkt); // 解析数据 data - len - it
         if(ret) {
             if(addr == pkt->addr) { //回收地址和发送地址同
-                offLine = 4;
+                offLine = 8;//offLine = 4;
                 loopData(box, pkt); //更新数据
                 envData(&(box->env), pkt);
                 box->rate = pkt->rate;
@@ -377,11 +377,13 @@ void RtuThread::BusTransData()
     for(int i=0; i<=mBusData->boxNum; ++i)
     {
         if(transData(i) == 0 ) {
-            msleep(900);
+            //msleep(900);
+            msleep(1200);
             transData(i);
         }
 #if( SI_RTUWIFI == 0)
-        msleep(750);
+        msleep(1200);
+        //msleep(750);
 #endif
 #if( SI_RTUWIFI == 1)
         msleep(900);

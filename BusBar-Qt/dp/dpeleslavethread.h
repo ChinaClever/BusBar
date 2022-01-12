@@ -1,6 +1,7 @@
 #ifndef DPELESLAVETHREAD_H
 #define DPELESLAVETHREAD_H
 
+#include <QtSql>
 #include <QObject>
 #include "common.h"
 
@@ -10,7 +11,12 @@ class DpEleSlaveThread : public QThread
 public:
     explicit DpEleSlaveThread(QObject *parent = 0);
     ~DpEleSlaveThread();
-
+    class DB_Tran
+    {
+        public:
+        DB_Tran() {QSqlDatabase::database().transaction();}
+        ~DB_Tran() {QSqlDatabase::database().commit();}
+    };
 signals:
 
 protected:

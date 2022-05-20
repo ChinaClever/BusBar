@@ -6,6 +6,9 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.HOME"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.MONKEY"/>
             </intent-filter>
 
             <!-- Application arguments -->
@@ -59,7 +62,12 @@
             <meta-data android:name="android.app.extract_android_style" android:value="full"/>
             <!-- extract android style -->
     </activity>
-
+    <receiver android:name=".BootBroadcastReceiver">
+        <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED"/>
+        <category android:name="android.intent.category.HOME"/>
+        </intent-filter>
+    </receiver>
     <!-- For adding service(s) please check: https://wiki.qt.io/AndroidServices -->
 
     </application>
@@ -82,4 +90,6 @@
 
 <!-- %%INSERT_PERMISSIONS -->
 
+<!-- %%INSERT_FEATURES -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 </manifest>

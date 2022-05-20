@@ -66,7 +66,8 @@ RESOURCES += \
 
 OTHER_FILES += \
     android/AndroidManifest.xml \
-    android/src/an/qt/busbar/QtFullscreenActivity.java
+    android/src/an/qt/busbar/QtFullscreenActivity.java \
+    android/src/an/qt/busbar/BroadcastReceiver.java
 
 #contains(ANDROID_TARGET_ARCH,armeabi-v7a)
 #{

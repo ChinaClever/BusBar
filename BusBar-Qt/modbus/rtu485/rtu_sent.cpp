@@ -53,12 +53,21 @@ static int rtu_sent_packet(Rtu_Sent *pkt, uchar *ptr)
     *(ptr++) = ((pkt->reg) >> 8); /*高8位*/
     *(ptr++) = (0xff)&(pkt->reg); /*低8位*/
 
+    if( pkt->fn == 0x10 ){
+        *(ptr++) = ((pkt->len) >> 24);
+        *(ptr++) = ((pkt->len) >> 16);
+    }
+
     /*填入数据长度*/
     *(ptr++) = ((pkt->len) >> 8); /*长度高8位*/
     *(ptr++) = (0xff)&(pkt->len); /*低8位*/
 
      /*填入CRC*/
-    pkt->crc = rtu_crc(buf, 6);
+    if( pkt->fn == 0x10 ){
+        pkt->crc = rtu_crc(buf, 8);
+    }else{
+        pkt->crc = rtu_crc(buf, 6);
+    }
     *(ptr++) = (0xff)&(pkt->crc); /*低8位*/
     *(ptr++) = ((pkt->crc) >> 8); /*高8位*/
 
@@ -75,7 +84,11 @@ static int rtu_sent_packet(Rtu_Sent *pkt, uchar *ptr)
     *(ptr-3) = 0x52;
     return 14;
     #else
-    return 8;
+    if( pkt->fn == 0x10 ){
+        return 10;
+    }else{
+        return 8;
+    }
     #endif
 }
 
@@ -97,7 +110,7 @@ int rtu_sent_buff(uchar addr, uchar *buf)
 
 
 
-int rtu_sent_buff(uchar addr, ushort reg, ushort len, uchar *buf)
+int rtu_sent_buff(uchar addr, ushort reg, uint len, uchar *buf)
 {
     static Rtu_Sent msg;
     static QMutex mutex; // 互拆锁

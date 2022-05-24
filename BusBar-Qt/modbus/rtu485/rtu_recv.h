@@ -6,7 +6,7 @@
 struct RtuRecvLine {
     ushort vol; // 电压值
     ushort cur; // 电流值
-    ushort pow; // 功率值
+    uint pow; // 功率值
     uint apPow; // 视在功率
     uint ele; // 电能值
 
@@ -14,8 +14,8 @@ struct RtuRecvLine {
     ushort maxVol; // 最大电压
     ushort minCur; // 最小电流
     ushort maxCur; // 最大电流
-    ushort minPow; // 最小功率
-    ushort maxPow; // 最大功率
+    uint minPow; // 最小功率
+    uint maxPow; // 最大功率
 
     ushort wave; // 谐波值
     uchar pf; // 功率因素

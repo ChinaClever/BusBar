@@ -86,7 +86,7 @@ bool RtuThread::init(const QString& name, int id)
     return ret;
 }
 
-int RtuThread::transmit(int addr, ushort reg, ushort len)
+int RtuThread::transmit(int addr, ushort reg, uint len)
 {
     /*
      *  0 - 发送失败
@@ -114,7 +114,7 @@ int RtuThread::transmit(int addr, ushort reg, ushort len)
 
 }
 
-int RtuThread::sendData(int addr, ushort reg, ushort len, bool value)
+int RtuThread::sendData(int addr, ushort reg, uint len, bool value)
 {   
     if(addr == 0xff){
         uchar *buf = mBuf;
@@ -243,17 +243,24 @@ int RtuThread::transData(int addr)
         return -1;
     }
     #elif(SI_RTUWIFI==0)
-
+    QByteArray sendarray;
+    QString sendstrArray;
+    sendarray.append((char *)buf, rtn);
+    sendstrArray = sendarray.toHex(); // 十六进制
+    for(int i=0; i<sendarray.size(); ++i)
+        sendstrArray.insert(2+3*i, " "); // 插入空格
+    qDebug()<<"  send:" << sendstrArray;
+    qDebug()<< "rtn  "<<rtn;
     rtn = mSerial->transmit(buf, rtn, buf); // 传输数据，发送同时接收
     #endif
 
-//    QByteArray array;
-//    QString strArray;
-//    array.append((char *)buf, rtn);
-//    strArray = array.toHex(); // 十六进制
-//    for(int i=0; i<array.size(); ++i)
-//        strArray.insert(2+3*i, " "); // 插入空格
-//    qDebug()<< "rtn  "<<rtn<<"  recv:" << strArray;
+    QByteArray array;
+    QString strArray;
+    array.append((char *)buf, rtn);
+    strArray = array.toHex(); // 十六进制
+    for(int i=0; i<array.size(); ++i)
+        strArray.insert(2+3*i, " "); // 插入空格
+    qDebug()<< "rtn  "<<rtn<<"  recv:" << strArray;
 
     if(rtn > 0) {
         bool ret = rtu_recv_packet(buf, rtn, pkt); // 解析数据 data - len - it

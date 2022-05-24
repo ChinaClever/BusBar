@@ -24,7 +24,7 @@
 #define NAME_LEN	32 // 名称最大长度
 #define SENSOR_NUM 3 // 二个传感器
 
-#define SRC_DATA_LEN_MAX 280 //一包数据最长 —— 用于对接动环
+#define SRC_DATA_LEN_MAX 512 //一包数据最长 —— 用于对接动环
 
 /**
  * 统计数据结构体

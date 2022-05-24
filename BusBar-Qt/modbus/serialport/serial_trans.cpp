@@ -193,7 +193,7 @@ int Serial_Trans::recvData(uchar *pBuf, int msecs)
     {
         do
         {
-            int rtn = read(fd, pBuf, 270);
+            int rtn = read(fd, pBuf, RTU_SENT_LEN_V23+15);
             #if (SI_RTUWIFI==1)
             msleep(90);
             #endif
@@ -204,8 +204,8 @@ int Serial_Trans::recvData(uchar *pBuf, int msecs)
             } else {
                 count++;
             }
-            if(ret > 270) {
-               read(fd, pBuf-260, 270);
+            if(ret > RTU_SENT_LEN_V23+15) {
+               read(fd, pBuf-RTU_SENT_LEN_V23+5, RTU_SENT_LEN_V23+15);
                ret = 0;
                break;
             }

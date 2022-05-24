@@ -16,8 +16,8 @@ public:
     ~RtuThread();
 
     bool init(const QString& name, int id);
-    int transmit(int addr, ushort reg, ushort len); //发送数据并回收
-    int sendData(int addr, ushort reg, ushort len, bool value = false); //发送数据
+    int transmit(int addr, ushort reg, uint len); //发送数据并回收
+    int sendData(int addr, ushort reg, uint len, bool value = false); //发送数据
     int sendData(uchar *pBuff, int nCount, int msec); //发送数据
     
 signals:    

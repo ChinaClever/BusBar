@@ -39,11 +39,11 @@ static int rtu_recv_len_dc(uchar *buf, int len)
 static int rtu_recv_len(uchar *buf, int len)
 {
     int ret = 0;
-    int rtn = RTU_SENT_LEN+5;
+    int rtn = RTU_SENT_LEN_V23+6;
 
-//    if(0 == rtu_recv_len_dc(buf, len)){ //先判断是否是直流数据
-//        return ret;
-//    }
+    //    if(0 == rtu_recv_len_dc(buf, len)){ //先判断是否是直流数据
+    //        return ret;
+    //    }
 
     if(len < rtn) {  //判断是否为交流数据
         ret = -1;
@@ -52,11 +52,10 @@ static int rtu_recv_len(uchar *buf, int len)
         ret = -2;
         //        qDebug() << "rtu recv Err: len too long!!" << len << rtn ;
     } else {
-        //        len = buf[2]*256 + buf[3];
-        len = buf[2];
-        if(len != RTU_SENT_LEN) {
+        len = buf[2]*256 + buf[3];
+        if(len != RTU_SENT_LEN_V23) {
             ret = -3;
-            qDebug() << "rtu recv len Err!!"<< len << rtn  << RTU_SENT_LEN;
+            qDebug() << "rtu recv len Err!!"<< len << rtn  << RTU_SENT_LEN_V23;
         }
     }
 
@@ -75,8 +74,10 @@ static int rtu_recv_head(uchar *ptr,  Rtu_recv *pkt)
     pkt->addr = *(ptr++);// 从机地址码
     pkt->fn = *(ptr++);  /*功能码*/
 
-    pkt->len = (*ptr) ; /*数据长度*/
-    return 3;
+//    pkt->len = (*ptr) ; /*数据长度*/
+//    return 3;
+    pkt->len = (*ptr)*256 +  *(ptr+1);  ptr += 2;/*数据长度*/
+    return 4;
 }
 
 /**
@@ -124,9 +125,18 @@ static int rtu_recv_new_data(uchar *ptr, RtuRecvLine *msg)
     msg->maxCur =  (*ptr) * 256 + *(ptr+1);  ptr += 2;
     msg->minCur =  (*ptr) * 256 + *(ptr+1);  ptr += 2;
 
-    msg->pow =  (*ptr) * 256 + *(ptr+1);  ptr += 2; // 读取功率
+    msg->pow =  (*ptr) * 256 + *(ptr+1);  ptr += 2; // 读取高16位功率
+    msg->pow <<= 16; // 左移16位
+    msg->pow =  (*ptr) * 256 + *(ptr+1);  ptr += 2; // 读取低16位功率
+
     msg->maxPow = (*ptr) * 256 + *(ptr+1);  ptr += 2;
+    msg->maxPow <<= 16; // 左移16位
+    msg->maxPow =  (*ptr) * 256 + *(ptr+1);  ptr += 2; // 读取低16位功率
+
     msg->minPow = (*ptr) * 256 + *(ptr+1);  ptr += 2;
+    msg->minPow <<= 16; // 左移16位
+    msg->minPow =  (*ptr) * 256 + *(ptr+1);  ptr += 2; // 读取低16位功率
+
     msg->pf =  *(ptr++);// 功率因素
 
     msg->ele =  (*ptr) * 256 + *(ptr+1);  ptr += 2; // 读取电能高8位
@@ -142,7 +152,7 @@ static int rtu_recv_new_data(uchar *ptr, RtuRecvLine *msg)
     unsigned long long cur = msg->cur;
     msg->apPow = vol * cur / 1000.0; // 视在功率
 
-    return 24;   ////============ 加上开关，功率因素之后，是为14
+    return 30;   ////============ 加上开关，功率因素之后，是为14
 }
 
 /**
@@ -184,12 +194,12 @@ static bool rtu_recv_crc(uchar *buf, int len, Rtu_recv *msg)
 static int rtu_recv_thd(uchar *ptr, Rtu_recv *msg)
 {
     msg->lps = *(ptr++); // 防雷开关
-     // 读取负载百分比
+    // 读取负载百分比
     for(int i=0; i<3; ++i) msg->pl[i] = *(ptr++);
 
     ptr+=6;//1.4版本 ，1.3版本需要注释
 
-    msg->hc = *(ptr++);    
+    msg->hc = *(ptr++);
 
     int len = 32;
     if(msg->addr) len = 3;
@@ -203,7 +213,7 @@ static int rtu_recv_thd(uchar *ptr, Rtu_recv *msg)
 
 static int rtu_recv_new_thd(uchar *ptr, Rtu_recv *msg)
 {
-     // 读取负载百分比
+    // 读取负载百分比
     for(int i=0; i<3; ++i) msg->pl[i] = *(ptr++);
     msg->volUnbalance = *(ptr++);
     msg->curUnbalance = *(ptr++);
@@ -265,32 +275,32 @@ bool rtu_recv_packet(uchar *buf, int len, Rtu_recv *pkt)
         for(int i=0; i<lineSum; ++i) // 读取电参数
             ptr += rtu_recv_new_data(ptr, &(pkt->data[i]));
 
-//        if(pkt->dc) { // 交流
-            ptr += rtu_recv_new_thd(ptr, pkt);
-//        } else {
+        //        if(pkt->dc) { // 交流
+        ptr += rtu_recv_new_thd(ptr, pkt);
+        //        } else {
 
-//            ptr++; // 直流此字节没有用
-//             // 读取负载百分比
-//            for(int i=0; i<2; ++i) pkt->pl[i] = *(ptr++);
-//            ptr++; // 此字节没有用，直流只有两路负载百分比
-//            ptr++; // 此字节没有用，直流谐波通道预留位
-//            //----------------------[二分二路直流][显示]----------------------------
-//            if(2 == pkt->rate && 2 == pkt->lineNum ){ //交换2-3数据
-//                RtuRecvLine data;
-//                data = pkt->data[1];
-//                pkt->data[1] = pkt->data[2];
-//                pkt->data[2] = data;
-//                //swap(pkt->data[1], pkt->data[2]);
-//            }
-//            //---------------------------------------------------------------
-//        }
+        //            ptr++; // 直流此字节没有用
+        //             // 读取负载百分比
+        //            for(int i=0; i<2; ++i) pkt->pl[i] = *(ptr++);
+        //            ptr++; // 此字节没有用，直流只有两路负载百分比
+        //            ptr++; // 此字节没有用，直流谐波通道预留位
+        //            //----------------------[二分二路直流][显示]----------------------------
+        //            if(2 == pkt->rate && 2 == pkt->lineNum ){ //交换2-3数据
+        //                RtuRecvLine data;
+        //                data = pkt->data[1];
+        //                pkt->data[1] = pkt->data[2];
+        //                pkt->data[2] = data;
+        //                //swap(pkt->data[1], pkt->data[2]);
+        //            }
+        //            //---------------------------------------------------------------
+        //        }
 
 #if 1
-//        if(pkt->dc) {
-            pkt->crc = (buf[RTU_SENT_LEN+5-1]*256) + buf[RTU_SENT_LEN+5-2]; // 获取校验码RTU_SENT_LEN+5
-//        }else{
-//            pkt->crc = (ptr[1]*256) + ptr[0]; // 获取校验码RTU_SENT_LEN+5
-//        }
+        //        if(pkt->dc) {
+        pkt->crc = (buf[RTU_SENT_LEN_V23+6-1]*256) + buf[RTU_SENT_LEN_V23+6-2]; // RTU_SENT_LEN_V23+5
+        //        }else{
+        //            pkt->crc = (ptr[1]*256) + ptr[0]; // 获取校验码RTU_SENT_LEN+5
+        //        }
         ret = rtu_recv_crc(buf, len, pkt); //校验码
 #else
         ret = true;

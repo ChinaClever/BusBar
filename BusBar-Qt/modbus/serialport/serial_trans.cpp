@@ -9,11 +9,12 @@ Serial_Trans::Serial_Trans(QObject *parent) :
     QThread(parent)
 {
     fd = -1;
+    connect(this , SIGNAL(closeSerialSig()) , this , SLOT(closeSerialSlot()));
 }
 
 Serial_Trans:: ~Serial_Trans()
 {
-    closeSerial();
+    emit closeSerialSig();
 }
 
 /**
@@ -128,7 +129,7 @@ openerr:
   * 出口参数：
   * 返回值：
   */
-void Serial_Trans :: closeSerial()
+void Serial_Trans :: closeSerialSlot()
 {
     if(fd >= 0)
     {

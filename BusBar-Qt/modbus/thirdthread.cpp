@@ -55,8 +55,8 @@ void ThirdThread::run()
         msleep(20);//msleep(1);
         if(256==system(QString("ls /dev/usb/tty1-1.3").toLatin1().data())&&256==system(QString("ls /dev/usb/tty1-1.2").toLatin1().data()))
         {
-            sleep(1);
-            mSerial->closeSerial();
+            sleep(2);
+            emit mSerial->closeSerialSig();
             isOpen = false;
             isRun = false;
             return;
@@ -81,13 +81,13 @@ void ThirdThread::transData()
 {
     uchar *buf = mBuf;
     int rtn = mSerial->recvData(buf, 5); //接收数据-
-//    QByteArray recvarray;
-//    QString recvstrArray;
-//    recvarray.append((char *)buf, rtn);
-//    recvstrArray = recvarray.toHex(); // 十六进制
-//    for(int i=0; i<recvarray.size(); ++i)
-//        recvstrArray.insert(2+3*i, " "); // 插入空格
-//    qDebug()<< "recv:" << recvstrArray;
+    //    QByteArray recvarray;
+    //    QString recvstrArray;
+    //    recvarray.append((char *)buf, rtn);
+    //    recvstrArray = recvarray.toHex(); // 十六进制
+    //    for(int i=0; i<recvarray.size(); ++i)
+    //        recvstrArray.insert(2+3*i, " "); // 插入空格
+    //    qDebug()<< "recv:" << recvstrArray;
     if(rtn > 2 ) {
         if(!validateData(rtn)) return; //解析并验证数据
         uchar id = mThr->addr / 0x20;
@@ -101,13 +101,13 @@ void ThirdThread::transData()
                 box->rtuArray[0] = mThr->addr;
                 setCrc(box->rtuArray, box->rtuLen);
                 mSerial->sendData(box->rtuArray, box->rtuLen);
-//                QByteArray array;
-//                QString strArray;
-//                array.append((char *)box->rtuArray, box->rtuLen);
-//                strArray = array.toHex(); // 十六进制
-//                for(int i=0; i<array.size(); ++i)
-//                    strArray.insert(2+3*i, " "); // 插入空格
-//                qDebug()<< "send:" << strArray;
+                //                QByteArray array;
+                //                QString strArray;
+                //                array.append((char *)box->rtuArray, box->rtuLen);
+                //                strArray = array.toHex(); // 十六进制
+                //                for(int i=0; i<array.size(); ++i)
+                //                    strArray.insert(2+3*i, " "); // 插入空格
+                //                qDebug()<< "send:" << strArray;
             } else {
                 mSerial->sendData(buf, rtn);
             }

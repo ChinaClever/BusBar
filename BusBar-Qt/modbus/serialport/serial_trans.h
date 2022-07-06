@@ -25,7 +25,7 @@ public:
     
     bool openSerial(const QString);
     int getSerialFd(void);
-    void closeSerial();
+
 
     int sendData(uchar *pBuff, int nCount, int msec);
     int sendData(uchar *pBuff, int nCount);
@@ -39,9 +39,11 @@ protected:
 signals:
     void serialReadSig();
     void serialClosed();
+    void closeSerialSig();
 
 protected  slots:
     void readDataSlot();
+    void closeSerialSlot();
 
 private:
     int fd; //串口句柄

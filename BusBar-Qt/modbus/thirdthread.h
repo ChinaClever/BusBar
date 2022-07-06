@@ -6,6 +6,7 @@
 #include "rtu485/rtu_recv.h"
 #include "common.h"
 #include "rtuthread.h"
+#include "net/tcp/server/tcpserver.h"
 
 
 enum {
@@ -42,7 +43,6 @@ protected:
     void transData();
     bool validateData(int rtn);
     void setCrc(uchar *buf, int len);
-    void setting();
     uint calcZeroCur(sBoxData *box);
     uchar rtu_sent_to_input_packet(sBoxData *box);
     uchar rtu_sent_to_output_packet(sBoxData *box);
@@ -57,6 +57,7 @@ private:
     QString serialName1;
     QString serialName2;
     bool isOpen;
+    TcpServer *mTcpServer;
 };
 
 #endif // THIRDTHREAD_H

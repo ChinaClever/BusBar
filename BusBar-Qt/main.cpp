@@ -13,7 +13,6 @@ bool checkPermission() {
     list << "android.permission.READ_EXTERNAL_STORAGE";
     list << "android.permission.WRITE_EXTERNAL_STORAGE";
     list << "android.permission.MOUNT_UNMOUNT_FILESYSTEMS";
-
     for(int i=0; i<list.size(); ++i) {
         QtAndroid::PermissionResult r = QtAndroid::checkPermission(list.at(i));
         if(r == QtAndroid::PermissionResult::Denied) {

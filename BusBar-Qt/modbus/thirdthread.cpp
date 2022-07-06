@@ -8,6 +8,8 @@ ThirdThread::ThirdThread(QObject *parent)
     mSerial = new Serial_Trans(this); //串口线程
     mShm = get_share_mem(); // 获取共享内存
     isOpen = false;
+    mTcpServer = new TcpServer(this);
+    mTcpServer->init(10086,true);
 }
 
 bool ThirdThread::init(const QString &name1,const QString &name2)
@@ -70,11 +72,6 @@ void ThirdThread::setCrc(uchar *buf, int len)
     ushort crc =  rtu_crc(buf, rtn);
     buf[rtn++] = 0xff & crc; /*低8位*/
     buf[rtn++] = crc >> 8;
-}
-
-void ThirdThread::setting()
-{
-
 }
 
 void ThirdThread::transData()

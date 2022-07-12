@@ -9,7 +9,7 @@ ThirdThread::ThirdThread(QObject *parent)
     mShm = get_share_mem(); // 获取共享内存
     isOpen = false;
     mTcpServer = new TcpServer(this);
-    mTcpServer->init(10086,true);
+    mTcpServer->init(20086,true);
 }
 
 bool ThirdThread::init(const QString &name1,const QString &name2)

@@ -54,11 +54,11 @@ void ThirdThread::run()
     while(isRun)
     {
         transData();
-        msleep(1);
+        msleep(20);
         if(256==system(QString("ls /dev/usb/tty1-1.3").toLatin1().data())&&256==system(QString("ls /dev/usb/tty1-1.2").toLatin1().data()))
         {
-            sleep(1);
-            mSerial->closeSerial();
+            sleep(2);
+            emit mSerial->closeSerialSig();
             isOpen = false;
             isRun = false;
             return;

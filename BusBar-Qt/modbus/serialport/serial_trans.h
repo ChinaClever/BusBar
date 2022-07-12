@@ -39,9 +39,11 @@ protected:
 signals:
     void serialReadSig();
     void serialClosed();
+    void closeSerialSig();
 
 protected  slots:
     void readDataSlot();
+    void closeSerialSlot();
 
 private:
     int fd; //串口句柄

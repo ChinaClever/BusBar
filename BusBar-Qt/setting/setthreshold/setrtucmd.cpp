@@ -7,7 +7,7 @@ SetRtuCmd::SetRtuCmd(QObject *parent) : QThread(parent)
 
 }
 
-void SetRtuCmd::sendData(int busID, int addr, ushort reg, ushort len)
+void SetRtuCmd::sendData(int busID, int addr, ushort reg, uint len)
 {
 #if (SI_RTUWIFI == 0)
     if((busID == 0xff) || (addr == 0xff)){

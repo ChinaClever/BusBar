@@ -12,7 +12,7 @@ public:
      void send(sThresholdItem &item);
 
 protected:
-     void sendData(int busID, int addr, ushort reg, ushort len);
+     void sendData(int busID, int addr, ushort reg, uint len);
      void sendReg(int reg, sThresholdItem &item);
      int getReg(sThresholdItem &item);
 

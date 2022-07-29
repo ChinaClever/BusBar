@@ -17,8 +17,7 @@ SetThresholdDlg::~SetThresholdDlg()
 
 void SetThresholdDlg::initSpinBox(sThresholdItem &item)
 {
-    ui->minBox->setValue(item.min);
-    ui->maxBox->setValue(item.max);
+
     int range = 63;
     QString str = "A";
     switch (item.type) {
@@ -27,14 +26,13 @@ void SetThresholdDlg::initSpinBox(sThresholdItem &item)
     case 3: str = "℃"; range = 99;  break;
     case 4:
         {
-            str = "kW"; range = 130;
+            str = "kW"; if(item.box)range = 130; else range = 1500;
+            ui->mindoubleSpinBox->setMaximum(range);
+            ui->maxdoubleSpinBox->setMaximum(range);
             ui->mindoubleSpinBox->setValue(item.min/COM_RATE_POW);
             ui->maxdoubleSpinBox->setValue(item.max/COM_RATE_POW);
             ui->mindoubleSpinBox->setSuffix(str);
             ui->maxdoubleSpinBox->setSuffix(str);
-
-            ui->mindoubleSpinBox->setMaximum(range);
-            ui->maxdoubleSpinBox->setMaximum(range);
         }
         break;
     case 5: str = "Hz"; range = 60; break;
@@ -45,6 +43,8 @@ void SetThresholdDlg::initSpinBox(sThresholdItem &item)
 
     ui->minBox->setMaximum(range);
     ui->maxBox->setMaximum(range);
+    ui->minBox->setValue(item.min);
+    ui->maxBox->setValue(item.max);
 }
 
 void SetThresholdDlg::setTitle(sThresholdItem &item)

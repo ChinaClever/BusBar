@@ -127,15 +127,15 @@ static int rtu_recv_new_data(uchar *ptr, RtuRecvLine *msg)
 
     msg->pow =  (*ptr) * 256 + *(ptr+1);  ptr += 2; // 读取高16位功率
     msg->pow <<= 16; // 左移16位
-    msg->pow =  (*ptr) * 256 + *(ptr+1);  ptr += 2; // 读取低16位功率
+    msg->pow +=  (*ptr) * 256 + *(ptr+1);  ptr += 2; // 读取低16位功率
 
     msg->maxPow = (*ptr) * 256 + *(ptr+1);  ptr += 2;
     msg->maxPow <<= 16; // 左移16位
-    msg->maxPow =  (*ptr) * 256 + *(ptr+1);  ptr += 2; // 读取低16位功率
+    msg->maxPow +=  (*ptr) * 256 + *(ptr+1);  ptr += 2; // 读取低16位功率
 
     msg->minPow = (*ptr) * 256 + *(ptr+1);  ptr += 2;
     msg->minPow <<= 16; // 左移16位
-    msg->minPow =  (*ptr) * 256 + *(ptr+1);  ptr += 2; // 读取低16位功率
+    msg->minPow +=  (*ptr) * 256 + *(ptr+1);  ptr += 2; // 读取低16位功率
 
     msg->pf =  *(ptr++);// 功率因素
 

@@ -325,7 +325,7 @@ void BoxLoopTableWid::setPow(int id, int column)
 {
     QString str = "---";
 
-    double value = mData->pow[id] / COM_RATE_POW;
+    double value = mData->pow.value[id] / COM_RATE_POW;
     if(value >= 0)
         str = QString::number(value, 'f', 3) + "kW";
     setTableItem(id, column, str);

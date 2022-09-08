@@ -83,7 +83,7 @@ void LineRoadWid::updateWid(int id)
     str =  QString::number(mData->cur.max[id]/COM_RATE_CUR,'f',1) + "A";
     ui->maxCur->setText(str);
 
-    str =  QString::number(mData->pow[id]/COM_RATE_POW,'f',3) + "kW";
+    str =  QString::number(mData->pow.value[id]/COM_RATE_POW,'f',3) + "kW";
     ui->powLab->setText(str);
 
     str =  QString::number(mData->pf[id]/COM_RATE_PF, 'f',2);

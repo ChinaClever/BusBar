@@ -62,7 +62,7 @@ void DpTgThread::tgObj(sObjData *obj, sTgObjData *tg)
     for(int i=0; i<LINE_NUM_MAX; ++i)
     {
         tg->cur += obj->cur.value[i];
-        tg->pow += obj->pow[i];
+        tg->pow += obj->pow.value[i];
         tg->ele += obj->ele[i];
         tg->apPow += obj->apPow[i];
     }
@@ -84,7 +84,7 @@ void DpTgThread::lineTgObj(sObjData *obj, sLineTgObjData *tg)
         tg->vol[i] = obj->vol.value[i];
         for(int j=0; j<3; ++j) {
             tg->cur[i] += obj->cur.value[i+j*3];
-            tg->pow[i] += obj->pow[i+j*3];
+            tg->pow[i] += obj->pow.value[i+j*3];
             tg->ele[i] += obj->ele[i+j*3];
           //  tg->apPow[i] += obj->apPow[i+j*3];
               tg->apPow[i] += obj->cur.value[i+j*3] * obj->vol.value[i+j*3]/10;
@@ -108,7 +108,7 @@ void DpTgThread::dcLineTgObj(sObjData *obj, sLineTgObjData *tg, int line, int le
         for(int i = 0 ; i < 2; i++){
             tg->vol[i] = obj->vol.value[i];
             tg->cur[i] = obj->cur.value[i];
-            tg->pow[i] = obj->pow[i];
+            tg->pow[i] = obj->pow.value[i];
             tg->ele[i] = obj->ele[i];
             tg->apPow[i] = obj->apPow[i];
         }
@@ -117,7 +117,7 @@ void DpTgThread::dcLineTgObj(sObjData *obj, sLineTgObjData *tg, int line, int le
             tg->vol[i] = obj->vol.value[i];
             for(int j=0; j<2; ++j) {
                 tg->cur[i] += obj->cur.value[i*2+j];
-                tg->pow[i] += obj->pow[i*2+j];
+                tg->pow[i] += obj->pow.value[i*2+j];
                 tg->ele[i] += obj->ele[i*2+j];
                 tg->apPow[i] += obj->apPow[i*2+j];
             }

@@ -43,6 +43,9 @@ protected:
     bool validateData(int rtn);
     void setCrc(uchar *buf, int len);
     void setting();
+    uint calcZeroCur(sBoxData *box);
+    uchar rtu_sent_to_input_packet(sBoxData *box);
+    uchar rtu_sent_to_output_packet(sBoxData *box);
 
 private:
     Serial_Trans *mSerial;

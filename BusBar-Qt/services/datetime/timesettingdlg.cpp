@@ -7,6 +7,9 @@
 #include <QMessageBox>
 #include <QTextCharFormat>
 #include "msgbox.h"
+#include <QAndroidJniObject>
+#include <QAndroidJniEnvironment>
+#include <QtAndroid>
 
 extern void com_setBackColour(const QString &str,QWidget *target);
 
@@ -34,7 +37,7 @@ TimeSettingDlg::TimeSettingDlg(QWidget *parent) :
 
     connect(ui->monSpin, SIGNAL(valueChanged(int)), this, SLOT(dateSetLimit(int)));
     connect(ui->yearSpin, SIGNAL(valueChanged(int)), this, SLOT(dateSetLimit(int)));
-    connect(ui->timeSet_but, SIGNAL(clicked()), this, SLOT(timeSetup()));
+//    connect(ui->timeSet_but, SIGNAL(clicked()), this, SLOT(timeSetup()));
 
     initEditBtn();
     initKey();
@@ -118,56 +121,86 @@ bool TimeSettingDlg::isLeap(int yN)
  */
 void TimeSettingDlg::timeSetup(void)
 {
-    QDateTime currentTime_old = QDateTime::currentDateTime();
-    int year_old = currentTime_old.date().year();
-    int month_old = currentTime_old.date().month();
-    int day_old = currentTime_old.date().day();
-    int hour_old = currentTime_old.time().hour();
-    int minute_old = currentTime_old.time().minute();
 
-    struct tm setDataTime;
-    time_t timep;
-    struct timeval tv;
 
-    setDataTime.tm_year = ui->yearSpin->value() - 1900;
-    setDataTime.tm_mon = ui->monSpin->value() - 1;
-    setDataTime.tm_mday = ui->daySpin->value();
+//    struct tm setDataTime;
+//    time_t timep;
+//    struct timeval tv;
 
-    setDataTime.tm_hour = ui->hourSpin->value();
-    setDataTime.tm_min = ui->minSpin->value();
-    setDataTime.tm_sec = ui->secSpin->value();
+//    setDataTime.tm_year = ui->yearSpin->value() - 1900;
+//    setDataTime.tm_mon = ui->monSpin->value() - 1;
+//    setDataTime.tm_mday = ui->daySpin->value();
 
-    timep = mktime(&setDataTime);
+//    setDataTime.tm_hour = ui->hourSpin->value();
+//    setDataTime.tm_min = ui->minSpin->value();
+//    setDataTime.tm_sec = ui->secSpin->value();
 
-    tv.tv_sec = timep;
-    tv.tv_usec = 0;
+//    timep = mktime(&setDataTime);
 
-    if (settimeofday(&tv, (struct timezone *)0) < 0)
-        return;
+//    tv.tv_sec = timep;
+//    tv.tv_usec = 0;
 
-    int ret = system("hwclock -w");
-    if(ret >= 0)
+//    if (settimeofday(&tv, (struct timezone *)0) < 0)
+//        return;
+
+//    int ret = system("hwclock -w");
+    QString timeStr;
+    if(ui->monSpin->value() < 10) timeStr += "0"+QString::number(ui->monSpin->value());
+    else timeStr += QString::number(ui->monSpin->value());
+    if(ui->daySpin->value() < 10) timeStr += "0"+QString::number(ui->daySpin->value());
+    else timeStr += QString::number(ui->daySpin->value());
+    if(ui->hourSpin->value() < 10) timeStr += "0"+QString::number(ui->hourSpin->value());
+    else timeStr += QString::number(ui->hourSpin->value());
+    if(ui->minSpin->value() < 10) timeStr += "0"+QString::number(ui->minSpin->value());
+    else timeStr += QString::number(ui->minSpin->value());
+    timeStr +=QString::number(ui->yearSpin->value()) + ".";
+    if(ui->secSpin->value() < 10) timeStr += "0"+QString::number(ui->secSpin->value());
+    else timeStr += QString::number(ui->secSpin->value());
+    qDebug()<<"aaaaaaaaaaaaaaaa        "<<timeStr;
+    QString command = QString("date %1 set\n").arg(timeStr);
+//    int ret = system(command.toLatin1().data());
+
+//    ret = system("busybox hwclock -w\n");
+
+    QAndroidJniObject runtime = QAndroidJniObject::callStaticObjectMethod(
+                "java/lang/Runtime","getRuntime","()Ljava/lang/Runtime;");
+    if(!runtime.isValid())
     {
-        QString str;
-        QDateTime currentTime_new = QDateTime::currentDateTime();
-        int year_new = currentTime_new.date().year();
-        int month_new = currentTime_new.date().month();
-        int day_new = currentTime_new.date().day();
-        int hour_new = currentTime_new.time().hour();
-        int minute_new = currentTime_new.time().minute();
-
-        if (year_old != year_new || month_old != month_new
-                || day_old != day_new || hour_old != hour_new
-                || minute_old != minute_new)  {
-            str = tr("时间设置成功");
-        }  else {
-            str = tr("时间未修改");
-            qDebug() << str;
-        }
-        //        QMessageBox::information(this,tr("信息提示"),str);
-        InfoMsgBox dlg(this,str);
-        ui->timeSet_but->setEnabled(false);
+        qDebug()<<"runtime.noValid()!"<<endl;
+        return;
     }
+    QAndroidJniObject suStr = QAndroidJniObject::fromString("su");
+    QAndroidJniObject process = runtime.callObjectMethod(
+                "exec","(Ljava/lang/String;)Ljava/lang/Process;",suStr.object());
+    if(!process.isValid())
+    {
+        qDebug()<<"process.noValid()!"<<endl;
+        return;
+    }
+    QAndroidJniObject outputStream = process.callObjectMethod(
+                "getOutputStream","()Ljava/io/OutputStream;");
+    if(!outputStream.isValid())
+    {
+        qDebug()<<"outputStream.noValid()!"<<endl;
+        return;
+    }
+    QAndroidJniObject dataOutputStream = QAndroidJniObject(
+                "java/io/DataOutputStream","(Ljava/io/OutputStream;)V",outputStream.object());
+    if(!dataOutputStream.isValid())
+    {
+        qDebug()<<"dataOutputStream.noValid()!"<<endl;
+        return;
+    }
+    QString strStartWatchdog3 = command;
+    QAndroidJniObject str3 = QAndroidJniObject::fromString(strStartWatchdog3);
+    dataOutputStream.callMethod<void>("writeBytes" , "(Ljava/lang/String;)V",str3.object());
+
+    QString strStartWatchdog = QString("busybox hwclock -w\n");
+    QAndroidJniObject str1 = QAndroidJniObject::fromString(strStartWatchdog);
+    dataOutputStream.callMethod<void>("writeBytes" , "(Ljava/lang/String;)V",str1.object());
+    QAndroidJniObject str2 = QAndroidJniObject::fromString("exit\n");
+    dataOutputStream.callMethod<void>("writeBytes" , "(Ljava/lang/String;)V",str2.object());
+    dataOutputStream.callMethod<void>("flush","()V");
 }
 
 
@@ -362,6 +395,53 @@ void TimeSettingDlg::on_quitBtn_clicked()
         int res = msgBox.exec();
         if(res == QMessageBox::Ok)
             this->close();
+    }
+    else
+        this->close();
+}
+
+void TimeSettingDlg::on_timeSet_but_clicked()
+{
+    bool ret = ui->timeSet_but->isEnabled();
+    if(ret)
+    {
+        QDateTime currentTime_old = QDateTime::currentDateTime();
+        int year_old = currentTime_old.date().year();
+        int month_old = currentTime_old.date().month();
+        int day_old = currentTime_old.date().day();
+        int hour_old = currentTime_old.time().hour();
+        int minute_old = currentTime_old.time().minute();
+        timeSetup();
+        QMessageBox msgBox(this);
+        com_setBackColour(tr("信息提示"),&msgBox);
+        msgBox.setText(tr("\n您已修改时间，是否要修改？\n"));
+        msgBox.setStandardButtons (QMessageBox::Ok|QMessageBox::Cancel);
+        msgBox.setButtonText (QMessageBox::Ok,QString("确定"));
+        msgBox.setButtonText (QMessageBox::Cancel,QString("取 消"));
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        int res = msgBox.exec();
+        if(res == QMessageBox::Ok)
+        {
+            QString str;
+            QDateTime currentTime_new = QDateTime::currentDateTime();
+            int year_new = currentTime_new.date().year();
+            int month_new = currentTime_new.date().month();
+            int day_new = currentTime_new.date().day();
+            int hour_new = currentTime_new.time().hour();
+            int minute_new = currentTime_new.time().minute();
+
+            if (year_old != year_new || month_old != month_new
+                    || day_old != day_new || hour_old != hour_new
+                    || minute_old != minute_new)  {
+                str = tr("时间设置成功");
+            }  else {
+                str = tr("时间未修改");
+            }
+            qDebug() << str << "  " <<year_new << "  " <<year_old;
+            //        QMessageBox::information(this,tr("信息提示"),str);
+            InfoMsgBox dlg(this,str);
+            this->close();
+        }
     }
     else
         this->close();

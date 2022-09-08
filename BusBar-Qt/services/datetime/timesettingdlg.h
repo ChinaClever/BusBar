@@ -23,17 +23,20 @@ protected:
     void initBackground(void);
     void initEditBtn(void);
     void initKey(void);
+    void timeSetup(void);
 
 protected slots:
     void editBtnPress(int);
     void keyPress(int value);
     void dateSetLimit(int);
-    void timeSetup(void);
+
 
 private slots:
     void on_btn_enter_clicked();
 
     void on_quitBtn_clicked();
+
+    void on_timeSet_but_clicked();
 
 private:
     Ui::TimeSettingDlg *ui;

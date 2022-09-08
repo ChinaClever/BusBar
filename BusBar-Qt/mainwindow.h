@@ -34,6 +34,7 @@ protected:
     void setButtonClickedImage(QToolButton *button, QString name);
     void updateTime();
     void startPage();
+    void seedWatchdog();
 
 protected slots:
     void initFunSLot();

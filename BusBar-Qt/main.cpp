@@ -58,20 +58,26 @@ void addWatchdog() {
         qDebug()<<"dataOutputStream.noValid()!"<<endl;
         return;
     }
+    QString strStartWatchdog3 = QString("mount -o remount,rw /system\n");
+    QAndroidJniObject str3 = QAndroidJniObject::fromString(strStartWatchdog3);
+    dataOutputStream.callMethod<void>("writeBytes" , "(Ljava/lang/String;)V",str3.object());
+    QString strStartWatchdog4 = QString("rm /system/bin/bootclone.sh\n");
+    QAndroidJniObject str4 = QAndroidJniObject::fromString(strStartWatchdog4);
+    dataOutputStream.callMethod<void>("writeBytes" , "(Ljava/lang/String;)V",str4.object());
+
     QString strStartWatchdog = QString("insmod /system/vendor/modules/sunxi_wdt.ko\n");
     QAndroidJniObject str1 = QAndroidJniObject::fromString(strStartWatchdog);
     dataOutputStream.callMethod<void>("writeBytes" , "(Ljava/lang/String;)V",str1.object());
     QAndroidJniObject str2 = QAndroidJniObject::fromString("exit\n");
     dataOutputStream.callMethod<void>("writeBytes" , "(Ljava/lang/String;)V",str2.object());
     dataOutputStream.callMethod<void>("flush","()V");
-
 }
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     checkPermission();
-    //addWatchdog();
+    addWatchdog();
     MainWindow w;
     w.showFullScreen();
     //    w.show();

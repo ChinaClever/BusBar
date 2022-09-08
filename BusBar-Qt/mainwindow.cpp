@@ -10,6 +10,10 @@
 
 #include "modbus/thirdthread.h"
 
+#include <QAndroidJniObject>
+#include <QAndroidJniEnvironment>
+#include <QtAndroid>
+
 RtuThread *rtu[4] = {NULL, NULL, NULL, NULL};
 ThirdThread *thr = NULL;
 extern int get_alarm_len();
@@ -72,8 +76,49 @@ void MainWindow::updateTime()
     ui->timeBtn->setText(time);
 }
 
+void MainWindow::seedWatchdog() {
+//    QAndroidJniObject runtime = QAndroidJniObject::callStaticObjectMethod(
+//                "java/lang/Runtime","getRuntime","()Ljava/lang/Runtime;");
+//    if(!runtime.isValid())
+//    {
+//        qDebug()<<"runtime.noValid()!"<<endl;
+//        return;
+//    }
+//    QAndroidJniObject suStr = QAndroidJniObject::fromString("su");
+//    QAndroidJniObject process = runtime.callObjectMethod(
+//                "exec","(Ljava/lang/String;)Ljava/lang/Process;",suStr.object());
+//    if(!process.isValid())
+//    {
+//        qDebug()<<"process.noValid()!"<<endl;
+//        return;
+//    }
+//    QAndroidJniObject outputStream = process.callObjectMethod(
+//                "getOutputStream","()Ljava/io/OutputStream;");
+//    if(!outputStream.isValid())
+//    {
+//        qDebug()<<"outputStream.noValid()!"<<endl;
+//        return;
+//    }
+//    QAndroidJniObject dataOutputStream = QAndroidJniObject(
+//                "java/io/DataOutputStream","(Ljava/io/OutputStream;)V",outputStream.object());
+//    if(!dataOutputStream.isValid())
+//    {
+//        qDebug()<<"dataOutputStream.noValid()!"<<endl;
+//        return;
+//    }
+//    QString strStartWatchdog = QString("echo 1 > /dev/watchdog\n");
+//    QAndroidJniObject str1 = QAndroidJniObject::fromString(strStartWatchdog);
+//    dataOutputStream.callMethod<void>("writeBytes" , "(Ljava/lang/String;)V",str1.object());
+//    QAndroidJniObject str2 = QAndroidJniObject::fromString("exit\n");
+//    dataOutputStream.callMethod<void>("writeBytes" , "(Ljava/lang/String;)V",str2.object());
+//    dataOutputStream.callMethod<void>("flush","()V");
+    system(QString("echo 1 > /dev/watchdog\n").toLatin1().data());
+
+}
+
 void MainWindow::timeoutDone()
 {   
+    seedWatchdog();
     updateTime();
     checkAlarm();
     setBusName(mIndex);

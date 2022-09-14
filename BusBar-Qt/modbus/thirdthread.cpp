@@ -89,19 +89,20 @@ void ThirdThread::transData()
         //        sBoxData *box = &(mShm->data[id].box[addr]); //共享内存
         if(addr-1 < 0) return;//上海创建
         sBoxData *box = &(mShm->data[id].box[addr-1]);
-        //if(box->offLine < 1) return;
+        if(box->offLine < 1) return;
 
         if(mThr->fn == Fn_Get){ //获取数据 _ [未加长度位0时该回复数据]
             if(box->rtuLen > 0) {
-                box->rtuArray[0] = mThr->addr;//
-                setCrc(box->rtuArray, box->rtuLen);//
-                mSerial->sendData(box->rtuArray, box->rtuLen);
+                //                box->rtuArray[0] = mThr->addr;//
+                //                setCrc(box->rtuArray, box->rtuLen);//
+                //                mSerial->sendData(box->rtuArray, box->rtuLen);
 
                 int rtn = 0;//上海创建
                 if(addr == 1)
                     rtn = rtu_sent_to_input_packet(box);
                 else if(addr > 1)
                     rtn = rtu_sent_to_output_packet(box);
+                qDebug()<<rtn<<"       "<<mThr->data*2<<endl;
                 if(mThr->data*2 == rtn)
                     mSerial->sendData(box->rtuArray, rtn+5);
 
@@ -207,8 +208,8 @@ uchar ThirdThread::rtu_sent_to_input_packet(sBoxData *box)
     /*填入输入有功功率*/
     for(int i = 0 ; i < 3 ; i++)
     {
-        *(ptr++) = ((box->data.pow.value[i]) >> 8); /*高8位*/
-        *(ptr++) = (0xff)&(box->data.pow.value[i]); /*低8位*/
+        *(ptr++) = ((box->data.pow[i]) >> 8); /*高8位*/
+        *(ptr++) = (0xff)&(box->data.pow[i]); /*低8位*/
     }//6//26
 
     /*填入输入视在功率*/
@@ -276,8 +277,8 @@ uchar ThirdThread::rtu_sent_to_output_packet(sBoxData *box)
     for(int i = 0 ; i < 3 ; i++)
     {
         if(box->loopNum==3){
-            *(ptr++) = ((box->data.pow.value[i]) >> 8); /*高8位*/
-            *(ptr++) = (0xff)&(box->data.pow.value[i]); /*低8位*/
+            *(ptr++) = ((box->data.pow[i]) >> 8); /*高8位*/
+            *(ptr++) = (0xff)&(box->data.pow[i]); /*低8位*/
         }else{
             *(ptr++) = ((box->lineTgBox.pow[i]) >> 8); /*高8位*/
             *(ptr++) = (0xff)&(box->lineTgBox.pow[i]); /*低8位*/

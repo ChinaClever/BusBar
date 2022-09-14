@@ -115,7 +115,7 @@ int RtuThread::transmit(int addr, ushort reg, ushort len)
 }
 
 int RtuThread::sendData(int addr, ushort reg, ushort len, bool value)
-{
+{   
     if(addr == 0xff){
         uchar *buf = mBuf;
         int rtn = rtu_sent_buff(addr, reg, len, buf); // 把数据打包成通讯格式的数据
@@ -125,8 +125,7 @@ int RtuThread::sendData(int addr, ushort reg, ushort len, bool value)
         if((box->offLine > 0) || value){ //在线
             //打包数据
             uchar *buf = mBuf;
-//            int rtn = rtu_sent_buff(addr, reg, len, buf); // 把数据打包成通讯格式的数据
-            int rtn = rtu_sent_buff(addr+1, reg, len, buf); // 把数据打包成通讯格式的数据
+            int rtn = rtu_sent_buff(addr, reg, len, buf); // 把数据打包成通讯格式的数据
             return mSerial->sendData(buf, rtn, 250); //发送 -- 并占用串口250ms 以前800ms
         }
     }
@@ -153,16 +152,14 @@ void RtuThread::loopObjData(sObjData *loop, int id, RtuRecvLine *data)
     loop->cur.crMin[id] = loop->cur.min[id] = data->minCur;
     loop->cur.crMax[id] = loop->cur.max[id] = data->maxCur;
 
-    loop->pow.value[id] = data->pow;
-//    loop->pow.crMin[id] = loop->pow.min[id] = data->minPow;
-//    loop->pow.crMax[id] = loop->pow.max[id] = data->maxPow;
+    loop->pow[id] = data->pow;
     loop->ele[id] = data->ele;
     loop->pf[id] = data->pf;
     loop->sw[id] = data->sw;
     loop->apPow[id] = data->apPow;
     //    loop->ratedCur[id] = data->curAlarm; ////
 
-    //loop->wave[id] = data->wave;
+    loop->wave[id] = data->wave;
 }
 
 void RtuThread::loopData(sBoxData *box, Rtu_recv *pkt)
@@ -191,14 +188,14 @@ void RtuThread::envData(sEnvData *env, Rtu_recv *pkt)
 
 void RtuThread::thdData(Rtu_recv *pkt)
 {
-    sBoxData *box = &(mBusData->box[pkt->addr-1]);
+    sBoxData *box = &(mBusData->box[pkt->addr]);
 
     box->lps = pkt->lps;
     for(int i=0; i<3; ++i) {
         box->data.pl[i] = pkt->pl[i];
     }
 
-    if(pkt->addr == 1) {
+    if(pkt->addr == 0) {
         int line = pkt->hc % 3;
         ushort *thd = mBusData->thdData.curThd[line];
         if(pkt->hc < 3) thd = mBusData->thdData.volThd[line];
@@ -226,7 +223,7 @@ int RtuThread::transData(int addr)
     Rtu_recv *pkt = mRtuPkt; //数据包
     sBoxData *box = &(mBusData->box[addr]); //共享内存
 
-    int rtn = rtu_sent_buff(addr+1,buf); // 把数据打包成通讯格式的数据
+    int rtn = rtu_sent_buff(addr,buf); // 把数据打包成通讯格式的数据
     #if (SI_RTUWIFI==1)
     rtn = mSerial->transmit_p(buf, rtn, buf); // 传输数据，发送同时接收
     static int preaddr = -1;
@@ -243,7 +240,6 @@ int RtuThread::transData(int addr)
         return -1;
     }
     #elif(SI_RTUWIFI==0)
-
     rtn = mSerial->transmit(buf, rtn, buf); // 传输数据，发送同时接收
     #endif
 
@@ -253,18 +249,16 @@ int RtuThread::transData(int addr)
 //    strArray = array.toHex(); // 十六进制
 //    for(int i=0; i<array.size(); ++i)
 //        strArray.insert(2+3*i, " "); // 插入空格
-//    qDebug()<< "rtn  "<<rtn<<"  recv:" << strArray;
+//    qDebug()<< "recv:" << strArray;
 
     if(rtn > 0) {
         bool ret = rtu_recv_packet(buf, rtn, pkt); // 解析数据 data - len - it
         if(ret) {
-            if(addr+1 == pkt->addr) { //回收地址和发送地址同
+            if(addr == pkt->addr) { //回收地址和发送地址同
                 offLine = 4;
                 loopData(box, pkt); //更新数据
                 envData(&(box->env), pkt);
                 box->rate = pkt->rate;
-//                box->minRate = pkt->minRate;
-//                box->maxRate = pkt->maxRate;
                 box->dc = pkt->dc;
                 box->version = pkt->version;
 
@@ -272,7 +266,7 @@ int RtuThread::transData(int addr)
             }
 
             box->rtuLen = rtn;
-            for(int i = 0; i < box->rtuLen; i++){
+            for(int i = 0; i < rtn; i++){
                 box->rtuArray[i] = buf[i];
             }
 
@@ -280,6 +274,7 @@ int RtuThread::transData(int addr)
             box->rtuLen = 0;  //数据出错清零
         }
     }
+
     if(offLine) {
         box->offLine = offLine; //在线
     } else {
@@ -371,11 +366,11 @@ void RtuThread::BusTransData()
     for(int i=0; i<=mBusData->boxNum; ++i)
     {
         if(transData(i) == 0 ) {
-            msleep(900);//900
+            msleep(900);
             transData(i);
         }
 #if( SI_RTUWIFI == 0)
-        msleep(750);//750
+        msleep(750);
 #endif
 #if( SI_RTUWIFI == 1)
         msleep(900);

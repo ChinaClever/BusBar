@@ -345,7 +345,7 @@ void init_dataLoop(_devDataObj *ptr, sObjData *obj)
     init_Unit(&(ptr->cur), &(obj->cur));
 
     ptr->sw    = obj->sw;   //开关状态
-    ptr->pow   = obj->pow.value;  // 功率
+    ptr->pow   = obj->pow;  // 功率
     ptr->ele   = obj->ele;  // 电能
     ptr->pf    = obj->pf;   //功率因素
     ptr->apPow = obj->apPow; //视在功率

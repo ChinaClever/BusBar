@@ -73,7 +73,7 @@ typedef struct _sObjData {
     sDataUnit vol; // 电压
     sDataUnit cur;  // 电流
 
-    sDataUnit pow; // 功率
+    uint pow[LINE_NUM_MAX]; // 功率
     uint ele[LINE_NUM_MAX]; // 电能
     ushort pf[LINE_NUM_MAX]; // 功率因素
     uchar sw[LINE_NUM_MAX]; // 开关状态

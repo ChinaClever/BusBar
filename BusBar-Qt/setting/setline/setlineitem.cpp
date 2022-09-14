@@ -67,7 +67,7 @@ void SetLineItem::setProgressbarValue(QProgressBar *bar, sDataUnit *data, int in
 
     int cirAlarm = data->crAlarm[index];
     int alarm = data->alarm[index];
-    if(alarm >= 1)
+    if(alarm == 1)
         setProcessBarColor(bar,"red"); //告警
     else if(cirAlarm == 1)
         setProcessBarColor(bar,"yellow"); //预警

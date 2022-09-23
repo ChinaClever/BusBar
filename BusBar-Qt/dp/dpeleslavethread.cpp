@@ -82,8 +82,10 @@ void DpEleSlaveThread::run()
     {
         isRun  = true;
 
-        for(int i=0; i<BUS_NUM; ++i)
+        for(int i=0; i<BUS_NUM; ++i){
             saveBus(i);
+            msleep(800);//////延时进行下一个事务
+        }
 
         isRun  = false;
     }

@@ -47,7 +47,7 @@ void DpEleSlaveThread::saveBox(int bus, sBoxData  &box)
     item.loop = box.tgBox.ele/rate;
 
     db_branchEle_obj(bus)->insertItem(item);
-    //msleep(50);
+    msleep(50);
 }
 
 
@@ -81,8 +81,10 @@ void DpEleSlaveThread::run()
     {
         isRun  = true;
 
-        for(int i=0; i<BUS_NUM; ++i)
+        for(int i=0; i<BUS_NUM; ++i){
             saveBus(i);
+            msleep(800);/////下一个事务延时
+        }
 
         isRun  = false;
     }

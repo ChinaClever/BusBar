@@ -26,7 +26,6 @@ MainWindow::MainWindow(QWidget *parent) :
     mInitShm = new InitShm(this); //线程
     mInitShm->start(); //初始化共享内存 -- 单线程运行一次
 
-
     mIndex = 0;
     initWidget();
     updateTime();

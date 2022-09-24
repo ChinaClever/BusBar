@@ -5,7 +5,7 @@
 BeepThread::BeepThread(QObject *parent) : QThread(parent)
 {
     isRun = false ;
-    gpio_init();
+//    gpio_init();
 
 #if ARM_LINUX == 2 //第一次运行时要执行
     system("echo 129 > /sys/class/gpio/export");
@@ -23,14 +23,14 @@ BeepThread *BeepThread::bulid()
 
 void BeepThread::beep()
 {
-    mSec = 100;
-    start();
+//    mSec = 100;
+//    start();
 }
 
 void BeepThread::longBeep()
 {
-    mSec = 650;
-    start();
+//    mSec = 650;
+//    start();
 }
 
 void BeepThread::run()

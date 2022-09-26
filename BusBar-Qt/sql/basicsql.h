@@ -15,7 +15,12 @@ struct DbBasicItem{
     int id;
     QString date, time;
 };
-
+class DB_Tran
+{
+    public:
+    DB_Tran() {QSqlDatabase::database().transaction();}
+    ~DB_Tran() {QSqlDatabase::database().commit();}
+};
 class BasicSql : public QObject
 {
     Q_OBJECT

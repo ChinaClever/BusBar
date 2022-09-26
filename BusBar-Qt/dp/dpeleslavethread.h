@@ -11,12 +11,6 @@ class DpEleSlaveThread : public QThread
 public:
     explicit DpEleSlaveThread(QObject *parent = 0);
     ~DpEleSlaveThread();
-    class DB_Tran
-    {
-        public:
-        DB_Tran() {QSqlDatabase::database().transaction();}
-        ~DB_Tran() {QSqlDatabase::database().commit();}
-    };
 signals:
 
 protected:

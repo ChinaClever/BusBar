@@ -72,6 +72,7 @@ void DpAlarmSlave::timeoutDone()
 
 void DpAlarmSlave::saveMsg(const QString &typeStr, const QString &str)
 {
+    DB_Tran tran;
     DbAlarmItem item;
     item.type = typeStr;
     item.msg = str;

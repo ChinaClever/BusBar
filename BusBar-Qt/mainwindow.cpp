@@ -117,7 +117,7 @@ void MainWindow::seedWatchdog() {
 
 void MainWindow::timeoutDone()
 {   
-    seedWatchdog();
+    //seedWatchdog();
     updateTime();
     checkAlarm();
     setBusName(mIndex);

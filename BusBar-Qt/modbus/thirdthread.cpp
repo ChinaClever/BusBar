@@ -48,11 +48,13 @@ void ThirdThread::timeoutDone()
 
 void ThirdThread::run()
 {
+    uint cnt = 0;
     isRun = true;
     while(isRun)
     {
         transData();
         msleep(20);//msleep(1);
+        if(cnt++ % 100) continue;
         if(256==system(QString("ls /dev/usb/tty1-1.3").toLatin1().data())&&256==system(QString("ls /dev/usb/tty1-1.2").toLatin1().data()))
         {
             sleep(2);

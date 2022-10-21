@@ -55,7 +55,7 @@ void ThirdThread::run()
     {
         transData();
         msleep(20);
-        if(256==system(QString("ls /dev/usb/tty1-1.3").toLatin1().data())&&256==system(QString("ls /dev/usb/tty1-1.2").toLatin1().data()))
+        if(!QFile::exists("/dev/usb/tty1-1.3")&&!QFile::exists("/dev/usb/tty1-1.2"))
         {
             sleep(2);
             emit mSerial->closeSerialSig();

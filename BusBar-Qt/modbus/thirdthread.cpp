@@ -48,14 +48,14 @@ void ThirdThread::timeoutDone()
 
 void ThirdThread::run()
 {
-    uint cnt = 0;
+    //uint cnt = 0;
     isRun = true;
     while(isRun)
     {
         transData();
-        msleep(20); cnt++; //msleep(1);
+        msleep(20); //cnt++; //msleep(1);
         //if((cnt > 50 *60 *60 *48) && (cnt % 100)) continue;
-        if(QFile::exists("/dev/usb/tty1-1.3")&&QFile::exists("/dev/usb/tty1-1.2"))
+        if(!QFile::exists("/dev/usb/tty1-1.3")&&!QFile::exists("/dev/usb/tty1-1.2"))
         {
             sleep(2);
             emit mSerial->closeSerialSig();

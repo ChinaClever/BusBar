@@ -10,8 +10,6 @@
 
 #include "modbus/thirdthread.h"
 #include <QTextEdit>
-#include <QSplashScreen>
-#include <QtTest>
 //#define MODBUSTCPPORT 11283
 #define MODBUSTCPPORT 502
 
@@ -43,26 +41,6 @@ MainWindow::~MainWindow()
 {
     delete ui;
     share_mem_del();
-}
-
-void MainWindow::startPage()
-{
-    QSplashScreen *splash = new QSplashScreen;
-    splash->setPixmap(QPixmap(":/new/prefix1/image/startpage.jpg"));
-    splash->show();
-    Qt::Alignment topRight = Qt::AlignRight | Qt::AlignTop;
-    splash->showMessage(QObject::tr("Setting up the main Window..."),
-                        topRight,
-                        Qt::red);
-    QTest::qSleep(3000);
-    QTextEdit *textEdit = new QTextEdit;
-    splash->showMessage(QObject::tr("Loading modules..."),
-                        topRight,
-                        Qt::blue);
-    QTest::qSleep(3000);
-    textEdit->show();
-    splash->finish(textEdit);
-    delete splash;
 }
 
 /**
@@ -103,15 +81,29 @@ void MainWindow::seedWatchdog()
 }
 
 void MainWindow::timeoutDone()
-{   
-    static uint cnt = 0;
-    if(cnt++ % 2 == 1){ seedWatchdog();cnt = 0;}
+{
     updateTime();
     checkAlarm();
     setBusName(mIndex);
 
     for(int i=0; i<BUS_NUM; ++i)
         updateBusName(i);
+}
+
+void MainWindow::watchdogDone()
+{
+    seedWatchdog();
+}
+
+void MainWindow::clearCache()
+{
+    system(QString("sync\n").toLatin1().data());
+    system(QString("echo 3 > /proc/sys/vm/drop_caches\n").toLatin1().data());
+}
+
+void MainWindow::clearCacheDone()
+{
+    clearCache();
 }
 
 void MainWindow::updateBusName(int index)
@@ -160,6 +152,14 @@ void MainWindow::initFunSLot()
     timer = new QTimer(this);
     timer->start(1000);
     connect(timer, SIGNAL(timeout()),this, SLOT(timeoutDone()));
+
+    mWatchdogtimer = new QTimer(this);
+    mWatchdogtimer->start(1000);
+    connect(mWatchdogtimer, SIGNAL(timeout()),this, SLOT(watchdogDone()));
+
+    mClearCachetimer = new QTimer(this);
+    mClearCachetimer->start(2*24*60*60*1000-5*60*1000);
+    connect(mClearCachetimer, SIGNAL(timeout()),this, SLOT(clearCacheDone()));
 
     mCheckDlg = new CheckPasswordDlg(this);
     connect(mCheckDlg,SIGNAL(dialogClosed(bool)),this,SLOT(dialogClosed(bool)));
@@ -294,7 +294,7 @@ void MainWindow::dialogClosed(bool ret)
 void MainWindow::on_timeBtn_clicked()
 {
 #if 0
-//    BeepThread::bulid()->beep();
+    //    BeepThread::bulid()->beep();
     TimeSettingDlg dlg(this);
     dlg.exec();
 #endif

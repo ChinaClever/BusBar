@@ -33,13 +33,15 @@ protected:
     void setButtonImage(QToolButton *button, QString name);
     void setButtonClickedImage(QToolButton *button, QString name);
     void updateTime();
-    void startPage();
     void seedWatchdog();
+    void clearCache();
 
 protected slots:
     void initFunSLot();
     void timeoutDone();
     void dialogClosed(bool ret);
+    void watchdogDone();
+    void clearCacheDone();
 
 private slots:
     void on_homeBtn_clicked();
@@ -62,6 +64,8 @@ private:
     Ui::MainWindow *ui;
     InitShm *mInitShm;
     QTimer *timer;
+    QTimer *mWatchdogtimer;
+    QTimer *mClearCachetimer;
 
     int mIndex;
     HomeWid *mHomeWid;

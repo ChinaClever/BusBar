@@ -75,20 +75,35 @@ void MainWindow::updateTime()
     ui->timeBtn->setText(time);
 }
 
-void MainWindow::seedWatchdog() {
+void MainWindow::seedWatchdog()
+{
     system(QString("echo 1 > /dev/watchdog\n").toLatin1().data());
 }
 
 void MainWindow::timeoutDone()
 {
-    static uint cnt = 0;
-    if(cnt++ % 2 == 1){ seedWatchdog();cnt = 0;}
     updateTime();
     checkAlarm();
     setBusName(mIndex);
 
     for(int i=0; i<BUS_NUM; ++i)
         updateBusName(i);
+}
+
+void MainWindow::watchdogDone()
+{
+    seedWatchdog();
+}
+
+void MainWindow::clearCache()
+{
+    system(QString("sync\n").toLatin1().data());
+    system(QString("echo 3 > /proc/sys/vm/drop_caches\n").toLatin1().data());
+}
+
+void MainWindow::clearCacheDone()
+{
+    clearCache();
 }
 
 void MainWindow::updateBusName(int index)
@@ -136,6 +151,14 @@ void MainWindow::initFunSLot()
     timer = new QTimer(this);
     timer->start(1000);
     connect(timer, SIGNAL(timeout()),this, SLOT(timeoutDone()));
+
+    mWatchdogtimer = new QTimer(this);
+    mWatchdogtimer->start(1000);
+    connect(mWatchdogtimer, SIGNAL(timeout()),this, SLOT(watchdogDone()));
+
+    mClearCachetimer = new QTimer(this);
+    mClearCachetimer->start(2*24*60*60*1000-5*60*1000);
+    connect(mClearCachetimer, SIGNAL(timeout()),this, SLOT(clearCacheDone()));
 
     mCheckDlg = new CheckPasswordDlg(this);
     connect(mCheckDlg,SIGNAL(dialogClosed(bool)),this,SLOT(dialogClosed(bool)));

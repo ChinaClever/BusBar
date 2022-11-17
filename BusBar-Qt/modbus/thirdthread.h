@@ -6,7 +6,7 @@
 #include "rtu485/rtu_recv.h"
 #include "common.h"
 #include "rtuthread.h"
-#include "net/tcp/server/tcpserver.h"
+//#include "net/tcp/server/tcpserver.h"
 
 
 enum {
@@ -57,7 +57,7 @@ private:
     QString serialName1;
     QString serialName2;
     bool isOpen;
-    TcpServer *mTcpServer;
+//    TcpServer *mTcpServer;
 };
 
 #endif // THIRDTHREAD_H

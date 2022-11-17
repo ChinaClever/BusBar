@@ -16,6 +16,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = busbar
 TEMPLATE = app
+CONFIG   += C++11
 
 
 
@@ -50,12 +51,14 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     currentalarmsdlg.cpp \
-    interfacechangesig.cpp
+    interfacechangesig.cpp \
+    watchdogthread.cpp
 
 HEADERS += \
         mainwindow.h \
     currentalarmsdlg.h \
-    interfacechangesig.h
+    interfacechangesig.h \
+    watchdogthread.h
 
 
 FORMS += \

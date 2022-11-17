@@ -7,9 +7,9 @@ ThirdThread::ThirdThread(QObject *parent)
     mBuf = (uchar *)malloc(RTU_BUF_SIZE); //申请内存  -- 随便用
     mSerial = new Serial_Trans(this); //串口线程
     mShm = get_share_mem(); // 获取共享内存
-    isOpen = false;
-    mTcpServer = new TcpServer(this);
-    mTcpServer->init(20086,true);
+//    isOpen = false;
+//    mTcpServer = new TcpServer(this);
+//    mTcpServer->init(20086,true);
 }
 
 bool ThirdThread::init(const QString &name1,const QString &name2)

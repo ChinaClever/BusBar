@@ -25,7 +25,10 @@ HEADERS += \
     $$PWD/send/devDataSent.h \
     $$PWD/save/pduhashdevdatasave.h \
     $$PWD/network.h \
-    $$PWD/send/devsetthread.h
+    $$PWD/send/devsetthread.h    \
+    $$PWD/tcp/server/mysocket.h   \
+    $$PWD/tcp/server/serverthread.h   \
+    $$PWD/tcp/server/server.h
 	
 SOURCES += \
     $$PWD/udp/recv/udprecvsocket.cpp \
@@ -44,7 +47,10 @@ SOURCES += \
     $$PWD/send/devDataSent.cpp \
     $$PWD/save/pduhashdevdatasave.cpp \
     $$PWD/network.cpp \
-    $$PWD/send/devsetthread.cpp
+    $$PWD/send/devsetthread.cpp     \
+    $$PWD/tcp/server/mysocket.cpp  \
+    $$PWD/tcp/server/serverthread.cpp  \
+    $$PWD/tcp/server/server.cpp
 
 
 	

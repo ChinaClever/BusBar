@@ -18,7 +18,7 @@ struct ThrNetData {
     ushort data; // get表示数据字节数_set表示设置数据
     ushort crc; // 检验码
 };
-
+typedef QPair<QString,int> TcpConnect;
 class TcpServer : public QObject
 {
     Q_OBJECT
@@ -26,11 +26,7 @@ public:
     explicit TcpServer(QObject *parent = nullptr);
 
     void init(int port, bool isVerify=true);
-    bool isConnect();
-
-    void sendData(char *data);
-    void sendData(uchar *data, int len);
-    void sendData(const QByteArray &data);
+//    bool isConnect();
 
     int readData(QString &ip, char *data);
 
@@ -38,7 +34,7 @@ signals:
 
 protected:
     void landVerify(QTcpSocket *socket);
-    void transData(uchar *buf, int len);
+    void transData(QTcpSocket* socket ,uchar *buf, int len);
     bool validateData(int rtn);
     void setCrc(uchar *buf, int len);
     uint calcZeroCur(sBoxData *box);
@@ -53,14 +49,13 @@ private slots:
 
 private:
     QTcpServer *m_tcpServer;
-    QMap<QString, QTcpSocket *> m_mapClient;
-    QString mIP;
+    QMap<TcpConnect, QTcpSocket *> m_mapClient;
     bool mIsConnect, mIsVerify;
     bool isRun;
     uchar *mBuf;
+//    uchar *mSendBuf;
     ThrNetData *mThr;
     sDataPacket *mShm;
-    sBoxData *mBox;
 };
 
 #endif // TCPSERVER_H

@@ -10,7 +10,7 @@ TcpServer::TcpServer(QObject *parent) : QObject(parent)
     connect(m_tcpServer,SIGNAL(newConnection()),this,SLOT(newConnectSlot()));
     mThr = new ThrNetData;
     mBuf = (uchar *)malloc(RTU_BUF_SIZE); //申请内存  -- 随便用
-    //    mSerial = new Serial_Trans(this); //串口线程
+//    mSendBuf = (uchar *)malloc(RTU_BUF_SIZE);
     mShm = get_share_mem(); // 获取共享内存
 }
 
@@ -22,51 +22,30 @@ void TcpServer::init(int port, bool isVerify)
         qDebug() << "listen error!";
     }
     mIsVerify = isVerify;
-    mBox = nullptr;
 }
 
 void TcpServer::newConnectSlot()
 {
     QTcpSocket *tcp = m_tcpServer->nextPendingConnection();
-    qDebug() <<"newConnectSlot"<<endl;
+//    qDebug() <<"newConnectSlot"<<endl;
     if(mIsVerify) {
         connect(tcp,SIGNAL(readyRead()),this,SLOT(readMessage()));
         mIsConnect = false;
     } else {
         mIsConnect = true;
     }
-    m_mapClient.insert(tcp->peerAddress().toString(), tcp);
+    m_mapClient.insert(TcpConnect(tcp->peerAddress().toString() , tcp->peerPort()), tcp);
+//    qDebug()<<m_mapClient.size() << "        "<<tcp->peerPort();
     connect(tcp,SIGNAL(disconnected()),this,SLOT(removeUserFormList()));
-    mIP = tcp->peerAddress().toString();
-
-    //    m_pMsgHandler->devOnline(tcp->peerAddress().toString());
 }
 
-bool TcpServer::isConnect()
-{
-    bool ret = false;
-    if(m_mapClient.contains(mIP))
-        ret = mIsConnect;
-    return ret;
-}
-
-void TcpServer::sendData(char *data)
-{
-    if(isConnect())
-        m_mapClient.value(mIP)->write(QByteArray(data));
-}
-
-void TcpServer::sendData(uchar *data, int len)
-{
-    if(isConnect())
-        m_mapClient.value(mIP)->write((char *)data, len);
-}
-
-void TcpServer::sendData(const QByteArray &data)
-{
-    if(isConnect())
-        m_mapClient.value(mIP)->write(data);
-}
+//bool TcpServer::isConnect()
+//{
+//    bool ret = false;
+//    if(m_mapClient.contains(mIP))
+//        ret = mIsConnect;
+//    return ret;
+//}
 
 int TcpServer::readData(QString &ip, char *data)
 {
@@ -85,46 +64,48 @@ int TcpServer::readData(QString &ip, char *data)
  */
 void TcpServer::landVerify(QTcpSocket *socket)
 {
-    qDebug() <<socket->peerAddress().toString()<<m_mapClient.value(socket->peerAddress().toString());
+//    if(socket){
+//    qDebug() <<socket->peerAddress().toString()<<socket;
+//    }
 
     uchar *inbuf = mBuf;
-    mBox = nullptr;
-    QByteArray by = socket->readAll();
+    QByteArray by;
+    if(socket){
+        by = socket->readAll();
+    }
     memset(mBuf , 0 , sizeof(mBuf));
     //QByteArray by = QByteArray::fromHex(byte);
     int rtn = 0;
     for(int i = 0 ; i < by.length() ; i++){
         mBuf[rtn++] = by.at(i);
     }
-    transData(inbuf , rtn);
-    if(mBox != nullptr){
-        int n = socket->write((char*)mBox->rtuArray, mBox->rtuLen);
-        socket->flush();
+    if(socket){
+        transData(socket , inbuf , rtn);
     }
+
     mIsConnect = true;
 }
 
 void TcpServer::readMessage()
 {
     QTcpSocket *socket = static_cast<QTcpSocket*>(sender());
-    landVerify(socket);
+    if(socket){
+        landVerify(socket);
+    }
 
     //disconnect(socket,SIGNAL(readyRead()),this,SLOT(readMessage()));
-    //    m_pMsgHandler->recvFromServer(socket->peerAddress().toString(), QString(socket->readAll()));
 }
 
 void TcpServer::removeUserFormList()
 {
     QTcpSocket* socket = static_cast<QTcpSocket*>(sender());
-    QMap<QString, QTcpSocket *>::iterator it;
-    qDebug() <<"removeUserFormList"<<endl;
+    QMap<TcpConnect, QTcpSocket *>::iterator it;
     for(it=m_mapClient.begin();it!=m_mapClient.end();it++)
     {
-        if(socket->peerAddress().toString() == it.key())
+        if(socket->peerAddress().toString() == it.key().first && socket->peerPort() == it.key().second)
         {
+            disconnect(socket,SIGNAL(readyRead()),this,SLOT(readMessage()));
             m_mapClient.erase(it);
-            //            m_pMsgHandler->devOffline(socket->peerAddress().toString());
-
             break;
         }
     }
@@ -138,18 +119,18 @@ void TcpServer::setCrc(uchar *buf, int len)
     buf[rtn++] = crc >> 8;
 }
 
-void TcpServer::transData(uchar *buf, int len)
+void TcpServer::transData(QTcpSocket* socket ,uchar *buf, int len)
 {
     //int rtn = mSerial->recvData(buf, 5); //接收数据-
     int rtn = len;
-    QByteArray sendarray;
-    QString sendstrArray;
-    sendarray.append((char *)buf, rtn);
-    sendstrArray = sendarray.toHex(); // 十六进制
-    for(int i=0; i<sendarray.size(); ++i)
-        sendstrArray.insert(2+3*i, " "); // 插入空格
-    qDebug()<<"  send:" << sendstrArray;
-    qDebug()<< "rtn  "<<rtn;
+    //    QByteArray sendarray;
+    //    QString sendstrArray;
+    //    sendarray.append((char *)buf, rtn);
+    //    sendstrArray = sendarray.toHex(); // 十六进制
+    //    for(int i=0; i<sendarray.size(); ++i)
+    //        sendstrArray.insert(2+3*i, " "); // 插入空格
+    //    qDebug()<<"  send:" << sendstrArray;
+    //    qDebug()<< "rtn  "<<rtn;
     if(rtn > 2 ) {
         if(!validateData(rtn)) return; //解析并验证数据
         uchar id = mThr->addr / 0x20;
@@ -162,15 +143,35 @@ void TcpServer::transData(uchar *buf, int len)
 
         if(mThr->fn == Fn_NetGet){ //获取数据 _ [未加长度位0时该回复数据]
             if(box->rtuLen > 0) {
+//                memset(mSendBuf , 0 , sizeof(mSendBuf));
+//                mSendBuf[0] = mThr->addr;//
+//                mSendBuf[1] = 0x03;
+//                mSendBuf[2] = mThr->data >> 8;
+//                mSendBuf[3] = mThr->data & 0xFF;
+//                int pos = mThr->position;
+//                for(int i = 4 ; i < mThr->data ; i++){
+//                    mSendBuf[i] = box->rtuArray[pos+i];
+//                }
+//                setCrc( mSendBuf, mThr->data + 6 );//
+
                 box->rtuArray[0] = mThr->addr;//
                 setCrc(box->rtuArray, box->rtuLen);//
-                //mSerial->sendData(box->rtuArray, box->rtuLen);
-                mBox = box;
+//                QByteArray sendarray;
+//                QString sendstrArray;
+//                sendarray.append((char *)mSendBuf, mThr->data + 6);
+//                sendstrArray = sendarray.toHex(); // 十六进制
+//                for(int i=0; i<sendarray.size(); ++i)
+//                    sendstrArray.insert(2+3*i, " "); // 插入空格
+//                qDebug()<<"  send:" << sendstrArray;
+                if(socket){
+                    //int n = socket->write((char*)mSendBuf, mThr->data + 6);
+                    int n = socket->write((char*)box->rtuArray, box->rtuLen);
+                    socket->flush();
+                }
             } else {
                 //mSerial->sendData(buf, rtn);
             }
         } else if(mThr->fn == Fn_NetSet){ //发送数据
-            //mSerial->sendData(buf, rtn); //先回应同样的数据
             if(rtu[id] != NULL) {
                 buf[0] = addr;
                 setCrc(buf, rtn);
@@ -205,6 +206,7 @@ bool TcpServer::validateData(int rtn)
     ushort hlcrc = rtu_crc(buf, rtn-2);
     ushort lhcrc = (hlcrc >> 8) + (hlcrc<<8);
     if(mThr->crc != lhcrc ) return false;
+    //if( mThr->position + mThr->data > 0x135 ) return false;
     return true;
 }
 

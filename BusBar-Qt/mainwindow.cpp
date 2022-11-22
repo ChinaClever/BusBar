@@ -230,6 +230,7 @@ void MainWindow::on_setBtn_clicked()
     if(ui->stackedWid->currentWidget() != mSettingWid) {
         BeepThread::bulid()->beep();
         mCheckDlg->exec();
+        mCheckDlg->move(0,0);
     }
 }
 

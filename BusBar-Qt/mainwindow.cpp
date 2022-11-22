@@ -9,9 +9,6 @@
 //#include "net/send/netsendthread.h"
 
 #include "modbus/thirdthread.h"
-#include <QTextEdit>
-//#define MODBUSTCPPORT 11283
-#define MODBUSTCPPORT 502
 
 RtuThread *rtu[4] = {NULL, NULL, NULL, NULL};
 ThirdThread *thr = NULL;
@@ -24,7 +21,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     mInitShm = new InitShm(this); //线程
     mInitShm->start(); //初始化共享内存 -- 单线程运行一次
-    //startPage();
 
     mIndex = 0;
     initWidget();
@@ -79,9 +75,9 @@ void MainWindow::timeoutDone()
 {
     updateTime();
     checkAlarm();
+    if((get_share_mem() && get_share_mem()->initFlag)) ui->comboBox->setEnabled(true);
     setBusName(mIndex);
-
-    for(int i=0; i<BUS_NUM; ++i)
+    for(int i = 0; i<BUS_NUM; ++i)
         updateBusName(i);
 }
 
@@ -107,9 +103,7 @@ void MainWindow::setBusName(int index)
     sBusData *busData = &(shm->data[index]);
     double rateCur = busData->box[0].ratedCur/COM_RATE_CUR;
     ui->ratedLab->setText(QString::number(rateCur));
-    ui->ratedLab->setText("V2.4.0");
-    //    ui->ratedLab->setText("V2.0.3");//上海创建
-
+    ui->ratedLab->setText("V2.5.0");
 }
 
 void MainWindow::checkAlarm()
@@ -155,7 +149,20 @@ void MainWindow::initFunSLot()
     //    {
     //        mTcpModbus->setTimeout(5000);
     //    }
+    QTimer::singleShot(7750,this,SLOT(initNetSLot())); //延时初始化
+    ui->comboBox->setEnabled(false);
+    QPixmap pix(1,60);
+    pix.fill(Qt::transparent);
+    QIcon icon(pix);
+    ui->comboBox->setIconSize(QSize(1,60));
+    ui->comboBox->setItemIcon(0 , icon);
+    ui->comboBox->setItemIcon(1 , icon);
+    ui->comboBox->setItemIcon(2 , icon);
+    ui->comboBox->setItemIcon(3 , icon);
+}
 
+void MainWindow::initNetSLot()
+{
     mServer = new Server(this);
     mServer->setMaxPendingConnections(30);
     mServer->listen(QHostAddress::AnyIPv4, 20086);
@@ -224,6 +231,7 @@ void MainWindow::on_setBtn_clicked()
     if(ui->stackedWid->currentWidget() != mSettingWid) {
         BeepThread::bulid()->beep();
         mCheckDlg->exec();
+        mCheckDlg->move(0,0);
     }
 }
 

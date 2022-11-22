@@ -10,7 +10,8 @@ BoxTotalWid::BoxTotalWid(QWidget *parent) :
     timer = new QTimer(this);
     timer->start(2000);
     connect(timer, SIGNAL(timeout()),this, SLOT(timeoutDone()));
-    ui->AllWid->hide(); //隐藏和 y_MW_2018.4.23
+    //ui->AllWid->hide(); //隐藏和 y_MW_2018.4.23
+    initWid();
 }
 
 BoxTotalWid::~BoxTotalWid()
@@ -37,45 +38,56 @@ void BoxTotalWid::timeoutDone()
 
 void BoxTotalWid::updateAll()
 {
-    QString str= "---";
+    QString str = "";
+    ui->label_6->setText(str);
+    ui->volH->setText(str);
+    ui->curH->setText(str);
+    ui->tEleH->setText(str);
 
-    if(mBox->offLine){
-//        str = QString::number(mTgBox->vol) + "V";
-        str = QString::number(mTgBox->vol/COM_RATE_VOL, 'f',1) + "V";
-        ui->volH->setText(str);
+    str = tr("总有功功率");
+    ui->tApPowH->setText(str);
 
-//        str= QString::number(mTgBox->cur/COM_RATE_CUR, 'f', 1) + "A";
-        str= QString::number(mTgBox->cur/COM_RATE_CUR, 'f', 2) + "A";
-        ui->curH->setText(str);
-
-//        str =  QString::number(mTgBox->pow/COM_RATE_POW, 'f', 3) + "kW";
-        str =  QString::number(mTgBox->pow/COM_RATE_POW, 'f', 3) + "kW";
-        ui->tPowH->setText(str);
-
-//        str =  QString::number(mTgBox->apPow/COM_RATE_POW, 'f', 3) + "kVA";
-        str =  QString::number(mTgBox->apPow/(COM_RATE_POW*100), 'f', 3) + "kVA";
-        ui->tApPowH->setText(str);
-
-        if(mTgBox->apPow == 0 )
-            str = QString::number(0, 'f', 2);
+    str = tr("零线温度");
+    ui->tPfH->setText(str);
+    str = "---";
+    ui->tPowH->setText(str);
+    ui->temH->setText(str);
+    if( mBox && mBox->offLine ){
+        if(mBox->data.totalPow == 0 )
+            str = QString::number(0, 'f', 2)+"kW";
         else
-            str = QString::number((mTgBox->pow*100)/mTgBox->apPow, 'f', 2);
-        ui->tPfH->setText(str);
-
-        str =  QString::number(mTgBox->ele/COM_RATE_ELE, 'f', 1);// + "kWh";
-        ui->tEleH->setText(str);
-
-        str =  QString::number(mTgBox->tem/COM_RATE_TEM) + "°C";
-        ui->temH->setText(str);
-    }else{
-        ui->curH->setText(str);
+            str = QString::number(mBox->data.totalPow/COM_RATE_POW, 'f', 3)+"kW";
         ui->tPowH->setText(str);
-        ui->tApPowH->setText(str);
-        ui->tPfH->setText(str);
-        ui->tEleH->setText(str);
-        ui->volH->setText(str);
+
+        if(mEnvData){
+            sDataUnit *unit = &(mEnvData->tem);
+            if(unit){
+                str =  QString::number(unit->value[3]/COM_RATE_TEM) + "°C";
+                ui->temH->setText(str);
+                setLabeColor(ui->temH, unit->alarm[3], unit->crAlarm[3]);
+            }
+        }
     }
 }
+
+void BoxTotalWid::initWid()
+{
+    QString str = "";
+    ui->label_6->setText(str);
+    ui->volH->setText(str);
+    ui->curH->setText(str);
+    ui->tEleH->setText(str);
+
+    str = tr("总有功功率");
+    ui->tApPowH->setText(str);
+
+    str = tr("零线温度");
+    ui->tPfH->setText(str);
+    str = "---";
+    ui->tPowH->setText(str);
+    ui->temH->setText(str);
+}
+
 
 void BoxTotalWid::updateData()
 {
@@ -94,6 +106,7 @@ void BoxTotalWid::updateData()
     QLabel *temLab[] = {ui->temA, ui->temB, ui->temC};
     QLabel *plLab[] = { ui->plA,  ui->plB,  ui->plC};
     QLabel *thdLab[] = {ui->thdA, ui->thdB, ui->thdC};
+    QLabel *rePowLab[] = {ui->tRePowA, ui->tRePowB, ui->tRePowC};
 
     for(int i=0; i<3; ++i) {
         QString str = "---";
@@ -120,6 +133,9 @@ void BoxTotalWid::updateData()
 //            str =  QString::number(mLineTgBox->apPow[i]/COM_RATE_POW, 'f', 3) + "kVA";
             str =  QString::number(mLineTgBox->apPow[i]/(COM_RATE_POW*100), 'f', 3) + "kVA";
             tApPowLab[i]->setText(str);
+
+            str =  QString::number(mLineTgBox->reactivePower[i]/(COM_RATE_POW), 'f', 3) + "kVar";
+            rePowLab[i]->setText(str);
 
             if(mLineTgBox->apPow[i] == 0 )
                 str = QString::number(0, 'f', 2);
@@ -149,6 +165,7 @@ void BoxTotalWid::updateData()
             pfLab[i]->setText(str);
             eleLab[i]->setText(str);
             temLab[i]->setText(str);
+            rePowLab[i]->setText(str);
         }
          if(mBox->dc == 0) thdLab[i]->setText("---");
     }

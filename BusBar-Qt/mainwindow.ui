@@ -622,7 +622,7 @@ color: rgb(255, 255, 255);</string>
        <property name="minimumSize">
         <size>
          <width>130</width>
-         <height>45</height>
+         <height>60</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -635,6 +635,9 @@ color: rgb(255, 255, 255);</string>
         <font>
          <pointsize>15</pointsize>
         </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
        </property>
        <item>
         <property name="text">

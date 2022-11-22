@@ -95,6 +95,7 @@ sDataPacket *get_share_mem()
     if(shm == NULL) {
         shm = share_mem_get();
         share_mem_init();
+        shm->initFlag = false;
     }
 
     return shm;

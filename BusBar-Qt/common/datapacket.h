@@ -22,9 +22,9 @@
 #define BOX_NUM 20 // 插接箱数量
 #define BUS_NUM 4  // 四条母线
 #define NAME_LEN	32 // 名称最大长度
-#define SENSOR_NUM 3 // 二个传感器
+#define SENSOR_NUM 4  // 二个传感器
 
-#define SRC_DATA_LEN_MAX 512 //一包数据最长 —— 用于对接动环
+#define SRC_DATA_LEN_MAX 1024 //一包数据最长 —— 用于对接动环
 
 /**
  * 统计数据结构体
@@ -48,7 +48,7 @@ typedef struct _sLineTgObjData {
     uint ele[3]; // 电能
     ushort pf[3]; // 功率因素
     uint apPow[3]; // 袖在功率
-    ushort tem[3];
+    uint reactivePower[3]; // 无功功率
 }sLineTgObjData;
 
 /**
@@ -94,10 +94,12 @@ typedef struct _sObjData {
     uint apPow[LINE_NUM_MAX]; // 视在功率
     ushort ratedCur[LINE_NUM_MAX]; // 额定电流
     ushort wave[LINE_NUM_MAX]; // 谐波值
+    uint reactivePower[LINE_NUM_MAX]; // 无功功率
 
     ushort pl[3]; // 负载百分比
     ushort curThd[3]; // 电流谐波含量
     ushort volThd[3]; // 电压谐波含量
+    uint totalPow;
 }sObjData;
 
 
@@ -106,7 +108,7 @@ typedef struct _sObjData {
  */
 typedef struct _sEnvData {
     sDataUnit tem; // 温度
-    sDataUnit hum; // 湿度
+//    sDataUnit hum; // 湿度
 }sEnvData;
 
 
@@ -162,6 +164,7 @@ typedef struct _sBusData{
 typedef struct _sDataPacket
 {
     sBusData data[BUS_NUM];  // 四条母线数据
+    bool initFlag;
 }sDataPacket;
 
 
@@ -169,75 +172,153 @@ typedef struct _sDataPacket
 /**
  * 设置地址枚举：包括各种参数的地址
  */
+//enum  sSetType{
+//     SetAddress        = 0x1001           //地址
+//    ,VoltageMAX_L1     = 0x1002           //电压上限
+//    ,VoltageMIN_L1     = 0x1003           //电压下限
+//    ,VoltageMAX_L2     = 0x1004
+//    ,VoltageMIN_L2     = 0x1005
+//    ,VoltageMAX_L3     = 0x1006
+//    ,VoltageMIN_L3     = 0x1007
+//    ,VoltageMAX_L4     = 0x1008
+//    ,VoltageMIN_L4     = 0x1009
+//    ,VoltageMAX_L5     = 0x100A
+//    ,VoltageMIN_L5     = 0x100B
+//    ,VoltageMAX_L6     = 0x100C
+//    ,VoltageMIN_L6     = 0x100D
+//    ,VoltageMAX_L7     = 0x100E
+//    ,VoltageMIN_L7     = 0x100F
+//    ,VoltageMAX_L8     = 0x1010
+//    ,VoltageMIN_L8     = 0x1011
+//    ,VoltageMAX_L9     = 0x1012
+//    ,VoltageMIN_L9     = 0x1013
+//    ,CurrentMAX_L1     = 0x1020           //电流上限
+//    ,CurrentMIN_L1     = 0x1021           //电流下限
+//    ,CurrentMAX_L2     = 0x1022
+//    ,CurrentMIN_L2     = 0x1023
+//    ,CurrentMAX_L3     = 0x1024
+//    ,CurrentMIN_L3     = 0x1025
+//    ,CurrentMAX_L4     = 0x1026
+//    ,CurrentMIN_L4     = 0x1027
+//    ,CurrentMAX_L5     = 0x1028
+//    ,CurrentMIN_L5     = 0x1029
+//    ,CurrentMAX_L6     = 0x102A
+//    ,CurrentMIN_L6     = 0x102B
+//    ,CurrentMAX_L7     = 0x102C
+//    ,CurrentMIN_L7     = 0x102D
+//    ,CurrentMAX_L8     = 0x102E
+//    ,CurrentMIN_L8     = 0x102F
+//    ,CurrentMAX_L9     = 0x1030
+//    ,CurrentMIN_L9     = 0x1031
+//    ,temperatureMAX_1  = 0x1032           //温度上限
+//    ,temperatureMIN_1  = 0x1033           //温度下限
+//    ,temperatureMAX_2  = 0x1034
+//    ,temperatureMIN_2  = 0x1035
+//    ,temperatureMAX_3  = 0x1036
+//    ,temperatureMIN_3  = 0x1037
+//    ,BaudRate          = 0x1038           //00:9600 01:4800 02:9600 03:19200 04:38400
+//    ,ClearEle          = 0x1039
+//    ,SetStartBoxAddr   = 0x1040           //设置始端箱地址1-31
+//    ,SetBuzzer         = 0x1041           //1:开启 0:关闭
+//    ,SetBreaker        = 0x1042           //断路器开关状态
+//    ,PowerMAX_L1       = 0x1050           //功率上限
+//    ,PowerMIN_L1       = 0x1051           //功率下限
+//    ,PowerMAX_L2       = 0x1052
+//    ,PowerMIN_L2       = 0x1053
+//    ,PowerMAX_L3       = 0x1054
+//    ,PowerMIN_L3       = 0x1055
+//    ,PowerMAX_L4       = 0x1056
+//    ,PowerMIN_L4       = 0x1057
+//    ,PowerMAX_L5       = 0x1058
+//    ,PowerMIN_L5       = 0x1059
+//    ,PowerMAX_L6       = 0x105A
+//    ,PowerMIN_L6       = 0x105B
+//    ,PowerMAX_L7       = 0x105C
+//    ,PowerMIN_L7       = 0x105D
+//    ,PowerMAX_L8       = 0x105E
+//    ,PowerMIN_L8       = 0x105F
+//    ,PowerMAX_L9       = 0x1060
+//    ,PowerMIN_L9       = 0x1061
+//    ,SetHzMAX          = 0x1062
+//    ,SetHzMIN          = 0x1063
+//};
+
 enum  sSetType{
      SetAddress        = 0x1001           //地址
-    ,VoltageMAX_L1     = 0x1002           //电压上限
-    ,VoltageMIN_L1     = 0x1003           //电压下限
-    ,VoltageMAX_L2     = 0x1004
-    ,VoltageMIN_L2     = 0x1005
-    ,VoltageMAX_L3     = 0x1006
-    ,VoltageMIN_L3     = 0x1007
-    ,VoltageMAX_L4     = 0x1008
-    ,VoltageMIN_L4     = 0x1009
-    ,VoltageMAX_L5     = 0x100A
-    ,VoltageMIN_L5     = 0x100B
-    ,VoltageMAX_L6     = 0x100C
-    ,VoltageMIN_L6     = 0x100D
-    ,VoltageMAX_L7     = 0x100E
-    ,VoltageMIN_L7     = 0x100F
-    ,VoltageMAX_L8     = 0x1010
-    ,VoltageMIN_L8     = 0x1011
-    ,VoltageMAX_L9     = 0x1012
-    ,VoltageMIN_L9     = 0x1013
-    ,CurrentMAX_L1     = 0x1020           //电流上限
-    ,CurrentMIN_L1     = 0x1021           //电流下限
-    ,CurrentMAX_L2     = 0x1022
-    ,CurrentMIN_L2     = 0x1023
-    ,CurrentMAX_L3     = 0x1024
-    ,CurrentMIN_L3     = 0x1025
-    ,CurrentMAX_L4     = 0x1026
-    ,CurrentMIN_L4     = 0x1027
-    ,CurrentMAX_L5     = 0x1028
-    ,CurrentMIN_L5     = 0x1029
-    ,CurrentMAX_L6     = 0x102A
-    ,CurrentMIN_L6     = 0x102B
-    ,CurrentMAX_L7     = 0x102C
-    ,CurrentMIN_L7     = 0x102D
-    ,CurrentMAX_L8     = 0x102E
-    ,CurrentMIN_L8     = 0x102F
-    ,CurrentMAX_L9     = 0x1030
-    ,CurrentMIN_L9     = 0x1031
-    ,temperatureMAX_1  = 0x1032           //温度上限
-    ,temperatureMIN_1  = 0x1033           //温度下限
-    ,temperatureMAX_2  = 0x1034
-    ,temperatureMIN_2  = 0x1035
-    ,temperatureMAX_3  = 0x1036
-    ,temperatureMIN_3  = 0x1037 
-    ,BaudRate          = 0x1038           //00:9600 01:4800 02:9600 03:19200 04:38400
-    ,ClearEle          = 0x1039
-    ,SetStartBoxAddr   = 0x1040           //设置始端箱地址1-31
-    ,SetBuzzer         = 0x1041           //1:开启 0:关闭
-    ,SetBreaker        = 0x1042           //断路器开关状态
-    ,PowerMAX_L1       = 0x1050           //功率上限
-    ,PowerMIN_L1       = 0x1051           //功率下限
-    ,PowerMAX_L2       = 0x1052
-    ,PowerMIN_L2       = 0x1053
-    ,PowerMAX_L3       = 0x1054
-    ,PowerMIN_L3       = 0x1055
-    ,PowerMAX_L4       = 0x1056
-    ,PowerMIN_L4       = 0x1057
-    ,PowerMAX_L5       = 0x1058
-    ,PowerMIN_L5       = 0x1059
-    ,PowerMAX_L6       = 0x105A
-    ,PowerMIN_L6       = 0x105B
-    ,PowerMAX_L7       = 0x105C
-    ,PowerMIN_L7       = 0x105D
-    ,PowerMAX_L8       = 0x105E
-    ,PowerMIN_L8       = 0x105F
-    ,PowerMAX_L9       = 0x1060
-    ,PowerMIN_L9       = 0x1061
-    ,SetHzMAX          = 0x1062
-    ,SetHzMIN          = 0x1063
+    ,VoltageMAX_L1      = 0x1002           //电压上限
+    ,VoltageMIN_L1      = 0x1003           //电压下限
+    ,VoltageMAX_L2      = 0x1004
+    ,VoltageMIN_L2      = 0x1005
+    ,VoltageMAX_L3      = 0x1006
+    ,VoltageMIN_L3      = 0x1007
+    ,VoltageMAX_L4      = 0x1008
+    ,VoltageMIN_L4      = 0x1009
+    ,VoltageMAX_L5      = 0x100A
+    ,VoltageMIN_L5      = 0x100B
+    ,VoltageMAX_L6      = 0x100C
+    ,VoltageMIN_L6      = 0x100D
+    ,VoltageMAX_L7      = 0x100E
+    ,VoltageMIN_L7      = 0x100F
+    ,VoltageMAX_L8      = 0x1010
+    ,VoltageMIN_L8      = 0x1011
+    ,VoltageMAX_L9      = 0x1012
+    ,VoltageMIN_L9      = 0x1013
+
+    ,CurrentMAX_L1      = 0x1014           //电流上限
+    ,CurrentMIN_L1      = 0x1015           //电流下限
+    ,CurrentMAX_L2      = 0x1016
+    ,CurrentMIN_L2      = 0x1017
+    ,CurrentMAX_L3      = 0x1018
+    ,CurrentMIN_L3      = 0x1019
+    ,CurrentMAX_L4      = 0x101A
+    ,CurrentMIN_L4      = 0x101B
+    ,CurrentMAX_L5      = 0x101C
+    ,CurrentMIN_L5      = 0x101D
+    ,CurrentMAX_L6      = 0x101E
+    ,CurrentMIN_L6      = 0x101F
+    ,CurrentMAX_L7      = 0x1020
+    ,CurrentMIN_L7      = 0x1021
+    ,CurrentMAX_L8      = 0x1022
+    ,CurrentMIN_L8      = 0x1023
+    ,CurrentMAX_L9      = 0x1024
+    ,CurrentMIN_L9      = 0x1025
+
+
+    ,PowerMAX_L1        = 0x1026           //功率上限
+    ,PowerMIN_L1        = 0x1027          //功率下限
+    ,PowerMAX_L2        = 0x1028
+    ,PowerMIN_L2        = 0x1029
+    ,PowerMAX_L3        = 0x102A
+    ,PowerMIN_L3        = 0x102B
+    ,PowerMAX_L4        = 0x102C
+    ,PowerMIN_L4        = 0x102D
+    ,PowerMAX_L5        = 0x102E
+    ,PowerMIN_L5        = 0x102F
+    ,PowerMAX_L6        = 0x1030
+    ,PowerMIN_L6        = 0x1031
+    ,PowerMAX_L7        = 0x1032
+    ,PowerMIN_L7        = 0x1033
+    ,PowerMAX_L8        = 0x1034
+    ,PowerMIN_L8        = 0x1035
+    ,PowerMAX_L9        = 0x1036
+    ,PowerMIN_L9        = 0x1037
+
+    ,SetHzMAX           = 0x1038
+    ,SetHzMIN           = 0x1039
+
+    ,temperatureMAX_1   = 0x103A           //温度上限
+    ,temperatureMIN_1   = 0x103B           //温度下限
+    ,temperatureMAX_2   = 0x103C
+    ,temperatureMIN_2   = 0x103D
+    ,temperatureMAX_3   = 0x103E
+    ,temperatureMIN_3   = 0x103F
+    ,temperatureMAX_4   = 0x1040
+    ,temperatureMIN_4   = 0x1041
+    ,BaudRate           = 0x1077           //00:9600 01:4800 02:9600 03:19200 04:38400
+    ,ClearEle           = 0x1078
+    ,SetStartBoxAddr    = 0x1079           //设置始端箱地址1-31
+    ,SetBuzzer          = 0x1080           //1:开启 0:关闭
+    ,SetBreaker         = 0x1081           //断路器开关状态
 };
 
 sDataPacket *share_mem_get();

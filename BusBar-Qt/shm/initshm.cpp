@@ -17,7 +17,7 @@ void InitShm::initBoxNum()
         shm->data[i].boxNum = boxNum; // 18个插接箱
 
         int rateCur = getRateCur(i); // rateCur
-        if(rateCur < 0) rateCur = 2600;
+        if(rateCur < 0) rateCur = 10000;//2600
         shm->data[i].box[0].ratedCur = rateCur; // 额定电流
     }
 }
@@ -145,4 +145,5 @@ void InitShm::run()
     initName(); //统一SQL 与功效内存内neme
     sleep(5);
     initThreshold(); //统一数据标准
+    shm->initFlag = true;
 }

@@ -89,6 +89,7 @@ void LineWid::timeoutDone()
                 pa.setColor(QPalette::WindowText, Qt::black);
                 ui->lpsLab->setPalette(pa);
             }
+            updateTem();
         }else{
             str= QString::number(mData->box[0].rate) + "路";
             ui->rateLab->setText(str); //频率
@@ -103,8 +104,8 @@ void LineWid::timeoutDone()
         QString version = QString("V%1.%2").arg(mData->box[0].version/10).arg(mData->box[0].version%10);
         ui->version->setText(version);
 
-//        updateTotalWid();
-//        updatePlot();
+        //        updateTotalWid();
+        //        updatePlot();
     }
 }
 
@@ -143,6 +144,29 @@ void LineWid::updateTotalWid()
     mVolPlot->setRange(0,275);
 }
 
+void LineWid::updateTem()
+{
+    QLabel *temLab[] = {ui->temA, ui->temB, ui->temC ,ui->temD};
+    QString str = "---";
+    if(mData && mData->box[0].offLine){
+        sDataUnit unit = mData->box[0].env.tem;
+
+        for(int i = 0 ; i < SENSOR_NUM ; i++){
+            temLab[i]->setText(QString::number(unit.value[i]/COM_RATE_TEM) + "°C");
+            updateAlarmStatus(temLab[i],unit,i);
+        }
+        if(mData->box[0].data.totalPow == 0 )
+            str = QString::number(0, 'f', 2)+"kW";
+        else
+            str = QString::number(mData->box[0].data.totalPow/COM_RATE_POW, 'f', 3)+"kW";
+        ui->totalPowLab->setText(str);
+    }else{
+        for(int i = 0 ; i < SENSOR_NUM ; i++){
+            temLab[i]->setText(str);
+        }
+        ui->totalPowLab->setText(str);
+    }
+}
 
 void LineWid::updatePlot()
 {    
@@ -169,4 +193,18 @@ void LineWid::on_thdBtn_clicked()
     ThdMainDlg dlg(this);
     dlg.initBus(mIndex);
     dlg.exec();
+}
+
+void LineWid::updateAlarmStatus(QLabel *lab, sDataUnit &unit , int id)
+{
+    QPalette pe;
+
+    if(unit.alarm[id])
+        pe.setColor(QPalette::WindowText,Qt::red);
+    else  if(unit.crAlarm[id])
+        pe.setColor(QPalette::WindowText,"#CD7E80");
+    else
+        pe.setColor(QPalette::WindowText,Qt::black);
+
+    lab->setPalette(pe);
 }

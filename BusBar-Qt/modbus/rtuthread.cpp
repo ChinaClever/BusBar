@@ -160,6 +160,7 @@ void RtuThread::loopObjData(sObjData *loop, int id, RtuRecvLine *data)
     loop->pf[id] = data->pf;
     loop->sw[id] = data->sw;
     loop->apPow[id] = data->apPow;
+    loop->reactivePower[id] = data->reactivePower;
     //    loop->ratedCur[id] = data->curAlarm; ////
 
     //loop->wave[id] = data->wave;
@@ -185,7 +186,7 @@ void RtuThread::envData(sEnvData *env, Rtu_recv *pkt)
         env->tem.crMin[i] = env->tem.min[i] = pkt->env[i].tem.min;
         env->tem.crMax[i] = env->tem.max[i] = pkt->env[i].tem.max;
 
-        env->hum.value[i] = pkt->env[i].hum.value;
+//        env->hum.value[i] = pkt->env[i].hum.value;
     }
 }
 
@@ -274,7 +275,7 @@ int RtuThread::transData(int addr)
                 box->maxRate = pkt->maxRate;
                 box->dc = pkt->dc;
                 box->version = pkt->version;
-
+                box->data.totalPow = pkt->totalPow;
                 thdData(pkt);
             }
 

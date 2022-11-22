@@ -134,7 +134,7 @@ void BoxLoopTableWid::initTableWidget()
     ui->tableWidget->setRowCount(0);        //设置行数/
 
     QStringList header;
-    header <<tr("回路") <<tr("名称") <<tr("断路器") << tr("电压") << tr("电流") << tr("功率") << tr("功率因数") << tr("电能");// << tr("温度");
+    header <<tr("回路") <<tr("名称") <<tr("断路器") << tr("电压") << tr("电流") << tr("有功功率")<< tr("无功功率") << tr("功率因数") << tr("电能");// << tr("温度");
     ui->tableWidget->setColumnCount(header.size());    //设置列数
     ui->tableWidget->setHorizontalHeaderLabels(header);
 
@@ -335,6 +335,17 @@ void BoxLoopTableWid::setPow(int id, int column)
     setAlarmStatus(id, column,mData->pow.alarm[id], mData->pow.crAlarm[id]);
 }
 
+void BoxLoopTableWid::setRePow(int id, int column)
+{
+    QString str = "---";
+
+    double value = mData->reactivePower[id] / COM_RATE_POW;
+    if(value >= 0)
+//        str = QString::number(value, 'f', 3) + "kW";
+        str = QString::number(value, 'f', 3) + "kVar";
+    setTableItem(id, column, str);
+}
+
 void BoxLoopTableWid::setPf(int id, int column)
 {
     QString str = "---";
@@ -390,6 +401,7 @@ void BoxLoopTableWid::updateData()
             setCur(i, k++); // 设置电流值
 
             setPow(i, k++); // 功率
+            setRePow(i, k++); // 无功功率
             setPf(i, k++); // 功率因素
             setEle(i, k++);
            // setTemp(i, k++); //温度

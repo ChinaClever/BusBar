@@ -42,6 +42,7 @@ protected slots:
     void initFunSLot();
     void timeoutDone();
     void dialogClosed(bool ret);
+    void initNetSLot();
     //void watchdogDone();
     //void clearCacheDone();
 

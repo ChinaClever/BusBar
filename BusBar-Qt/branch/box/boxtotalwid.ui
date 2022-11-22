@@ -57,13 +57,13 @@
        <widget class="QLabel" name="label_6">
         <property name="minimumSize">
          <size>
-          <width>90</width>
+          <width>50</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>90</width>
+          <width>50</width>
           <height>16777215</height>
          </size>
         </property>
@@ -79,13 +79,13 @@
        <widget class="QLabel" name="volH">
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>
@@ -101,13 +101,13 @@
        <widget class="QLabel" name="curH">
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>
@@ -137,7 +137,7 @@
          </size>
         </property>
         <property name="text">
-         <string>50kW</string>
+         <string>50kVA</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -159,7 +159,7 @@
          </size>
         </property>
         <property name="text">
-         <string>48kVA</string>
+         <string>48kW</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -237,7 +237,7 @@
    </item>
    <item row="3" column="0">
     <widget class="QWidget" name="CWid" native="true">
-     <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,1,1,1,1,1,1,1,0,1">
+     <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,1,1,1,1,1,1,0,1,0,1">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -257,13 +257,13 @@
        <widget class="QLabel" name="label_5">
         <property name="minimumSize">
          <size>
-          <width>90</width>
+          <width>50</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>90</width>
+          <width>50</width>
           <height>16777215</height>
          </size>
         </property>
@@ -279,13 +279,13 @@
        <widget class="QLabel" name="volC">
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>
@@ -301,13 +301,13 @@
        <widget class="QLabel" name="curC">
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>
@@ -326,13 +326,13 @@
        <widget class="QLabel" name="plC">
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>
@@ -351,13 +351,13 @@
        <widget class="QLabel" name="thdC">
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>
@@ -387,7 +387,7 @@
          </size>
         </property>
         <property name="text">
-         <string>50kW</string>
+         <string>50kVA</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -409,7 +409,29 @@
          </size>
         </property>
         <property name="text">
-         <string>48kVA</string>
+         <string>48kW</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="tRePowC">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>0.0kVar</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -420,13 +442,13 @@
        <widget class="QLabel" name="tPfC">
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>
@@ -487,7 +509,7 @@
    </item>
    <item row="2" column="0">
     <widget class="QWidget" name="BWid" native="true">
-     <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1,1,1,1,1,1,1,0,1">
+     <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1,1,1,1,1,1,0,1,0,1">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -507,13 +529,13 @@
        <widget class="QLabel" name="label_3">
         <property name="minimumSize">
          <size>
-          <width>90</width>
+          <width>50</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>90</width>
+          <width>50</width>
           <height>16777215</height>
          </size>
         </property>
@@ -529,13 +551,13 @@
        <widget class="QLabel" name="volB">
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>
@@ -551,13 +573,13 @@
        <widget class="QLabel" name="curB">
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>
@@ -576,13 +598,13 @@
        <widget class="QLabel" name="plB">
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>
@@ -601,13 +623,13 @@
        <widget class="QLabel" name="thdB">
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>
@@ -637,7 +659,7 @@
          </size>
         </property>
         <property name="text">
-         <string>50kW</string>
+         <string>50kVA</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -659,7 +681,29 @@
          </size>
         </property>
         <property name="text">
-         <string>48kVA</string>
+         <string>48kW</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="tRePowB">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>0.0kVar</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -670,13 +714,13 @@
        <widget class="QLabel" name="tPfB">
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>
@@ -737,7 +781,7 @@
    </item>
    <item row="1" column="0">
     <widget class="QWidget" name="AWid" native="true">
-     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,1,1,1,1,1,1,1,0,1">
+     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,1,1,1,1,1,1,0,1,0,1">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -757,13 +801,13 @@
        <widget class="QLabel" name="label_2">
         <property name="minimumSize">
          <size>
-          <width>90</width>
+          <width>50</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>90</width>
+          <width>50</width>
           <height>16777215</height>
          </size>
         </property>
@@ -779,13 +823,13 @@
        <widget class="QLabel" name="volA">
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>
@@ -801,13 +845,13 @@
        <widget class="QLabel" name="curA">
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>
@@ -826,13 +870,13 @@
        <widget class="QLabel" name="plA">
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>
@@ -851,13 +895,13 @@
        <widget class="QLabel" name="thdA">
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>
@@ -887,7 +931,7 @@
          </size>
         </property>
         <property name="text">
-         <string>50</string>
+         <string>50kVA</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -909,7 +953,29 @@
          </size>
         </property>
         <property name="text">
-         <string>48</string>
+         <string>48kW</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="tRePowA">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>0.0kVar</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -920,13 +986,13 @@
        <widget class="QLabel" name="tPfA">
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>
@@ -995,13 +1061,13 @@
        <widget class="QLabel" name="label">
         <property name="minimumSize">
          <size>
-          <width>90</width>
+          <width>50</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>90</width>
+          <width>50</width>
           <height>16777215</height>
          </size>
         </property>
@@ -1017,13 +1083,13 @@
        <widget class="QLabel" name="label_11">
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>
@@ -1039,13 +1105,13 @@
        <widget class="QLabel" name="label_4">
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>
@@ -1061,13 +1127,13 @@
        <widget class="QLabel" name="label_13">
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>
@@ -1083,13 +1149,13 @@
        <widget class="QLabel" name="label_14">
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>
@@ -1147,7 +1213,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_7">
+       <widget class="QLabel" name="label_15">
         <property name="minimumSize">
          <size>
           <width>80</width>
@@ -1157,6 +1223,28 @@
         <property name="maximumSize">
          <size>
           <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>无功功率</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_7">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>70</width>
           <height>16777215</height>
          </size>
         </property>

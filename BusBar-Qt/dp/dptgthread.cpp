@@ -88,6 +88,7 @@ void DpTgThread::lineTgObj(sObjData *obj, sLineTgObjData *tg)
             tg->ele[i] += obj->ele[i+j*3];
           //  tg->apPow[i] += obj->apPow[i+j*3];
               tg->apPow[i] += obj->cur.value[i+j*3] * obj->vol.value[i+j*3]/10;
+              tg->reactivePower[i] += obj->reactivePower[i+j*3];
         }
     }
 

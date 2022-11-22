@@ -132,7 +132,7 @@ void DpAlarmThread::boxAlarm(sBoxData &box)
 
         //--------------[限制存在才告警]----------------- By_MW 2018.3.23
         if(box.dc){ //交流
-            lineNum = 3;
+            lineNum = 4;
         }else{ //直流
             lineNum = box.rate;
         }

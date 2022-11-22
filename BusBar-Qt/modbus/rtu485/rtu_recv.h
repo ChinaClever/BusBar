@@ -20,17 +20,18 @@ struct RtuRecvLine {
     ushort wave; // 谐波值
     uchar pf; // 功率因素
     uchar sw; // 开关
+    uint reactivePower;// 无功功率
 };
 
 struct RtuEnvUnit {
-    uchar value;
-    uchar min;
-    uchar max;
+    ushort value;
+    ushort min;
+    ushort max;
 };
 
 struct RtuRecvEnv {
     RtuEnvUnit tem; // 温度
-    RtuEnvUnit hum; // 湿度
+//    RtuEnvUnit hum; // 湿度
 };
 
 struct Rtu_recv {
@@ -57,7 +58,7 @@ struct Rtu_recv {
     uchar pl[3]; // 负载百分比
     uchar hc; //谐波通道(00表示A路电压通道，01表示B路电压通道，02表示C路电压通道 03表示A路电流通道，04表示B路电流通道，05表示C路电流通道)
     ushort thd[40]; //   谐波含量
-
+    uint totalPow;
     ushort crc; // 检验码
 };
 

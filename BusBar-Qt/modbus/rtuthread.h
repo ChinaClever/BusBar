@@ -6,7 +6,7 @@
 #include "serialport/serial_trans.h"
 #include "rtu485/rtu_recv.h"
 
-#define RTU_BUF_SIZE 512
+#define RTU_BUF_SIZE 1024
 
 class RtuThread : public QThread
 {

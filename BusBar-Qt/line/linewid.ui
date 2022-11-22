@@ -26,9 +26,9 @@
   <widget class="QLabel" name="version">
    <property name="geometry">
     <rect>
-     <x>920</x>
+     <x>940</x>
      <y>20</y>
-     <width>81</width>
+     <width>68</width>
      <height>18</height>
     </rect>
    </property>
@@ -45,15 +45,15 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>850</x>
+     <x>870</x>
      <y>20</y>
-     <width>68</width>
+     <width>50</width>
      <height>23</height>
     </rect>
    </property>
    <property name="minimumSize">
     <size>
-     <width>68</width>
+     <width>50</width>
      <height>18</height>
     </size>
    </property>
@@ -67,15 +67,15 @@
   <widget class="QLabel" name="rateLab">
    <property name="geometry">
     <rect>
-     <x>100</x>
+     <x>90</x>
      <y>10</y>
-     <width>68</width>
+     <width>30</width>
      <height>18</height>
     </rect>
    </property>
    <property name="minimumSize">
     <size>
-     <width>68</width>
+     <width>30</width>
      <height>18</height>
     </size>
    </property>
@@ -108,7 +108,7 @@
   <widget class="QPushButton" name="thdBtn">
    <property name="geometry">
     <rect>
-     <x>760</x>
+     <x>790</x>
      <y>10</y>
      <width>91</width>
      <height>31</height>
@@ -241,7 +241,7 @@
          </property>
          <property name="maximumSize">
           <size>
-           <width>140</width>
+           <width>120</width>
            <height>16777215</height>
           </size>
          </property>
@@ -263,7 +263,7 @@
          </property>
          <property name="maximumSize">
           <size>
-           <width>140</width>
+           <width>120</width>
            <height>16777215</height>
           </size>
          </property>
@@ -301,18 +301,18 @@
         <widget class="QLabel" name="label_4">
          <property name="minimumSize">
           <size>
-           <width>100</width>
+           <width>120</width>
            <height>0</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>100</width>
+           <width>120</width>
            <height>16777215</height>
           </size>
          </property>
          <property name="text">
-          <string>温度</string>
+          <string>无功功率</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -323,7 +323,7 @@
         <widget class="QLabel" name="label_7">
          <property name="minimumSize">
           <size>
-           <width>100</width>
+           <width>120</width>
            <height>0</height>
           </size>
          </property>
@@ -376,7 +376,7 @@ border-bottom:2px solid rgb(228,228,228);
   <widget class="QLabel" name="lpsLab">
    <property name="geometry">
     <rect>
-     <x>270</x>
+     <x>170</x>
      <y>10</y>
      <width>68</width>
      <height>18</height>
@@ -395,15 +395,15 @@ border-bottom:2px solid rgb(228,228,228);
   <widget class="QLabel" name="label_10">
    <property name="geometry">
     <rect>
-     <x>180</x>
+     <x>120</x>
      <y>10</y>
-     <width>68</width>
+     <width>40</width>
      <height>23</height>
     </rect>
    </property>
    <property name="minimumSize">
     <size>
-     <width>68</width>
+     <width>20</width>
      <height>18</height>
     </size>
    </property>
@@ -412,6 +412,211 @@ border-bottom:2px solid rgb(228,228,228);
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_11">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>10</y>
+     <width>50</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>50</width>
+     <height>18</height>
+    </size>
+   </property>
+   <property name="text">
+    <string>A相温度:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="temA">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>10</y>
+     <width>30</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>30</width>
+     <height>18</height>
+    </size>
+   </property>
+   <property name="text">
+    <string>---</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="temB">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>10</y>
+     <width>30</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>30</width>
+     <height>18</height>
+    </size>
+   </property>
+   <property name="text">
+    <string>---</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_12">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>10</y>
+     <width>50</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>50</width>
+     <height>18</height>
+    </size>
+   </property>
+   <property name="text">
+    <string>B相温度:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="temC">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>10</y>
+     <width>30</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>30</width>
+     <height>18</height>
+    </size>
+   </property>
+   <property name="text">
+    <string>---</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_14">
+   <property name="geometry">
+    <rect>
+     <x>410</x>
+     <y>10</y>
+     <width>50</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>50</width>
+     <height>18</height>
+    </size>
+   </property>
+   <property name="text">
+    <string>C相温度:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="temD">
+   <property name="geometry">
+    <rect>
+     <x>580</x>
+     <y>10</y>
+     <width>30</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>30</width>
+     <height>18</height>
+    </size>
+   </property>
+   <property name="text">
+    <string>---</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_15">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>10</y>
+     <width>55</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>55</width>
+     <height>18</height>
+    </size>
+   </property>
+   <property name="text">
+    <string>零线温度:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_16">
+   <property name="geometry">
+    <rect>
+     <x>610</x>
+     <y>10</y>
+     <width>70</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>70</width>
+     <height>18</height>
+    </size>
+   </property>
+   <property name="text">
+    <string>总有功功率:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="totalPowLab">
+   <property name="geometry">
+    <rect>
+     <x>690</x>
+     <y>10</y>
+     <width>101</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>30</width>
+     <height>18</height>
+    </size>
+   </property>
+   <property name="text">
+    <string>---</string>
    </property>
   </widget>
  </widget>

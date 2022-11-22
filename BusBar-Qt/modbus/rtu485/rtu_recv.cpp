@@ -39,7 +39,7 @@ static int rtu_recv_len_dc(uchar *buf, int len)
 static int rtu_recv_len(uchar *buf, int len)
 {
     int ret = 0;
-    int rtn = RTU_SENT_LEN_V23+6;
+    int rtn = RTU_SENT_LEN_V25+6;
 
     //    if(0 == rtu_recv_len_dc(buf, len)){ //先判断是否是直流数据
     //        return ret;
@@ -53,9 +53,9 @@ static int rtu_recv_len(uchar *buf, int len)
         //        qDebug() << "rtu recv Err: len too long!!" << len << rtn ;
     } else {
         len = buf[2]*256 + buf[3];
-        if(len != RTU_SENT_LEN_V23) {
+        if(len != RTU_SENT_LEN_V25) {
             ret = -3;
-            qDebug() << "rtu recv len Err!!"<< len << rtn  << RTU_SENT_LEN_V23;
+            qDebug() << "rtu recv len Err!!"<< len << rtn  << RTU_SENT_LEN_V25;
         }
     }
 
@@ -74,8 +74,6 @@ static int rtu_recv_head(uchar *ptr,  Rtu_recv *pkt)
     pkt->addr = *(ptr++);// 从机地址码
     pkt->fn = *(ptr++);  /*功能码*/
 
-//    pkt->len = (*ptr) ; /*数据长度*/
-//    return 3;
     pkt->len = (*ptr)*256 +  *(ptr+1);  ptr += 2;/*数据长度*/
     return 4;
 }
@@ -139,20 +137,24 @@ static int rtu_recv_new_data(uchar *ptr, RtuRecvLine *msg)
 
     msg->pf =  *(ptr++);// 功率因素
 
+    msg->reactivePower =  (*ptr) * 256 + *(ptr+1);  ptr += 2; // 读取无功功率高8位
+    msg->reactivePower <<= 16; // 左移16位
+    msg->reactivePower +=  (*ptr) * 256 + *(ptr+1);  ptr += 2; // 读取无功功率底8位
+
     msg->ele =  (*ptr) * 256 + *(ptr+1);  ptr += 2; // 读取电能高8位
     msg->ele <<= 16; // 左移8位
     msg->ele +=  (*ptr) * 256 + *(ptr+1);  ptr += 2; // 读取电能底8位
+
+    ptr += 4;//无功电能
     msg->sw =  *(ptr++);// 开关状态
-
-
-
-    //msg->wave =  (*ptr) * 256 + *(ptr+1);  ptr += 2;    // 谐波值
 
     unsigned long long vol = msg->vol;
     unsigned long long cur = msg->cur;
     msg->apPow = vol * cur / 1000.0; // 视在功率
 
-    return 30;   ////============ 加上开关，功率因素之后，是为14
+    //return 30;   ////============ 加上开关，功率因素之后，是为14
+    ptr += 22;//预留
+    return 30+30;
 }
 
 /**
@@ -163,11 +165,11 @@ static int rtu_recv_new_data(uchar *ptr, RtuRecvLine *msg)
   */
 static int rtu_recv_env(uchar *ptr, RtuEnvUnit *msg)
 {
-    msg->value = *(ptr++);
-    msg->max = *(ptr++);
-    msg->min = *(ptr++);
+    msg->value = (*ptr) * 256 + *(ptr+1);ptr+=2;
+    msg->max = (*ptr) * 256 + *(ptr+1);ptr+=2;
+    msg->min = (*ptr) * 256 + *(ptr+1);ptr+=2;
 
-    return 3;
+    return 6;
 }
 
 /**
@@ -263,6 +265,7 @@ bool rtu_recv_packet(uchar *buf, int len, Rtu_recv *pkt)
         pkt->type = *(ptr++);// 箱子类型
         pkt->lineNum = *(ptr++); //[输出位]
         pkt->proNum = *(ptr++);// 项目ID
+        ptr+=1;// 电流规格
         pkt->version = *(ptr++); // 软件版本
 
         for(int i=0; i<RTU_TH_NUM; ++i) // 读取环境 数据
@@ -270,12 +273,16 @@ bool rtu_recv_packet(uchar *buf, int len, Rtu_recv *pkt)
 
         ptr += rtu_recv_rate(ptr , &pkt->rate , &pkt->minRate , &pkt->maxRate);//  频率上下限
 
+        ptr += 4;//[预留]
         int lineSum = pkt->lineNum; //交流
         if(!pkt->dc) lineSum = 4; //[暂时未加宏]
         for(int i=0; i<lineSum; ++i) // 读取电参数
             ptr += rtu_recv_new_data(ptr, &(pkt->data[i]));
 
         //        if(pkt->dc) { // 交流
+        pkt->totalPow = (*ptr) * 256 + *(ptr+1); ptr+=2;
+        pkt->totalPow <<= 16;
+        pkt->totalPow += (*ptr) * 256 + *(ptr+1); ptr+=2;
         ptr += rtu_recv_new_thd(ptr, pkt);
         //        } else {
 
@@ -297,7 +304,7 @@ bool rtu_recv_packet(uchar *buf, int len, Rtu_recv *pkt)
 
 #if 1
         //        if(pkt->dc) {
-        pkt->crc = (buf[RTU_SENT_LEN_V23+6-1]*256) + buf[RTU_SENT_LEN_V23+6-2]; // RTU_SENT_LEN_V23+5
+        pkt->crc = (buf[RTU_SENT_LEN_V25+6-1]*256) + buf[RTU_SENT_LEN_V25+6-2]; // RTU_SENT_LEN_V23+5
         //        }else{
         //            pkt->crc = (ptr[1]*256) + ptr[0]; // 获取校验码RTU_SENT_LEN+5
         //        }

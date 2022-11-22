@@ -97,7 +97,6 @@ void SetTempWid::itemClicked(QTableWidgetItem *it)
         dlg.move(0,0);
         dlg.set(item);
         dlg.exec();
-
     }
 
 }

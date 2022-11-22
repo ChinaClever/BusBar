@@ -1,5 +1,6 @@
 #include "setnameswid.h"
 #include "ui_setnameswid.h"
+#include "interfacechangesig.h"
 extern void set_box_num(int id, int num);
 
 SetNamesWid::SetNamesWid(QWidget *parent) :
@@ -10,9 +11,19 @@ SetNamesWid::SetNamesWid(QWidget *parent) :
     mIndex = 0;
     mSetShm = new SetShm;
     mSetNameDlg = new SetNameDlg(this);
-    QTimer::singleShot(100,this,SLOT(initFunSLot()));
+    QTimer::singleShot(7650,this,SLOT(initFunSLot()));
     initScrollArea(); // 开启滑动功能
+    connect(InterfaceChangeSig::get(), SIGNAL(typeSig(int)), this,SLOT(interfaceChangedSlot(int)));
+    isRun = false;
+}
 
+void SetNamesWid::interfaceChangedSlot(int id)
+{
+    if(id == 5) {
+        isRun = true;
+    } else {
+        isRun = false;
+    }
 }
 
 void SetNamesWid::initScrollArea()
@@ -189,8 +200,7 @@ void SetNamesWid::checkBus()
  */
 void SetNamesWid::indexChanged(int index)
 {
-//    if(mIndex == index)  return;
-
+    //    if(mIndex == index)  return;
     mIndex = index;
     mPacket = &(get_share_mem()->data[index]);
     initWid(index);
@@ -212,7 +222,9 @@ void SetNamesWid::updateWid()
 
 void SetNamesWid::timeoutDone()
 {
-    updateWid();
+    if(isRun){
+        updateWid();
+    }
 }
 
 
@@ -233,11 +245,11 @@ void SetNamesWid::setTableItem(int row, int column)
     //box->rate 直流的情况下，box->rate代表路数
     if(box->offLine > 0 /* && column <= box->rate */) {
         if(column <= box->loopNum) {
-           str = box->loopName[column-1];
+            str = box->loopName[column-1];
         }
     }
     if(!str.isEmpty())
-    item->setText(str);
+        item->setText(str);
 }
 
 

@@ -146,7 +146,7 @@ static void pdu_hash_envData(sEnvData *env,pdu_dev_data *data)
         break;
 
     case PDU_CMD_HUM: //湿度
-        pdu_hash_unitData(&(env->hum), data);
+        //pdu_hash_unitData(&(env->hum), data);
         break;
 
 //    case PDU_CMD_DOOR: //门禁

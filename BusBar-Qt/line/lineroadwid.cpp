@@ -85,7 +85,7 @@ void LineRoadWid::updateAlarmStatus(QLabel *lab, sDataPowUnit &unit)
 void LineRoadWid::updateWid(int id)
 {
     sObjData *mData = &(mBox->data); //回路状态内带三相信息
-    sEnvData  *mEnv = &(mBox->env); //环境状态
+    //sEnvData  *mEnv = &(mBox->env); //环境状态
 
 //    QString str = QString::number(mData->vol.value[id]) + "V";
     QString str = QString::number(mData->vol.value[id]/COM_RATE_VOL , 'f',1) + "V";
@@ -112,9 +112,10 @@ void LineRoadWid::updateWid(int id)
     str =  QString::number(mData->ele[id]/COM_RATE_ELE,'f',1) + "kWh";
     ui->eleLab->setText(str);
 
-    str =  QString::number(mEnv->tem.value[id]) + "℃";
+    //str =  QString::number(mEnv->tem.value[id]) + "℃";
+    str =  QString::number(mData->reactivePower[id]/COM_RATE_POW) + "kVar";
     ui->temLab->setText(str);
-    updateAlarmStatus(ui->temLab, mEnv->tem);
+    //updateAlarmStatus(ui->temLab, mEnv->tem);
 }
 
 void LineRoadWid::initWid()

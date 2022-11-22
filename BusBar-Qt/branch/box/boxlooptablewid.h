@@ -40,6 +40,7 @@ protected:
     void setVol(int id, int column);
     void setSw(int id, int column);
     void setPow(int id, int column);
+    void setRePow(int id, int column);
     void setPf(int id, int column);
     void setEle(int id, int column);
     void setTemp(int id, int column);

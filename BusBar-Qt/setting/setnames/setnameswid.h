@@ -44,6 +44,7 @@ private slots:
     void itemDoubleClicked(QTableWidgetItem *item);
     void initFunSLot();
     void timeoutDone();
+    void interfaceChangedSlot(int id);
 
 private:
     Ui::SetNamesWid *ui;
@@ -55,6 +56,7 @@ private:
     QTimer* mTimer;
     QScrollBar *m_scrollBarV;
     QScrollBar *m_scrollBarH;
+    bool isRun;
 };
 
 #endif // SETNAMESWID_H

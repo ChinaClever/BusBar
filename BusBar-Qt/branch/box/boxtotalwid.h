@@ -22,6 +22,7 @@ protected:
     void updateData();
     void updateAll();
     void setLabeColor(QLabel *, int , int);
+    void initWid();
 
 protected slots:
     void timeoutDone();

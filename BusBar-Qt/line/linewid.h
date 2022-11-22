@@ -29,6 +29,8 @@ protected:
     void initTotalWid();
     void updateTotalWid();
     void updatePlot();
+    void updateAlarmStatus(QLabel *lab, sDataUnit &unit , int id);
+    void updateTem();
 
 protected slots:
     void timeoutDone();

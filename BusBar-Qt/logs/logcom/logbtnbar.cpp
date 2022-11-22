@@ -10,11 +10,19 @@
 #include "logcalendardlg.h"
 #include "common.h"
 
+
 LogBtnBar::LogBtnBar(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::LogBtnBar)
 {
     ui->setupUi(this);
+    QPixmap pix(1,60);
+    pix.fill(Qt::transparent);
+    QIcon icon(pix);
+    ui->comboBox->setIconSize(QSize(1,60));
+    ui->comboBox->setItemIcon(0 , icon);
+    ui->comboBox->setItemIcon(1 , icon);
+    ui->comboBox->setItemIcon(2 , icon);
     com_setBackColour(tr("日志操作"),this);
     ui->dateEdit->setDate(QDate::currentDate());
     connect(ui->refreshBtn, SIGNAL(clicked()),this,SIGNAL(refreshSig()));

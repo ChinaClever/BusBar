@@ -20,6 +20,7 @@ public:
 protected:
     void updateWid();
     void setTem(int id);
+    void setBtnColor(QPushButton *label, int alarm, int crAlarm);
 
 protected slots:
     void timeoutDone();

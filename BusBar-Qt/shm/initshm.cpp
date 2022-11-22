@@ -145,4 +145,5 @@ void InitShm::run()
     initName(); //统一SQL 与功效内存内neme
     sleep(5);
     initThreshold(); //统一数据标准
+    shm->initFlag = true;
 }

@@ -34,10 +34,10 @@ void SetLoopWid::initWid()
 
 void SetLoopWid::checkBus(int index)
 {
-//    if(mBus != index) {
-//        mBus = index;
+    //    if(mBus != index) {
+    //        mBus = index;
     mPacket = &(get_share_mem()->data[index]);
-//    }
+    //    }
 
     int dc = mPacket ? mPacket->box[0].dc : 0;
     if(mDc != dc ) {
@@ -96,26 +96,20 @@ void SetLoopWid::timeoutDone()
 void SetLoopWid::itemClicked(QTableWidgetItem *it)
 {
     if(it->text().compare("---") == 0) return;  //为空不设置
-    static int i = 0;//防止弹出多次对话框
-    i++;
-    if(i % 3 == 1)
+
+    int column = it->column();
+    if(column > 0)
     {
+        BeepThread::bulid()->beep();
+        sThresholdItem item;
+        item.bus = mBus;
+        item.box = it->row()+1;
+        item.num = column-1;
+        item.type = 2;
 
-        int column = it->column();
-        if(column > 0)
-        {
-            BeepThread::bulid()->beep();
-            sThresholdItem item;
-            item.bus = mBus;
-            item.box = it->row()+1;
-            item.num = column-1;
-            item.type = 2;
-
-            SetThresholdDlg dlg(this);
-            dlg.move(0,0);
-            dlg.set(item);
-            dlg.exec();
-            i = 1;
-        }
+        SetThresholdDlg dlg(this);
+        dlg.move(0,0);
+        dlg.set(item);
+        dlg.exec();
     }
 }

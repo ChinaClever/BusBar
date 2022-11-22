@@ -47,12 +47,14 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     currentalarmsdlg.cpp \
-    interfacechangesig.cpp
+    interfacechangesig.cpp \
+    watchdogthread.cpp
 
 HEADERS += \
         mainwindow.h \
     currentalarmsdlg.h \
-    interfacechangesig.h
+    interfacechangesig.h \
+    watchdogthread.h
 
 
 FORMS += \

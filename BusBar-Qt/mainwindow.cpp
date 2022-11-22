@@ -75,44 +75,24 @@ void MainWindow::updateTime()
     ui->timeBtn->setText(time);
 }
 
-void MainWindow::seedWatchdog()
-{
-    system(QString("echo 1 > /dev/watchdog\n").toLatin1().data());
-}
-
 void MainWindow::timeoutDone()
 {
     updateTime();
     checkAlarm();
+    if((get_share_mem() && get_share_mem()->initFlag)) ui->comboBox->setEnabled(true);
     setBusName(mIndex);
 
     for(int i=0; i<BUS_NUM; ++i)
         updateBusName(i);
 }
 
-void MainWindow::watchdogDone()
-{
-    seedWatchdog();
-}
-
-void MainWindow::clearCache()
-{
-    system(QString("sync\n").toLatin1().data());
-    system(QString("echo 3 > /proc/sys/vm/drop_caches\n").toLatin1().data());
-}
-
-void MainWindow::clearCacheDone()
-{
-    clearCache();
-}
-
 void MainWindow::updateBusName(int index)
 {
-     sDataPacket *shm = get_share_mem();
-     char *name = shm->data[index].busName;
+    sDataPacket *shm = get_share_mem();
+    char *name = shm->data[index].busName;
 
-     QString str = "0" + QString::number(index+1) + " " + name;
-     ui->comboBox->setItemText(index, str);
+    QString str = "0" + QString::number(index+1) + " " + name;
+    ui->comboBox->setItemText(index, str);
 }
 
 void MainWindow::setBusName(int index)
@@ -128,7 +108,7 @@ void MainWindow::setBusName(int index)
     sBusData *busData = &(shm->data[index]);
     double rateCur = busData->box[0].ratedCur/COM_RATE_CUR;
     ui->ratedLab->setText(QString::number(rateCur));
-//    ui->ratedLab->setText("V2.0.2");//上海创建
+    //    ui->ratedLab->setText("V2.0.2");//上海创建
     ui->ratedLab->setText("V2.0.0");
 }
 
@@ -152,19 +132,23 @@ void MainWindow::initFunSLot()
     timer->start(1000);
     connect(timer, SIGNAL(timeout()),this, SLOT(timeoutDone()));
 
-    mWatchdogtimer = new QTimer(this);
-    mWatchdogtimer->start(1000);
-    connect(mWatchdogtimer, SIGNAL(timeout()),this, SLOT(watchdogDone()));
-
-    mClearCachetimer = new QTimer(this);
-    mClearCachetimer->start(2*24*60*60*1000-5*60*1000);
-    connect(mClearCachetimer, SIGNAL(timeout()),this, SLOT(clearCacheDone()));
+    mWatchdogThread = new Watchdogthread(this);
+    mWatchdogThread->start(QThread::HighestPriority);
 
     mCheckDlg = new CheckPasswordDlg(this);
     connect(mCheckDlg,SIGNAL(dialogClosed(bool)),this,SLOT(dialogClosed(bool)));
 
-//    mNetWork = new NetWork(this);
-//    connect(ui->comboBox, SIGNAL(currentIndexChanged(int)),mNetWork,SIGNAL(sendNetBusSig(int)));
+    //    mNetWork = new NetWork(this);
+    //    connect(ui->comboBox, SIGNAL(currentIndexChanged(int)),mNetWork,SIGNAL(sendNetBusSig(int)));
+    ui->comboBox->setEnabled(false);
+    QPixmap pix(1,60);
+    pix.fill(Qt::transparent);
+    QIcon icon(pix);
+    ui->comboBox->setIconSize(QSize(1,60));
+    ui->comboBox->setItemIcon(0 , icon);
+    ui->comboBox->setItemIcon(1 , icon);
+    ui->comboBox->setItemIcon(2 , icon);
+    ui->comboBox->setItemIcon(3 , icon);
 }
 
 void MainWindow::initWidget()

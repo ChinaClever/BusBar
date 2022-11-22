@@ -34,13 +34,33 @@ void SetLineTem::updateWid()
 
     for(int i=0; i<3; ++i) {
         QString str = "";
-        if(mFlag)
+        if(mFlag){
             str = startBoxTem->value[i] ?  QString::number(startBoxTem->value[i],10)+"℃" : "---";
-        else
+            btn[i]->setText(str);
+            sDataUnit *unit = &(get_share_mem()->data[mBus].box[0].env.tem);
+            setBtnColor(btn[i] , unit->alarm[i] , unit->crAlarm[i]);
+        }else{
             str = share_mem_get()->data[mBus].box[0].offLine ?  QString::number(startBoxPow->value[i]/COM_RATE_POW,'f', 3)+"kW" : "---";
-        btn[i]->setText(str);
+            btn[i]->setText(str);
+            sDataPowUnit *unit = &(get_share_mem()->data[mBus].box[0].data.pow);
+            setBtnColor(btn[i] , unit->alarm[i] , unit->crAlarm[i]);
+        }
     }
 }
+
+void SetLineTem::setBtnColor(QPushButton *label, int alarm, int crAlarm)
+{
+    QPalette pa;
+    if(alarm) { // 告警
+        pa.setColor(QPalette::ButtonText,Qt::red);
+    } else  if(crAlarm) { // 预警
+        pa.setColor(QPalette::ButtonText,"#CD7E80");
+    } else {
+        pa.setColor(QPalette::ButtonText,Qt::black);
+    }
+    label->setPalette(pa);
+}
+
 
 void SetLineTem::indexChanged(int index)
 {

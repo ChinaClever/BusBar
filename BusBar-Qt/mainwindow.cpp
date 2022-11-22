@@ -79,6 +79,7 @@ void MainWindow::timeoutDone()
 {
     updateTime();
     checkAlarm();
+    if((get_share_mem() && get_share_mem()->initFlag)) ui->comboBox->setEnabled(true);
     setBusName(mIndex);
 
     for(int i=0; i<BUS_NUM; ++i)
@@ -137,9 +138,9 @@ void MainWindow::initFunSLot()
     //mWatchdogtimer->start(1000);
     //connect(mWatchdogtimer, SIGNAL(timeout()),this, SLOT(watchdogDone()));
 
-//    mClearCachetimer = new QTimer(this);
-//    mClearCachetimer->start(2*24*60*60*1000-5*60*1000);
-//    connect(mClearCachetimer, SIGNAL(timeout()),this, SLOT(clearCacheDone()));
+    //    mClearCachetimer = new QTimer(this);
+    //    mClearCachetimer->start(2*24*60*60*1000-5*60*1000);
+    //    connect(mClearCachetimer, SIGNAL(timeout()),this, SLOT(clearCacheDone()));
 
     mCheckDlg = new CheckPasswordDlg(this);
     connect(mCheckDlg,SIGNAL(dialogClosed(bool)),this,SLOT(dialogClosed(bool)));
@@ -156,6 +157,20 @@ void MainWindow::initFunSLot()
     //        mTcpModbus->setTimeout(5000);
     //    }
 
+    QTimer::singleShot(7750,this,SLOT(initNetSLot())); //延时初始化
+    ui->comboBox->setEnabled(false);
+    QPixmap pix(1,60);
+    pix.fill(Qt::transparent);
+    QIcon icon(pix);
+    ui->comboBox->setIconSize(QSize(1,60));
+    ui->comboBox->setItemIcon(0 , icon);
+    ui->comboBox->setItemIcon(1 , icon);
+    ui->comboBox->setItemIcon(2 , icon);
+    ui->comboBox->setItemIcon(3 , icon);
+}
+
+void MainWindow::initNetSLot()
+{
     mServer = new Server(this);
     mServer->setMaxPendingConnections(30);
     mServer->listen(QHostAddress::AnyIPv4, 20086);
@@ -224,6 +239,7 @@ void MainWindow::on_setBtn_clicked()
     if(ui->stackedWid->currentWidget() != mSettingWid) {
         BeepThread::bulid()->beep();
         mCheckDlg->exec();
+        mCheckDlg->move(0,0);
     }
 }
 

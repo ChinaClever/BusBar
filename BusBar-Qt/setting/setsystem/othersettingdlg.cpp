@@ -96,4 +96,5 @@ void OtherSettingDlg::on_pwdSetBtn_clicked()
     BeepThread::bulid()->beep();
     PassordSettingDlg *passwordDlg = new PassordSettingDlg(this);
     passwordDlg->show();
+    passwordDlg->move(0,0);
 }

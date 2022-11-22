@@ -162,6 +162,7 @@ typedef struct _sBusData{
 typedef struct _sDataPacket
 {
     sBusData data[BUS_NUM];  // 四条母线数据
+    bool initFlag;
 }sDataPacket;
 
 

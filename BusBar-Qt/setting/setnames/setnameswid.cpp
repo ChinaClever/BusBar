@@ -1,5 +1,6 @@
 #include "setnameswid.h"
 #include "ui_setnameswid.h"
+#include "interfacechangesig.h"
 extern void set_box_num(int id, int num);
 
 SetNamesWid::SetNamesWid(QWidget *parent) :
@@ -10,9 +11,19 @@ SetNamesWid::SetNamesWid(QWidget *parent) :
     mIndex = 0;
     mSetShm = new SetShm;
     mSetNameDlg = new SetNameDlg(this);
-    QTimer::singleShot(100,this,SLOT(initFunSLot()));
+    QTimer::singleShot(7650,this,SLOT(initFunSLot()));
     initScrollArea(); // 开启滑动功能
+    connect(InterfaceChangeSig::get(), SIGNAL(typeSig(int)), this,SLOT(interfaceChangedSlot(int)));
+    isRun = false;
+}
 
+void SetNamesWid::interfaceChangedSlot(int id)
+{
+    if(id == 5) {
+        isRun = true;
+    } else {
+        isRun = false;
+    }
 }
 
 void SetNamesWid::initScrollArea()
@@ -212,7 +223,9 @@ void SetNamesWid::updateWid()
 
 void SetNamesWid::timeoutDone()
 {
-    updateWid();
+    if(isRun){
+        updateWid();
+    }
 }
 
 

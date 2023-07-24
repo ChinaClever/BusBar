@@ -108,7 +108,7 @@ void MainWindow::setBusName(int index)
     sBusData *busData = &(shm->data[index]);
     double rateCur = busData->box[0].ratedCur/COM_RATE_CUR;
     ui->ratedLab->setText(QString::number(rateCur));
-    ui->ratedLab->setText("V2.4.0");
+    ui->ratedLab->setText("V2.6.0");
     //    ui->ratedLab->setText("V2.0.3");//上海创建
 
 }
@@ -179,6 +179,7 @@ void MainWindow::initNetSLot()
 void MainWindow::initWidget()
 {
     //    set_background_color(ui->stackedWid,Qt::white);
+    ui->label_2->hide();
     set_background_icon(ui->stackedWid,":/new/prefix1/image/background.png");
     initBackground(); //按钮图标
 

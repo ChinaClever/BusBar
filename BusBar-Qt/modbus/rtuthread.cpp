@@ -274,6 +274,7 @@ int RtuThread::transData(int addr)
                 box->maxRate = pkt->maxRate;
                 box->dc = pkt->dc;
                 box->version = pkt->version;
+                box->proNum = pkt->proNum;
 
                 thdData(pkt);
             }

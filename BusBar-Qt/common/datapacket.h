@@ -117,6 +117,7 @@ typedef struct _sBoxData {
     char offLine; // 离线标识
     char loopNum; // 回路数量
     char version;
+    char proNum; // 0:标准 1:250A 2:400A 3:650A
 
     sObjData data; // 回路数据
     char loopName[LINE_NUM_MAX][NAME_LEN]; // 回路名称

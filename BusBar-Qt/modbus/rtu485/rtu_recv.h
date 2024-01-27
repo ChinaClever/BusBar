@@ -63,5 +63,6 @@ struct Rtu_recv {
 };
 
 bool rtu_recv_packet(uchar *buf, int len, Rtu_recv *pkt);
+void rtu_recv_packet1(uchar *buf, int len, Rtu_recv *pkt);
 
 #endif // RTU_RECV_H

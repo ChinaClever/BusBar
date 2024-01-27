@@ -266,6 +266,7 @@ int RtuThread::transData(int addr)
     if(rtn > 0) {
         bool ret = rtu_recv_packet(buf, rtn, pkt); // 解析数据 data - len - it
         if(ret) {
+            rtu_recv_packet1(buf, rtn, pkt);
             if(addr+1 == pkt->addr) { //回收地址和发送地址同
                 offLine = 4;
                 loopData(box, pkt); //更新数据

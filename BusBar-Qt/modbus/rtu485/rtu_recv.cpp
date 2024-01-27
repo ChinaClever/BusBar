@@ -280,9 +280,18 @@ bool rtu_recv_packet(uchar *buf, int len, Rtu_recv *pkt)
             ptr += rtu_recv_new_data(ptr, &(pkt->data[i]));
 
         //        if(pkt->dc) { // 交流
-        pkt->totalPow = (*ptr) * 256 + *(ptr+1); ptr+=2;
-        pkt->totalPow <<= 16;
-        pkt->totalPow += (*ptr) * 256 + *(ptr+1); ptr+=2;
+//        pkt->totalPow = (*ptr) * 256 + *(ptr+1); ptr+=2;
+//        pkt->totalPow <<= 16;
+//        pkt->totalPow += (*ptr) * 256 + *(ptr+1); ptr+=2;
+        ptr+=2;
+        ptr+=2;
+//        pkt->totalPow = 0;
+//        for(int i=0; i<lineSum; ++i)
+//            pkt->totalPow += pkt->data[i].pow;
+//        *(ptr-4) = ((pkt->totalPow>>24)&(0xff));
+//        *(ptr-3) = ((pkt->totalPow>>16)&(0xff));
+//        *(ptr-2) = ((pkt->totalPow>>8)&(0xff));
+//        *(ptr-1) = (pkt->totalPow&(0xff));
         ptr += rtu_recv_new_thd(ptr, pkt);
         //        } else {
 
@@ -314,4 +323,53 @@ bool rtu_recv_packet(uchar *buf, int len, Rtu_recv *pkt)
 #endif
     }
     return ret;
+}
+
+/**
+  * 功　能：还原数据包
+  * 入口参数：buf -> 缓冲区   len -> 数据长度
+  * 出口参数：pkt -> 结构体
+  * 返回值：true
+  */
+void rtu_recv_packet1(uchar *buf, int len, Rtu_recv *pkt)
+{
+    int rtn = rtu_recv_len(buf, len); //判断回收的数据是否完全
+    if(rtn == 0) {
+        uchar *ptr=buf;
+//        ptr += rtu_recv_head(ptr, pkt); //指针偏移
+        ptr += 4; //指针偏移
+
+//        pkt->dc = *(ptr++);  //[交直流]
+//        pkt->type = *(ptr++);// 箱子类型
+//        pkt->lineNum = *(ptr++); //[输出位]
+//        pkt->proNum = *(ptr++);// 项目ID
+//        ptr+=1;// 电流规格
+//        pkt->version = *(ptr++); // 软件版本
+        ptr += 6;
+
+        for(int i=0; i<RTU_TH_NUM; ++i) // 读取环境 数据
+            ptr += 6;
+
+        ptr += 6;//  频率上下限
+
+        ptr += 4;//[预留]
+        int lineSum = pkt->lineNum; //交流
+        if(!pkt->dc) lineSum = 4; //[暂时未加宏]
+        for(int i=0; i<lineSum; ++i) // 读取电参数
+            ptr += 60;
+
+        //        if(pkt->dc) { // 交流
+//        pkt->totalPow = (*ptr) * 256 + *(ptr+1); ptr+=2;
+//        pkt->totalPow <<= 16;
+//        pkt->totalPow += (*ptr) * 256 + *(ptr+1); ptr+=2;
+        ptr+=2;
+        ptr+=2;
+        pkt->totalPow = 0;
+        for(int i=0; i<lineSum; ++i)
+            pkt->totalPow += pkt->data[i].pow;
+        *(ptr-4) = ((pkt->totalPow>>24)&(0xff));
+        *(ptr-3) = ((pkt->totalPow>>16)&(0xff));
+        *(ptr-2) = ((pkt->totalPow>>8)&(0xff));
+        *(ptr-1) = (pkt->totalPow&(0xff));//由于美里湖项目始端箱插接箱的总功率有问题，需要十寸屏累加有功功率，再修改buf值
+    }
 }

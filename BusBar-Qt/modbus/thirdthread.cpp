@@ -208,22 +208,22 @@ uchar ThirdThread::rtu_sent_to_input_packet(sBoxData *box)
         *(ptr++) = (0xff)&ut;//i++;
 
         t = box->data.apPow[k];
-        *(ptr++) = (t >> 24);//i++; /*HH8位*/
+        *(ptr++) = (0xff)&(t >> 24);//i++; /*HH8位*/
         *(ptr++) = (0xff)&(t >> 16);//i++; /*HL8位*/
         *(ptr++) = (0xff)&(t >> 8);//i++; /*LH8位*/
         *(ptr++) = (0xff)&(t);//i++; /*LL8位*/
         t = box->data.pow.value[k];
-        *(ptr++) = (t >> 24);//i++; /*HH8位*/
+        *(ptr++) = (0xff)&(t >> 24);//i++; /*HH8位*/
         *(ptr++) = (0xff)&(t >> 16);//i++; /*HL8位*/
         *(ptr++) = (0xff)&(t >> 8);//i++; /*LH8位*/
         *(ptr++) = (0xff)&(t);//i++; /*LL8位*/
         t = box->data.pow.max[k];
-        *(ptr++) = (t >> 24);//i++; /*HH8位*/
+        *(ptr++) = (0xff)&(t >> 24);//i++; /*HH8位*/
         *(ptr++) = (0xff)&(t >> 16);//i++; /*HL8位*/
         *(ptr++) = (0xff)&(t >> 8);//i++; /*LH8位*/
         *(ptr++) = (0xff)&(t);//i++; /*LL8位*/
         t = box->data.pow.min[k];
-        *(ptr++) = (t >> 24);//i++; /*HH8位*/
+        *(ptr++) = (0xff)&(t >> 24);//i++; /*HH8位*/
         *(ptr++) = (0xff)&(t >> 16);//i++; /*HL8位*/
         *(ptr++) = (0xff)&(t >> 8);//i++; /*LH8位*/
         *(ptr++) = (0xff)&(t);//i++; /*LL8位*/
@@ -232,7 +232,7 @@ uchar ThirdThread::rtu_sent_to_input_packet(sBoxData *box)
         *(ptr++) = ut >> 8;//i++;
         *(ptr++) = (0xff)&ut;//i++;
         t = box->data.ele[k];
-        *(ptr++) = (t >> 24);//i++; /*HH8位*/
+        *(ptr++) = (0xff)&(t >> 24);//i++; /*HH8位*/
         *(ptr++) = (0xff)&(t >> 16);//i++; /*HL8位*/
         *(ptr++) = (0xff)&(t >> 8);//i++; /*LH8位*/
         *(ptr++) = (0xff)&(t);//i++; /*LL8位*/

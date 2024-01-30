@@ -31,6 +31,7 @@ void LineWid::initFun()
     timer = new QTimer(this);
     timer->start(3*1000);
     connect(timer, SIGNAL(timeout()),this, SLOT(timeoutDone()));
+    ui->thdBtn->hide();//0135始端箱谐波有问题，需隐藏
 }
 
 void LineWid::initWid()
@@ -75,7 +76,7 @@ void LineWid::timeoutDone()
             ui->rateLab->setText(str); //频率
             ui->label->setText("频率：");
 
-            ui->thdBtn->setHidden(false);
+            //ui->thdBtn->setHidden(false);
             ui->widget->setHidden(false);
             mLineTable->updateData(mData->box[0]);
             ui->lpsLab->setText(mData->box[0].lps==0?"正常":"损坏");
@@ -94,7 +95,7 @@ void LineWid::timeoutDone()
             ui->rateLab->setText(str); //频率
             ui->label->setText("输入：");
 
-            ui->thdBtn->setHidden(false);
+            //ui->thdBtn->setHidden(false);
             ui->widget->setHidden(true);
         }
 

@@ -15,7 +15,9 @@ void LineTable::initWid()
 {
     QString title = tr("");
     QStringList header;
-    header << "L" << tr("负载率(%)") << tr("电压谐波含量(%)") << tr("电流谐波含量(%)");
+//    header << "L" << tr("负载率(%)") << tr("电压谐波含量(%)") << tr("电流谐波含量(%)");
+//    initTableWid(header, 3, title);
+    header << "L" << tr("负载率(%)");
     initTableWid(header, 3, title);
 }
 
@@ -29,11 +31,11 @@ int LineTable::updateObj(sObjData &obj, int row)
     double value = obj.pl[row];
     list << QString::number(value);
 
-    value = obj.volThd[row] / 100.0;
-    list << QString::number(value,'f', 2);
+//    value = obj.volThd[row] / 100.0;
+//    list << QString::number(value,'f', 2);
 
-    value = obj.curThd[row] / 100.0;
-    list << QString::number(value,'f', 2);
+//    value = obj.curThd[row] / 100.0;
+//    list << QString::number(value,'f', 2);
 
     setTableRow(row, list);
 

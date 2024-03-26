@@ -22,8 +22,13 @@
      <height>35</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Times New Roman</family>
+    </font>
+   </property>
    <property name="text">
-    <string>退出</string>
+    <string>Quit</string>
    </property>
   </widget>
   <widget class="QPushButton" name="refreshBtn">
@@ -35,8 +40,13 @@
      <height>35</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Times New Roman</family>
+    </font>
+   </property>
    <property name="text">
-    <string>刷新</string>
+    <string>Refresh</string>
    </property>
   </widget>
   <widget class="QTableWidget" name="tableWidget">
@@ -53,6 +63,9 @@
      <pointsize>10</pointsize>
     </font>
    </property>
+   <attribute name="horizontalHeaderDefaultSectionSize">
+    <number>200</number>
+   </attribute>
   </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
@@ -63,8 +76,13 @@
      <height>41</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Times New Roman</family>
+    </font>
+   </property>
    <property name="text">
-    <string>当前告警信息</string>
+    <string>Current alarm information</string>
    </property>
   </widget>
  </widget>

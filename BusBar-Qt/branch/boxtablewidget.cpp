@@ -132,7 +132,7 @@ void BoxTableWidget::initTableWidget()
     ui->tableWidget->setRowCount(0);        //设置行数/
 
     QStringList header;
-    header <<tr("插接箱") << tr("状态") << tr("A电流") << tr("A电能") << tr("B电流") << tr("B电能") << tr("C电流")   << tr("C电能");
+    header <<tr("Plug box") << tr("State") << tr("A Current") << tr("A Electric energy") << tr("B Current") << tr("B Electric energy") << tr("C Current")   << tr("C Electric energy");
     ui->tableWidget->setColumnCount(header.size());    //设置列数
     ui->tableWidget->setHorizontalHeaderLabels(header);
 
@@ -259,17 +259,17 @@ void BoxTableWidget::setAlarmStatus(int id, int column)
         int curAlarm = mBoxData->box[id].boxCurAlarm;
         int volAlarm = mBoxData->box[id].boxVolAlarm;
         if((curAlarm == 2)  || (volAlarm == 2)) { // 告警
-            str = tr("告警");
+            str = tr("Alarm");
             item->setTextColor(QColor(Qt::red));
         } else  if((curAlarm == 1)  || (volAlarm == 1))  { // 预警
-            str = tr("预警");
+            str = tr("Early waring");
             item->setTextColor(QColor("#CD7E80"));
         } else {
-            str = tr("正常");
+            str = tr("Normal");
             item->setTextColor(QColor(Qt::black));
         }
     } else {
-        str = tr("离线");
+        str = tr("Offline");
         item->setTextColor(QColor(Qt::red));
     }
     item->setText(str);

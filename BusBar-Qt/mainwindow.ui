@@ -286,13 +286,14 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="maximumSize">
         <size>
-         <width>57</width>
+         <width>82</width>
          <height>16777215</height>
         </size>
        </property>
        <property name="font">
         <font>
-         <pointsize>12</pointsize>
+         <family>Times New Roman</family>
+         <pointsize>10</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -301,7 +302,7 @@ color: rgb(255, 255, 255);</string>
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="text">
-        <string>主界面</string>
+        <string>Main interface</string>
        </property>
        <property name="flat">
         <bool>true</bool>
@@ -359,13 +360,14 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="maximumSize">
         <size>
-         <width>50</width>
+         <width>75</width>
          <height>16777215</height>
         </size>
        </property>
        <property name="font">
         <font>
-         <pointsize>12</pointsize>
+         <family>Times New Roman</family>
+         <pointsize>10</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -374,8 +376,8 @@ color: rgb(255, 255, 255);</string>
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="text">
-        <string>主路
-信息</string>
+        <string>Main road
+information</string>
        </property>
        <property name="flat">
         <bool>true</bool>
@@ -433,13 +435,14 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="maximumSize">
         <size>
-         <width>50</width>
+         <width>70</width>
          <height>16777215</height>
         </size>
        </property>
        <property name="font">
         <font>
-         <pointsize>12</pointsize>
+         <family>Times New Roman</family>
+         <pointsize>10</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -448,8 +451,8 @@ color: rgb(255, 255, 255);</string>
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="text">
-        <string>支路
-信息</string>
+        <string>Branch
+information</string>
        </property>
        <property name="flat">
         <bool>true</bool>
@@ -507,13 +510,14 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="maximumSize">
         <size>
-         <width>50</width>
+         <width>70</width>
          <height>16777215</height>
         </size>
        </property>
        <property name="font">
         <font>
-         <pointsize>12</pointsize>
+         <family>Times New Roman</family>
+         <pointsize>10</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -522,8 +526,7 @@ color: rgb(255, 255, 255);</string>
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="text">
-        <string>数据
-记录</string>
+        <string>Data record</string>
        </property>
        <property name="flat">
         <bool>true</bool>
@@ -581,13 +584,14 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="maximumSize">
         <size>
-         <width>50</width>
+         <width>70</width>
          <height>16777215</height>
         </size>
        </property>
        <property name="font">
         <font>
-         <pointsize>12</pointsize>
+         <family>Times New Roman</family>
+         <pointsize>10</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -596,8 +600,8 @@ color: rgb(255, 255, 255);</string>
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="text">
-        <string>参数
-设置</string>
+        <string>Parameter
+setting</string>
        </property>
        <property name="flat">
         <bool>true</bool>
@@ -621,7 +625,7 @@ color: rgb(255, 255, 255);</string>
       <widget class="QComboBox" name="comboBox">
        <property name="minimumSize">
         <size>
-         <width>130</width>
+         <width>150</width>
          <height>60</height>
         </size>
        </property>
@@ -633,27 +637,28 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>15</pointsize>
+         <family>Times New Roman</family>
+         <pointsize>11</pointsize>
         </font>
        </property>
        <item>
         <property name="text">
-         <string>01 主路源</string>
+         <string>01 Main road source</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>02 主路源</string>
+         <string>02 Main road source</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>03 主路源</string>
+         <string>03 Main road source</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>04 主路源</string>
+         <string>04 Main road source</string>
         </property>
        </item>
       </widget>

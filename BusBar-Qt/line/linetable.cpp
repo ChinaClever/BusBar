@@ -15,7 +15,7 @@ void LineTable::initWid()
 {
     QString title = tr("");
     QStringList header;
-    header << "L" << tr("负载率(%)") << tr("电压谐波含量(%)") << tr("电流谐波含量(%)");
+    header << "L" << tr("Load rate(%)") << tr("电压谐波含量(%)") << tr("电流谐波含量(%)");
     initTableWid(header, 3, title);
 }
 

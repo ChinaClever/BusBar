@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>893</width>
+    <width>918</width>
     <height>400</height>
    </rect>
   </property>
@@ -68,7 +68,7 @@
          </size>
         </property>
         <property name="text">
-         <string>平均/和</string>
+         <string>Average/sum</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -1005,8 +1005,13 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
-         <string>输入</string>
+         <string>Input</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -1027,8 +1032,13 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
-         <string>电压(V)</string>
+         <string>Voltage(V)</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -1049,8 +1059,13 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
-         <string>电流(A)</string>
+         <string>Current(A)</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -1071,8 +1086,13 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
-         <string>负载率(%)</string>
+         <string>Load rate(%)</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -1083,7 +1103,7 @@
        <widget class="QLabel" name="label_14">
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>95</width>
           <height>25</height>
          </size>
         </property>
@@ -1093,9 +1113,14 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
-         <string>电流
-谐波含量</string>
+         <string>Current
+harmonic content</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -1116,8 +1141,13 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
-         <string>视在功率</string>
+         <string>Apparent power</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -1138,8 +1168,13 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
-         <string>有功功率</string>
+         <string>Active power</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -1160,8 +1195,13 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
-         <string>功率因数</string>
+         <string>Power factor</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -1172,7 +1212,7 @@
        <widget class="QLabel" name="label_12">
         <property name="minimumSize">
          <size>
-          <width>60</width>
+          <width>80</width>
           <height>25</height>
          </size>
         </property>
@@ -1182,8 +1222,13 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
-         <string>温度</string>
+         <string>Temperature</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -1194,18 +1239,23 @@
        <widget class="QLabel" name="label_8">
         <property name="minimumSize">
          <size>
-          <width>100</width>
+          <width>120</width>
           <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>100</width>
+          <width>150</width>
           <height>16777215</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
-         <string>电能(kWh)</string>
+         <string>Electric energy(kWh)</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>

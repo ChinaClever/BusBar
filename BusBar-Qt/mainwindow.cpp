@@ -287,7 +287,7 @@ void MainWindow::dialogClosed(bool ret)
         InterfaceChangeSig::get()->changeType(5);
     }
     else
-        QMessageBox::information(this,"information","对不起，密码输入不正确，您不具备该权限！","确认");
+        QMessageBox::information(this,"information","Sorry，the passward entered is incorrect.You do not have the permission！","Confirm");
     mCheckDlg->clear();
 }
 

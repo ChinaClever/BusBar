@@ -23,7 +23,7 @@
       </font>
      </property>
      <property name="title">
-      <string>表格</string>
+      <string>sheet</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">

@@ -78,9 +78,9 @@ void HomeWid::timeoutDone()
         //------------[交直流区分]-------------------By_MW 2018.3.30
         QString name;
         if(mBusData->box[0].dc){ //交流
-            name = "交";
+            name = "A";
         }else{
-            name = "直";
+            name = "D";
         }
         ui->name1->setText(name);
         //-----------------------------------------

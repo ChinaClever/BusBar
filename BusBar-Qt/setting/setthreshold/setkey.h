@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QSignalMapper>
-
+#include "common.h"
 namespace Ui {
 class SetKey;
 }
@@ -23,12 +23,10 @@ public slots:
 
 protected:
     void initKey(void);
-
+    void timeoutDone();
 private slots:
     void on_timeSet_but_clicked();
-
     void on_quitBtn_clicked();
-
 private:
     QSignalMapper *m;
     double mNuber;

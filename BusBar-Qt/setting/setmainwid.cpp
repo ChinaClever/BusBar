@@ -9,6 +9,7 @@ SetMainWid::SetMainWid(QWidget *parent) :
     ui->setupUi(this);
     this->setStyleSheet(BTN_FOCUS_BACK_COLOR);
     QTimer::singleShot(10,this,SLOT(initFunSLot())); //延时初始化
+    timeoutDone();
     SetThread::bulid(this)->start();
 }
 
@@ -16,7 +17,24 @@ SetMainWid::~SetMainWid()
 {
     delete ui;
 }
-
+void SetMainWid::timeoutDone()
+{
+    if(gLanguage == 0){
+        ui->sysBtn->setText("系统设置");
+        ui->temBtn->setText("温度设置");
+        ui->lineBtn->setText("主路设置");
+        ui->loopBtn->setText("支路设置");
+        ui->nameBtn->setText("名称设置");
+        ui->powerBtn->setText("功率设置");
+    }else{
+        ui->sysBtn->setText("System settings");
+        ui->temBtn->setText("Temperature settings");
+        ui->lineBtn->setText("Main road settings");
+        ui->loopBtn->setText("Branch settings");
+        ui->nameBtn->setText("Name settings");
+        ui->powerBtn->setText("Power settings");
+    }
+}
 
 void SetMainWid::initWidget()
 {

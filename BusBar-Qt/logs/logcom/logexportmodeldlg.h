@@ -22,7 +22,7 @@ signals:
 
 protected:
      bool checkInput();
-
+    void initLanguage();
 private slots:
     void on_startDateBtn_clicked();
     void on_endDateBtn_clicked();

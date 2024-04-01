@@ -12,7 +12,8 @@ bool MsgBox::critical(QWidget *parent,  const QString &str)
 {
     bool ret = false;
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::critical(parent,  QObject::tr("Error message"), str);
+    if(gLanguage == 0)reply = QMessageBox::critical(parent,  QObject::tr("错误提示"), str);
+    else reply = QMessageBox::critical(parent,  QObject::tr("Error message"), str);
     if (reply == QMessageBox::Abort) ret = true;
     else if (reply == QMessageBox::Retry) ret = false;
 
@@ -23,7 +24,8 @@ bool MsgBox::information(QWidget *parent,  const QString &str)
 {
     bool ret = false;
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::information(parent,  QObject::tr("Message notification"), str);
+    if(gLanguage == 0)reply = QMessageBox::information(parent,  QObject::tr("信息提示"), str);
+    else reply = QMessageBox::information(parent,  QObject::tr("Message notification"), str);
     if (reply == QMessageBox::Ok) ret = true;
 
     return ret;
@@ -33,7 +35,8 @@ bool MsgBox::question(QWidget *parent,  const QString &str)
 {
     bool ret = false;
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(parent,  QObject::tr("Information inquiry"), str);
+    if(gLanguage == 0) reply = QMessageBox::question(parent,  QObject::tr("信息询问"), str);
+    else reply = QMessageBox::question(parent,  QObject::tr("Information inquiry"), str);
     if (reply == QMessageBox::Yes) ret = true;
 
     return ret;
@@ -43,7 +46,8 @@ bool MsgBox::warning(QWidget *parent,  const QString &str)
 {
     bool ret = false;
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::warning(parent,  QObject::tr("Warning message"), str);
+    if(gLanguage == 0) reply = QMessageBox::warning(parent,  QObject::tr("警告信息"), str);
+    else reply = QMessageBox::warning(parent,  QObject::tr("Warning message"), str);
     if (reply == QMessageBox::Ok) ret = true;
 
     return ret;
@@ -54,16 +58,20 @@ bool MsgBox::warning(QWidget *parent,  const QString &str)
 QuMsgBox::QuMsgBox(QWidget *parent,QString strContext) : QMessageBox(parent)
 {    
     setWindowFlags(Qt::WindowStaysOnTopHint);
-    setWindowTitle(tr("Prompt information"));
-    com_setBackColour(tr("Prompt information"),this);
+    if(gLanguage == 0) {setWindowTitle(tr("提示信息"));
+        com_setBackColour(tr("提示信息"),this);}
+    else{setWindowTitle(tr("Prompt information"));
+        com_setBackColour(tr("Prompt information"),this);}
     setWindowIcon(QIcon(":/images/logo.jpg"));
     resize(600, 400);
 
     setIcon(QMessageBox::Question);
     setText(strContext);
 
-    confirmBut = addButton(tr("Confirm"), QMessageBox::AcceptRole);
-    cancelBut = addButton(tr("Cancel"), QMessageBox::AcceptRole);
+    if(gLanguage == 0) {confirmBut = addButton(tr("确定"), QMessageBox::AcceptRole);
+        cancelBut = addButton(tr("取消"), QMessageBox::AcceptRole);}
+    else{confirmBut = addButton(tr("Confirm"), QMessageBox::AcceptRole);
+        cancelBut = addButton(tr("Cancel"), QMessageBox::AcceptRole);}
     confirmBut->setFixedSize(60,25);
     cancelBut->setFixedSize(60,25);
     setDefaultButton(confirmBut);
@@ -93,15 +101,18 @@ WaringMsgBox::WaringMsgBox(QWidget *parent,QString strContext) : QMessageBox(par
 {
     //    setWindowFlags(Qt::WindowStaysOnTopHint);
     //    setWindowTitle(tr("警告信息"));
-    com_setBackColour(tr("Warning message"),this);
+    if(gLanguage == 0) com_setBackColour(tr("警告信息"),this);
+    else com_setBackColour(tr("Warning message"),this);
     setWindowIcon(QIcon(":/images/logo.jpg"));
     resize(500, 400);
 
     setIcon(QMessageBox::Warning);
     setText(strContext);
 
-    confirmBut = addButton(tr("Confirm "), QMessageBox::AcceptRole);
-    cancelBut = addButton(tr("Cancel"), QMessageBox::AcceptRole);
+    if(gLanguage == 0){confirmBut = addButton(tr("确定"), QMessageBox::AcceptRole);
+        cancelBut = addButton(tr("取消"), QMessageBox::AcceptRole);}
+    else{confirmBut = addButton(tr("Confirm "), QMessageBox::AcceptRole);
+    cancelBut = addButton(tr("Cancel"), QMessageBox::AcceptRole);}
     confirmBut->setMinimumSize(75,29);
     cancelBut->setMinimumSize(75,29);
 
@@ -132,14 +143,16 @@ InfoMsgBox::InfoMsgBox(QWidget *parent,QString strContext) :
 {
     //    setWindowFlags(Qt::WindowStaysOnTopHint);
     //    setWindowTitle(tr("信息提示"));
-    com_setBackColour(tr("Message notification"),this);
+    if(gLanguage == 0)com_setBackColour(tr("信息提示"),this);
+    else com_setBackColour(tr("Message notification"),this);
     setWindowIcon(QIcon(":/images/logo.jpg"));
     resize(500, 400);
 
     setIcon(QMessageBox::Information);
     setText(strContext);
 
-    confirmBut = addButton(tr("Confirm"), QMessageBox::AcceptRole);
+    if(gLanguage == 0)confirmBut = addButton(tr("确定"), QMessageBox::AcceptRole);
+    else confirmBut = addButton(tr("Confirm"), QMessageBox::AcceptRole);
     setDefaultButton(confirmBut);
     confirmBut->setMinimumSize(75,29);
 
@@ -161,14 +174,16 @@ CriticalMsgBox::CriticalMsgBox(QWidget *parent,QString strContext) :
 {
     //    setWindowFlags(Qt::WindowStaysOnTopHint);
     //    setWindowTitle(tr("错误提示"));
-    com_setBackColour(tr("Error message"),this);
+    if(gLanguage == 0)com_setBackColour(tr("错误提示"),this);
+    else com_setBackColour(tr("Error message"),this);
     setWindowIcon(QIcon(":/images/logo.jpg"));
     resize(500, 400);
 
     setIcon(QMessageBox::Critical);
     setText(strContext);
 
-    confirmBut = addButton(tr("Confirm"), QMessageBox::AcceptRole);
+    if(gLanguage == 0)confirmBut = addButton(tr("确定"), QMessageBox::AcceptRole);
+    else confirmBut = addButton(tr("Confirm"), QMessageBox::AcceptRole);
     setDefaultButton(confirmBut);
     confirmBut->setMinimumSize(75,29);
 

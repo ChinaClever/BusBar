@@ -12,7 +12,9 @@ ThdTableWid::ThdTableWid(QWidget *parent) : ComTableWid(parent)
 
 void ThdTableWid::initWid()
 {
-    QString title = tr("各次谐波含量THD(%)");
+    QString title;
+    if(gLanguage == 0)title = tr("各次谐波含量THD(%)");
+    else title = tr("Harmonic content THD of each order(%)");
     QStringList header;
 
     for(int i = 0; i < 10; i++)
@@ -20,6 +22,7 @@ void ThdTableWid::initWid()
 
     initTableWid(header, 3, title);
 }
+
 
 int ThdTableWid::updateLine(QList<ushort> &datas, int row)
 {

@@ -17,10 +17,9 @@ SetLoopPowerWid::SetLoopPowerWid(QWidget *parent): ComTableWid(parent)
 
 void SetLoopPowerWid::initWid()
 {
-    QString title = tr("回路功率");
-    QStringList header;
-    header<< tr("插接箱");
-
+    QString title;QStringList header;
+    if(gLanguage == 0){title = tr("回路功率");header<< tr("插接箱");}
+    else {title = tr("Loop power");header<< tr("Plug box");}
     if(mDc){ //交流9个
         for(int i = 0; i < LINE_NUM; ++i)
             header << QString((char)('A' + i%3))+ QString("%1").arg(i/3 + 1);

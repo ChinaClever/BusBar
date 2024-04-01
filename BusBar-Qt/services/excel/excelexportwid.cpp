@@ -12,7 +12,8 @@ ExcelExportWid::ExcelExportWid(QWidget *parent) :
     ui(new Ui::ExcelExportWid)
 {
     ui->setupUi(this);
-    this->setWindowTitle(tr("日志导出"));
+    if(gLanguage == 0) this->setWindowTitle(tr("日志导出"));
+    else this->setWindowTitle(tr("Log export"));
 
     mExportThread = new ExcelExportLogThread(this);
     connect(mExportThread, SIGNAL(progressSig(int)), this,SLOT(progressSlot(int)));
@@ -55,11 +56,13 @@ void ExcelExportWid::progressSlot(int progress)
 void ExcelExportWid::overSlot(bool over)
 {
     int progress = 100;
-    QString str =  tr("\n导出完成!!\n");
-
+    QString str;
+    if(gLanguage == 0) str =  tr("\n导出完成!!\n");
+    else str =  tr("\nExport completed!!\n");
     if(!over) {
         progress = 0;
-        str =  tr("\n导出失败!!\n");
+        if(gLanguage == 0) str =  tr("\n导出失败!!\n");
+        else str =  tr("\nExport failed!!\n");
     }
 
     ui->progressBar->setValue(progress);

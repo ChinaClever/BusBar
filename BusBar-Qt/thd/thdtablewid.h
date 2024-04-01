@@ -18,7 +18,6 @@ protected:
 
 signals:
 
-public slots:
 };
 
 #endif // THDTABLEWID_H

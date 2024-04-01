@@ -28,13 +28,25 @@ IpSettingDlg::IpSettingDlg(QWidget *parent) :
     ui->setupUi(this);
 
     initData();
+    initLanguage();
 }
 
 IpSettingDlg::~IpSettingDlg()
 {
     delete ui;
 }
-
+void IpSettingDlg::initLanguage()
+{
+    if(gLanguage == 0)
+    {
+        ui->groupBox->setTitle("IP设置");
+        ui->saveBtn->setText("保存");
+    }
+    else{
+        ui->groupBox->setTitle("IP settings");
+        ui->saveBtn->setText("Save");
+    }
+}
 void IpSettingDlg::initData()
 {
     bool ret = sys_configFile_open();

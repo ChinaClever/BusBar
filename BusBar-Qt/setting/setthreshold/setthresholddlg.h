@@ -23,7 +23,7 @@ protected:
     bool checkData();
     void setTitle(sThresholdItem &item);
     void initSpinBox(sThresholdItem &item);
-
+    void timeoutDone();
 private slots:
     void on_saveBtn_clicked();
     void on_cancelBtn_clicked();

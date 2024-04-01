@@ -12,6 +12,11 @@ SetNameDlg::SetNameDlg(QWidget *parent) :
 {
     ui->setupUi(this);
     com_setBackColour(tr("设置界面"), this);
+    if(gLanguage == 0) {ui->label->setText("名称修改");
+        ui->label_2->setText("修改");ui->label_3->setText("名称");}
+    else {ui->label->setText("Name modification");
+        ui->label_2->setText("Modify");ui->label_3->setText("Name");}
+
 }
 
 SetNameDlg::~SetNameDlg()
@@ -74,7 +79,8 @@ void SetNameDlg::on_saveBtn_clicked()
             close();
         }
     } else {
-        CriticalMsgBox box(this, tr("名称不能为空!!"));
+        if(gLanguage == 0) CriticalMsgBox box(this, tr("名称不能为空!!"));
+        else CriticalMsgBox box(this, tr("Name cannot be empty!!"));
     }
 }
 

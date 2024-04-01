@@ -25,7 +25,7 @@ EmailWid::EmailWid(QWidget *parent) :
 
     gSet = new email_setInfo;
     initData();
-
+    initLanguage();
     mEmailThread = new EmailThread(this);
 }
 
@@ -33,7 +33,24 @@ EmailWid::~EmailWid()
 {
     delete ui;
 }
-
+void EmailWid::initLanguage()
+{
+    if(gLanguage == 0){
+        ui->groupBox->setTitle("SNMP设置");
+        ui->label->setText("接收地址:");
+        ui->label_2->setText("邮件设置:");
+        ui->label_3->setText("邮件测试:");
+        ui->setBtn->setText("设置");
+        ui->sentBtn->setText("发送");
+    }else{
+        ui->groupBox->setTitle("SNMP settings");
+        ui->label->setText("Receiving address:");
+        ui->label_2->setText("E-Mail settings:");
+        ui->label_3->setText("Email test:");
+        ui->setBtn->setText("Set up");
+        ui->sentBtn->setText("Send");
+    }
+}
 
 /**
  * @brief 初始化数据
@@ -100,18 +117,30 @@ void EmailWid::on_sentBtn_clicked()
     if(recipient.size() == 0)
     {
         bool ok;
-        QString text = QInputDialog::getText(this,tr("邮件测试"),tr("请输入接收地址"),QLineEdit::Normal,NULL,&ok);
+        QString text;
+        if(gLanguage == 0) text = QInputDialog::getText(this,tr("邮件测试"),tr("请输入接收地址"),QLineEdit::Normal,NULL,&ok);
+        else text = QInputDialog::getText(this,tr("Email test"),tr("Please enter the receiving address"),QLineEdit::Normal,NULL,&ok);
         if(ok && !text.isEmpty())
             recipient << text;
         else
             return ;
     }
+    if(gLanguage == 0){
+        QString subject = tr("PDU测试邮件");
+        QString body = tr("这是一份测试邮件!");
 
-    QString subject = tr("PDU测试邮件");
-    QString body = tr("这是一份测试邮件!");
+        Email email;
+        email.sentEmail(recipient,subject,body);
 
-    Email email;
-    email.sentEmail(recipient,subject,body);
+        InfoMsgBox box(this,tr("邮件已发送至：%1，请等待!").arg(recipient.at(0)));
+    }else{
+        QString subject = tr("PDU test email");
+        QString body = tr("This is a test email!");
 
-    InfoMsgBox box(this,tr("邮件已发送至：%1，请等待!").arg(recipient.at(0)));
+        Email email;
+        email.sentEmail(recipient,subject,body);
+
+        InfoMsgBox box(this,tr("The email has been sent to：%1，please wait patiently!").arg(recipient.at(0)));
+    }
+
 }

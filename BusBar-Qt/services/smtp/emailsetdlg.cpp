@@ -6,9 +6,10 @@ EmailSetDlg::EmailSetDlg(QWidget *parent) :
     ui(new Ui::EmailSetDlg)
 {
     ui->setupUi(this);
-    setWindowTitle(tr("SMTP设置"));
+    if(gLanguage == 0) setWindowTitle(tr("SMTP设置"));
+    else setWindowTitle(tr("SMTP settings"));
     mSet = NULL;
-
+    initLanguage();
     ui->checkBox->setHidden(true); // 隐藏加密邮件功能
 }
 
@@ -17,7 +18,24 @@ EmailSetDlg::~EmailSetDlg()
     delete ui;
 }
 
-
+void EmailSetDlg::initLanguage()
+{
+    if(gLanguage == 0){
+        ui->label->setText("发件箱账号:");
+        ui->label_2->setText("发件箱密码:");
+        ui->label_3->setText("发件箱服务器:");
+        ui->label_4->setText("发件箱端口号:");
+        ui->saveBtn->setText("保存");
+        ui->quitBtn->setText("退出");
+    }else{
+        ui->label->setText("Outbox account:");
+        ui->label_2->setText("Outbox password:");
+        ui->label_3->setText("Outbox server:");
+        ui->label_4->setText("Outbox port:");
+        ui->saveBtn->setText("Save");
+        ui->quitBtn->setText("Quit");
+    }
+}
 /**
  * @brief 设置初值
  * @param email
@@ -52,7 +70,8 @@ bool EmailSetDlg::dataCheck(void)
 
     bool ret = cm_isDigitStr(str);
     if(ret == false)
-        CriticalMsgBox box(this, "发件箱端口号错误!");
+        if(gLanguage == 0) CriticalMsgBox box(this, "发件箱端口号错误!");
+        else CriticalMsgBox box(this, "Outbox port number wrong!");
 
     return ret;
 }

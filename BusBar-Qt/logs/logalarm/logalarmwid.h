@@ -39,7 +39,6 @@ protected slots:
     void clearTableSlot();
     void refreshSlot();
     void exportSlot(int);
-
 private:
     Ui::LogAlarmWid *ui;
     int mid;
@@ -50,6 +49,7 @@ private:
     int mCount;
     QScrollBar *m_scrollBarV;
     QScrollBar *m_scrollBarH;
+    QTimer *timer;
 };
 
 #endif // LOGALARMWID_H

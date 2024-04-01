@@ -17,7 +17,7 @@ public:
     ~BoxTotalWid();
 
     void initFun(int bus, int box);
-
+    void initlanguage();
 protected:
     void updateData();
     void updateAll();

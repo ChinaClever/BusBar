@@ -1,6 +1,5 @@
 #include "boxlooptablewid.h"
 #include "ui_boxlooptablewid.h"
-
 BoxLoopTableWid::BoxLoopTableWid(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::BoxLoopTableWid)
@@ -134,7 +133,8 @@ void BoxLoopTableWid::initTableWidget()
     ui->tableWidget->setRowCount(0);        //设置行数/
 
     QStringList header;
-    header <<tr("Loop") <<tr("Name") <<tr("Circuit breaker") << tr("Voltage") << tr("Current") << tr("Power") << tr("Power factor") << tr("Electric energy");// << tr("温度");
+    if(gLanguage == 0) header <<tr("回路") <<tr("名称") <<tr("断路器") << tr("电压") << tr("电流") << tr("功率") << tr("功率因数") << tr("电能");// << tr("温度");
+    else header <<tr("Loop") <<tr("Name") <<tr("Circuit breaker") << tr("Voltage") << tr("Current") << tr("Power") << tr("Power factor") << tr("Electric energy");// << tr("温度");
     ui->tableWidget->setColumnCount(header.size());    //设置列数
     ui->tableWidget->setHorizontalHeaderLabels(header);
 
@@ -301,10 +301,12 @@ void BoxLoopTableWid::setSw(int id, int column)
     QString str = "---";
 
     int sw = mData->sw[id];
-    if(sw)
-        str = "Closure";
-    else
-        str = "Disconnect";
+    if(sw){
+        if(gLanguage == 0) str = "闭合";
+        else str = "Closure";}
+    else{
+        if(gLanguage == 0) str = "断开";
+        else str = "Disconnect";}
 
     setTableItem(id, column, str);
     setAlarmStatus(id, column,1-sw, 0);

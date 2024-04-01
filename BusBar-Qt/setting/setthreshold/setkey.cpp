@@ -10,6 +10,7 @@ SetKey::SetKey(QWidget *parent, double value, QString tit) :
     ui->label_7->setText(tit);
     mNuber = value;
     ui->lineEdit->setText(QString::number(value));
+    timeoutDone();
     initKey();
 }
 
@@ -17,7 +18,18 @@ SetKey::~SetKey()
 {
     delete ui;
 }
-
+void SetKey::timeoutDone()
+{
+    if(gLanguage == 0){
+        ui->label_7->setText("修改值:");
+        ui->timeSet_but->setText("确认");
+        ui->quitBtn->setText("退出");
+    }else{
+        ui->label_7->setText("Modify value:");
+        ui->timeSet_but->setText("Confirm");
+        ui->quitBtn->setText("Quit");
+    }
+}
 double SetKey::getNuber()
 {
     return mNuber;

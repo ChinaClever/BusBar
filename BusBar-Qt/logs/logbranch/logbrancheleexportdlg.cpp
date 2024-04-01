@@ -12,6 +12,7 @@ LogBranchEleExportDlg::LogBranchEleExportDlg(QWidget *parent) :
     ui(new Ui::LogBranchEleExportDlg)
 {
     ui->setupUi(this);
+    initLanguage();
 
     mDbThread = new LogBranchEleExportThread(this);
     connect(mDbThread,SIGNAL(readDbSig(QString)), this,SLOT(readDbSlot(QString)));
@@ -26,7 +27,20 @@ LogBranchEleExportDlg::~LogBranchEleExportDlg()
     delete ui;
 }
 
-
+void LogBranchEleExportDlg::initLanguage()
+{
+    if(gLanguage == 0){
+        ui->label->setText("日志导出");
+        ui->label_2->setText("导出状态");
+        ui->label_4->setText("导出进度：");
+        ui->pushButton->setText("退出");
+    }else{
+        ui->label->setText("Log export");
+        ui->label_2->setText("Export Status:");
+        ui->label_4->setText("Export Progress:");
+        ui->pushButton->setText("Quit");
+    }
+}
 void LogBranchEleExportDlg::set(int id)
 {
     ui->pushButton->setEnabled(false);

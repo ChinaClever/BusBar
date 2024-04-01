@@ -16,6 +16,8 @@ LogBranchEleWid::LogBranchEleWid(QWidget *parent) :
 {
     ui->setupUi(this);
     QTimer::singleShot(100,this,SLOT(initFunSLot())); //延时初始化
+
+
     mCount = 0;
     initScrollArea(); // 开启滑动功能
 }
@@ -24,7 +26,6 @@ LogBranchEleWid::~LogBranchEleWid()
 {
     delete ui;
 }
-
 void LogBranchEleWid::initScrollArea()
 {
     m_scrollBarV = ui->tableView->verticalScrollBar();
@@ -174,8 +175,8 @@ void LogBranchEleWid::initTableSlot(int id)
     mid = id;
     m_table = getTableName(id);
     this->refreshTable(m_table);
-
-    mHeadList << tr("编号") << tr("日期") << tr("时间") << tr("插接箱");
+    if(gLanguage == 0) mHeadList << tr("编号") << tr("日期") << tr("时间") << tr("插接箱");
+    else mHeadList << tr("NO.") << tr("Date") << tr("Time") << tr("Plug box");
     /* for(int i=0; i<9; ++i)
         mHeadList << "L" + QString::number(i+1);*/
     //--------------------[由于界面不好修改——By_MW 2018.3.21]-----------
@@ -183,7 +184,9 @@ void LogBranchEleWid::initTableSlot(int id)
               << tr("C2") << tr("A3") << tr("B3") << tr("C3");
     //---------------------------------------------------------------
     mHeadList << tr("合计");
+
     model->setHeaders(mHeadList);
+
 }
 
 
@@ -225,7 +228,9 @@ void LogBranchEleWid::refreshSlot()
 
 void LogBranchEleWid::doubleSlot(QModelIndex)
 {
-    QString str = tr("是否删除这条记录?");
+    QString str;
+    if(gLanguage == 0) str = tr("是否删除这条记录?");
+    else str = tr("Do you want to delete this record?");
     QuMsgBox box(this, str);
     bool ret = box.Exec();
     if(ret)

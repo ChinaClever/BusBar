@@ -22,10 +22,9 @@ public:
 private:
     void initWidget();
     void setButtonColor(QPushButton *button);
-
+    void timeoutDone();
 public slots:
     void busChangedSlot(int);
-
 private slots:
     void initFunSLot();
     void on_nameBtn_clicked();
@@ -33,6 +32,7 @@ private slots:
     void on_loopBtn_clicked();
     void on_temBtn_clicked();
     void on_sysBtn_clicked();
+
 #if ( SI_RTUWIFI == 1 )
 signals:
     void busChangedSig(int);

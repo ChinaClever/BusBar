@@ -245,5 +245,5 @@ sDataPacket *share_mem_get();
 void share_mem_init();
 void share_mem_free();
 void share_mem_del();
-
+extern int gLanguage;//0--中文 1---英文
 #endif // DATAPACKET_H

@@ -15,6 +15,7 @@ LogMainEleWid::LogMainEleWid(QWidget *parent) :
     ui(new Ui::LogMainEleWid)
 {
     ui->setupUi(this);
+
     QTimer::singleShot(100,this,SLOT(initFunSLot())); //延时初始化
     mCount = 0;
     initScrollArea(); // 开启滑动功能
@@ -24,7 +25,6 @@ LogMainEleWid::~LogMainEleWid()
 {
     delete ui;
 }
-
 void LogMainEleWid::initScrollArea()
 {
     m_scrollBarV = ui->tableView->verticalScrollBar();
@@ -131,7 +131,7 @@ void LogMainEleWid::initFunSLot()
 
 void LogMainEleWid::initBtnBar()
 {
-    mBtnBar = new LogBtnBar(ui->widget);
+   mBtnBar = new LogBtnBar(ui->widget);
 //    connect(mBtnBar, SIGNAL(busNumSig(int)), this, SLOT(initTableSlot(int)));
     connect(mBtnBar,SIGNAL(querySig(QString)),model,SLOT(queryFilter(QString)));
     connect(mBtnBar,SIGNAL(clearSig()),this,SLOT(clearTableSlot()));
@@ -149,8 +149,8 @@ void LogMainEleWid::initTableSlot(int id)
     mid = id;
     m_table = getTableName(id);
     this->refreshTable(m_table);
-
-    mHeadList << tr("编号") << tr("日期") << tr("时间") << tr("A")<< tr("B") << tr("C") << tr("合相");
+    if(gLanguage == 0) mHeadList << tr("编号") << tr("日期") << tr("时间") << tr("A")<< tr("B") << tr("C") << tr("合相");
+    else mHeadList << tr("NO.") << tr("Date") << tr("Time") << tr("A")<< tr("B") << tr("C") << tr("Coniunction");
     model->setHeaders(mHeadList);
 }
 
@@ -197,7 +197,9 @@ void LogMainEleWid::refreshSlot()
 void LogMainEleWid::doubleSlot(QModelIndex)
 {
     BeepThread::bulid()->beep();
-    QString str = tr("是否删除这条记录?");
+    QString str;
+    if(gLanguage == 0) str = tr("是否删除这条记录?");
+    else str = tr("Do you want to delete this record?");
     QuMsgBox box(this, str);
     bool ret = box.Exec();
     if(ret)

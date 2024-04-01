@@ -7,7 +7,6 @@ LineTable::LineTable(QWidget *parent) : ComTableWid(parent)
     layout->addWidget(this);
     layout->setSpacing(0);
     layout->setContentsMargins(0, 0, 0, 0);
-
     initWid();
 }
 
@@ -15,7 +14,8 @@ void LineTable::initWid()
 {
     QString title = tr("");
     QStringList header;
-    header << "L" << tr("Load rate(%)") << tr("电压谐波含量(%)") << tr("电流谐波含量(%)");
+    if(gLanguage == 0) header << "L" << tr("负载率(%)") << tr("电压谐波含量(%)") << tr("电流谐波含量(%)");
+    else header << "L" << tr("Load rate(%)") << tr("Voltage harmonic content(%)") << tr("Current harmonic content(%)");
     initTableWid(header, 3, title);
 }
 

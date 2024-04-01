@@ -15,6 +15,7 @@ public:
     ~SetNameDlg();
 
     void init(int bus, int box, int loop, const QString &name);
+
 protected:
     bool save();
     bool saveToDev();
@@ -22,7 +23,6 @@ protected:
 private slots:
     void on_saveBtn_clicked();
     void on_cancelBtn_clicked();
-
 private:
     Ui::SetNameDlg *ui;
     int mBusId, mBox, mLoop;

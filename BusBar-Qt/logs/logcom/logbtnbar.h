@@ -18,7 +18,7 @@ class LogBtnBar : public QWidget
 public:
     explicit LogBtnBar(QWidget *parent = 0);
     ~LogBtnBar();
-
+    void initLanguage();
 signals:
     void refreshSig();
     void querySig(QString);
@@ -29,11 +29,8 @@ signals:
 private slots:
     void on_dateBtn_clicked();
     void on_queryBtn_clicked();
-
     void on_exportBtn_clicked();
-
     void on_clearBtn_clicked();
-
     void on_comboBox_currentIndexChanged(int index);
 
 private:

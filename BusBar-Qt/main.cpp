@@ -84,6 +84,20 @@ bool appendFile(const QString &msg)
 
     return true;
 }
+void initLanguage()
+{
+    bool ret = sys_configFile_open();
+    if(ret)
+    {
+        int temp;
+        QString us = sys_configFile_readStr("language");
+        if(!us.isEmpty()){
+            temp = us.toInt();
+        }
+        gLanguage = temp;
+    }
+    sys_configFile_close();
+}
 
 int main(int argc, char *argv[])
 {
@@ -91,9 +105,9 @@ int main(int argc, char *argv[])
     checkPermission();
     appendFile("monitor");
     addWatchdog();
+    initLanguage();
     MainWindow w;
     w.showFullScreen();
     //    w.show();
-
     return a.exec();
 }

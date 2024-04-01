@@ -8,11 +8,10 @@ LineWid::LineWid(QWidget *parent) :
     ui(new Ui::LineWid)
 {
     ui->setupUi(this);
-
+    initLanguage();
     mIndex = 0;
     initFun();
     initWid();
-
     connect(this, SIGNAL(busChangedSig(int)), this, SLOT(indexChanged(int)));
     connect(InterfaceChangeSig::get(), SIGNAL(typeSig(int)), this,SLOT(interfaceChangedSlot(int)));
 }
@@ -26,11 +25,38 @@ void LineWid::initFun()
 {
     sDataPacket *shm = get_share_mem();
     mData = &(shm->data[mIndex]);
-
     isRun = false;
     timer = new QTimer(this);
     timer->start(3*1000);
     connect(timer, SIGNAL(timeout()),this, SLOT(timeoutDone()));
+}
+void LineWid::initLanguage()
+{
+    if(gLanguage == 0){
+        ui->label_10->setText("防雷:");
+        ui->label_2->setText("版本:");
+        ui->label_5->setText("输入:");
+        ui->label_13->setText("电压:");
+        ui->label_9->setText("电流:");
+        ui->label_3->setText("过载电流:");
+        ui->label_8->setText("有功功率:");
+        ui->label_6->setText("功率因数:");
+        ui->label_4->setText("温度:");
+        ui->label_7->setText("电能:");
+        ui->thdBtn->setText("谐波分析:");
+    }else{
+        ui->label_10->setText("Lightning protection:");
+        ui->label_2->setText("Version:");
+        ui->label_5->setText("Input:");
+        ui->label_13->setText("Voltage:");
+        ui->label_9->setText("Current:");
+        ui->label_3->setText("Overload current:");
+        ui->label_8->setText("Active power:");
+        ui->label_6->setText("Active power:");
+        ui->label_4->setText("Temperature :");
+        ui->label_7->setText("Electric energy:");
+        ui->thdBtn->setText("Harmonic analysis:");
+    }
 }
 
 void LineWid::initWid()
@@ -73,12 +99,13 @@ void LineWid::timeoutDone()
         if(mData->box[0].dc){ //交流
             str= QString::number(mData->box[0].rate) + "Hz";
             ui->rateLab->setText(str); //频率
-            ui->label->setText("频率：");
-
+            if(gLanguage == 0)ui->label->setText("频率：");
+            else ui->label->setText("Frequency：");
             ui->thdBtn->setHidden(false);
             ui->widget->setHidden(false);
             mLineTable->updateData(mData->box[0]);
-            ui->lpsLab->setText(mData->box[0].lps==0?"正常":"损坏");
+            if(gLanguage == 0)ui->lpsLab->setText(mData->box[0].lps==0?"正常":"损坏");
+            else ui->lpsLab->setText(mData->box[0].lps==0?"normal":"damage");
             QPalette pa;
             if(mData->box[0].lps==1)
             {
@@ -90,10 +117,15 @@ void LineWid::timeoutDone()
                 ui->lpsLab->setPalette(pa);
             }
         }else{
-            str= QString::number(mData->box[0].rate) + "路";
-            ui->rateLab->setText(str); //频率
-            ui->label->setText("输入：");
-
+            if(gLanguage == 0){
+                str= QString::number(mData->box[0].rate) + "路";
+                ui->rateLab->setText(str); //频率
+                ui->label->setText("输入：");
+            }else{
+                str= QString::number(mData->box[0].rate) + " load";
+                ui->rateLab->setText(str); //频率
+                ui->label->setText("Input：");
+            }
             ui->thdBtn->setHidden(false);
             ui->widget->setHidden(true);
         }
@@ -102,7 +134,6 @@ void LineWid::timeoutDone()
         //------[版本号]------------
         QString version = QString("V%1.%2").arg(mData->box[0].version/10).arg(mData->box[0].version%10);
         ui->version->setText(version);
-
 //        updateTotalWid();
 //        updatePlot();
     }

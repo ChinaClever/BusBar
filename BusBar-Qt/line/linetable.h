@@ -17,7 +17,6 @@ protected:
 
 signals:
 
-public slots:
 };
 
 #endif // LINETABLE_H

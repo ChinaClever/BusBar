@@ -6,7 +6,7 @@ LineTotalWid::LineTotalWid(QWidget *parent) :
     ui(new Ui::LineTotalWid)
 {
     ui->setupUi(this);
-
+    initLan();
     QTimer::singleShot(1000,this,SLOT(initFunSLot())); //延时初始化
 }
 
@@ -14,7 +14,21 @@ LineTotalWid::~LineTotalWid()
 {
     delete ui;
 }
+void LineTotalWid::initLan()
+{
+    if(gLanguage == 0){
+        ui->label_4->setText("总电流:");
+        ui->label_8->setText("总电能:");
+        ui->label_7->setText("功率参数:");
+        ui->label_9->setText("视在功率:");
+    }else{
+        ui->label_4->setText("Total current:");
+        ui->label_8->setText("Total electric energy:");
+        ui->label_7->setText("Power parameter:");
+        ui->label_9->setText("Apparent power:");
+    }
 
+}
 void LineTotalWid::initFunSLot()
 {
     busChangeSlot(0);

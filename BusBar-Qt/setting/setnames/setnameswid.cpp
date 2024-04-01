@@ -9,6 +9,7 @@ SetNamesWid::SetNamesWid(QWidget *parent) :
 {
     ui->setupUi(this);
     mIndex = 0;
+
     mSetShm = new SetShm;
     mSetNameDlg = new SetNameDlg(this);
     QTimer::singleShot(7650,this,SLOT(initFunSLot()));
@@ -131,8 +132,14 @@ void SetNamesWid::initTableWidget()
     ui->tableWidget->clear();
     ui->tableWidget->setRowCount(0);
 
+    if(gLanguage == 0){ui->label->setText("母线名称");ui->label_2->setText("额定电流");
+        ui->label_3->setText("插接箱数量");ui->saveBtn->setText("保存");}
+    else{ui->label->setText("Busbar name");ui->label_2->setText("Rated current");
+        ui->label_3->setText("Number of plug-in boxes");ui->saveBtn->setText("Save");}
+
     QStringList horHead;
-    horHead<< tr("插接箱");
+    if(gLanguage == 0) horHead<< tr("插接箱");
+    else horHead<< tr("Plug box");
 
     int dc = mPacket ? mPacket->box[0].dc : 1;
     if(dc){ //交流9个
@@ -210,7 +217,6 @@ void SetNamesWid::indexChanged(int index)
 void SetNamesWid::updateWid()
 {
     checkBus();
-
     int row = ui->tableWidget->rowCount();
     for(int i = 0 ; i < row ; i++)
     {
@@ -300,7 +306,8 @@ bool SetNamesWid::saveBusName()
         item.name = name;
         mSetShm->setName(item);
     }else {
-        CriticalMsgBox box(this, tr("母线名称保存失败!!"));
+        if(gLanguage == 0) CriticalMsgBox box(this, tr("母线名称保存失败!!"));
+        else CriticalMsgBox box(this, tr("Busbar name save failed!!"));
         ret = false;
     }
     return ret;
@@ -316,7 +323,8 @@ void SetNamesWid::on_saveBtn_clicked()
         updateWid();                               //2018-12-17保存插接箱数量的同时，更新名称设置列表 pmd
 
         BeepThread::bulid()->beep();
-        InfoMsgBox box(this, tr("保存成功！"));
+        if(gLanguage == 0) InfoMsgBox box(this, tr("保存成功！"));
+        else InfoMsgBox box(this, tr("Save successfull！"));
     }
 }
 

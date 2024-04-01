@@ -1,4 +1,6 @@
 #include "emailthread.h"
+#include "common.h"
+
 extern QString get_email_str();
 
 EmailThread::EmailThread(QObject *parent) : QThread(parent)
@@ -35,7 +37,8 @@ bool EmailThread::getMessage(QString &subject, QString &body)
 {
     bool ret = true;
 
-    subject = tr("IDC-BUS告警邮件");
+    if(gLanguage == 0) subject = tr("IDC-BUS告警邮件");
+    else subject = tr("IDC-BUS alarm email");
     body = get_email_str();
     if(body.isEmpty())
         ret = false;

@@ -6,7 +6,7 @@ BoxTotalWid::BoxTotalWid(QWidget *parent) :
     ui(new Ui::BoxTotalWid)
 {
     ui->setupUi(this);
-
+    initlanguage();
     timer = new QTimer(this);
     timer->start(2000);
     connect(timer, SIGNAL(timeout()),this, SLOT(timeoutDone()));
@@ -17,7 +17,32 @@ BoxTotalWid::~BoxTotalWid()
 {
     delete ui;
 }
-
+void BoxTotalWid::initlanguage()
+{
+    if(gLanguage == 0){
+        ui->label->setText("输入");
+        ui->label_11->setText("电压(V)");
+        ui->label_4->setText("电流(A)");
+        ui->label_13->setText("负载率(%)");
+        ui->label_14->setText("电流\n谐波含量");
+        ui->label_9->setText("视在功率");
+        ui->label_10->setText("有功功率");
+        ui->label_7->setText("功率因数");
+        ui->label_12->setText("温度");
+        ui->label_8->setText("电能(kWh)");
+    }else{
+        ui->label->setText("Input");
+        ui->label_11->setText("Voltage(V)");
+        ui->label_4->setText("Current(A)");
+        ui->label_13->setText("Load rate(%)");
+        ui->label_14->setText("Current\nharmonic content");
+        ui->label_9->setText("Apparent power");
+        ui->label_10->setText("Active power");
+        ui->label_7->setText("Power factor");
+        ui->label_12->setText("Temperature");
+        ui->label_8->setText("Electric energy(kWh)");
+    }
+}
 
 void BoxTotalWid::initFun(int bus, int box)
 {

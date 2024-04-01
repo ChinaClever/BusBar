@@ -21,12 +21,12 @@ public:
 protected:
     void initData();
     bool ipCheck(int i, QLineEdit *edit);
-
+    void initLanguage();
 private slots:
     void on_saveBtn_clicked();
-
 private:
     Ui::IpSettingDlg *ui;
+
 };
 int getByIp(const QString &ip);
 #endif // IPSETTINGDLG_H

@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QNetworkInterface>
-
+#include "common.h"
 namespace Ui {
 class NetSettingDlg;
 }
@@ -18,10 +18,9 @@ public:
 
 private slots:
     void on_pushButton_4_clicked();
-
 private:
     void initData();
-
+    void initLanguage();
 private:
     Ui::NetSettingDlg *ui;
 };

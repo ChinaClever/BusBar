@@ -9,13 +9,31 @@ SetThresholdDlg::SetThresholdDlg(QWidget *parent) :
     ui->setupUi(this);
     com_setBackColour(tr("阈值设置"),this);
     ui->checkBox->hide();
+    timeoutDone();
 }
 
 SetThresholdDlg::~SetThresholdDlg()
 {
     delete ui;
 }
-
+void SetThresholdDlg::timeoutDone()
+{
+    if(gLanguage == 0){
+        ui->titleLab->setText("阈值设置");
+        ui->label_2->setText("最大值：");
+        ui->label_3->setText("最小值：");
+        ui->checkBox->setText("统一设置");
+        ui->saveBtn->setText("保存");
+        ui->cancelBtn->setText("取消");
+    }else{
+        ui->titleLab->setText("Threshold setting");
+        ui->label_2->setText("Maximum value:");
+        ui->label_3->setText("Minimum value:");
+        ui->checkBox->setText("Unified settings");
+        ui->saveBtn->setText("Save");
+        ui->cancelBtn->setText("Cancel");
+    }
+}
 void SetThresholdDlg::initSpinBox(sThresholdItem &item)
 {
 
@@ -50,23 +68,44 @@ void SetThresholdDlg::initSpinBox(sThresholdItem &item)
 
 void SetThresholdDlg::setTitle(sThresholdItem &item)
 {
-    QString str;
-    switch (item.type) {
-    case 1: str = tr("电压"); break;
-    case 2: str = tr("电流"); break;
-    case 3: str = tr("温度"); break;
-    case 4: str = tr("功率"); break;
-    case 5: str = tr("频率"); break;
+    if(gLanguage == 0){
+        QString str;
+        switch (item.type) {
+        case 1: str = tr("电压"); break;
+        case 2: str = tr("电流"); break;
+        case 3: str = tr("温度"); break;
+        case 4: str = tr("功率"); break;
+        case 5: str = tr("频率"); break;
+        }
+
+        sBoxData *dev = &(share_mem_get()->data[item.bus].box[item.box]); //获取共享内存
+        QString nameStr = QString("插接箱%1").arg(dev->boxName);
+        if(item.box == 0) nameStr = "始端箱";;
+
+        QString busName = share_mem_get()->data[item.bus].busName;
+        QString title = tr("母线%1 %2 输入%3 %4设置").arg(busName).arg(nameStr).arg(item.num+1).arg(str);
+        if( item.type == 5 ) title = tr("母线%1 %2 %3设置").arg(busName).arg(nameStr).arg(str);
+        ui->titleLab->setText(title);
+    }else{
+        QString str;
+        switch (item.type) {
+        case 1: str = tr("Voltage"); break;
+        case 2: str = tr("Current"); break;
+        case 3: str = tr("Temperature"); break;
+        case 4: str = tr("Power"); break;
+        case 5: str = tr("Frequency"); break;
+        }
+
+        sBoxData *dev = &(share_mem_get()->data[item.bus].box[item.box]); //获取共享内存
+        QString nameStr = QString("Plug box%1").arg(dev->boxName);
+        if(item.box == 0) nameStr = "Start box";;
+
+        QString busName = share_mem_get()->data[item.bus].busName;
+        QString title = tr("Busbar %1 %2 input %3 %4 set").arg(busName).arg(nameStr).arg(item.num+1).arg(str);
+        if( item.type == 5 ) title = tr("busbar%1 %2 %3 set").arg(busName).arg(nameStr).arg(str);
+        ui->titleLab->setText(title);
     }
 
-    sBoxData *dev = &(share_mem_get()->data[item.bus].box[item.box]); //获取共享内存
-    QString nameStr = QString("插接箱%1").arg(dev->boxName);
-    if(item.box == 0) nameStr = "始端箱";;
-
-    QString busName = share_mem_get()->data[item.bus].busName;
-    QString title = tr("母线%1 %2 输入%3 %4设置").arg(busName).arg(nameStr).arg(item.num+1).arg(str);
-    if( item.type == 5 ) title = tr("母线%1 %2 %3设置").arg(busName).arg(nameStr).arg(str);
-    ui->titleLab->setText(title);
 }
 
 void SetThresholdDlg::set(sThresholdItem &item)
@@ -126,7 +165,8 @@ bool SetThresholdDlg::checkData()
         mItem.min = min;
         mItem.max = max;
     } else {
-        QMessageBox::warning(this,tr("waring"),tr("最小值大于最大值！"),tr("OK"));
+        if(gLanguage == 0) QMessageBox::warning(this,tr("waring"),tr("最小值大于最大值！"),tr("OK"));
+        else QMessageBox::warning(this,tr("waring"),tr("The minimun value is greater than the maximum value!"),tr("OK"));
         ret = false;
     }
 

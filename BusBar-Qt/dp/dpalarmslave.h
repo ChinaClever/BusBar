@@ -28,13 +28,12 @@ protected:
 
 protected slots:
     void timeoutDone();
-
 private:
      bool isRun;
      QTimer *timer;
      sDataPacket *shm;
      int mBusId;
-     QStringList mAlarmStr;
+    QStringList mAlarmStr;
 };
 
 QString get_email_str();

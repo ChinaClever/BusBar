@@ -24,7 +24,7 @@ protected:
     void initEditBtn(void);
     void initKey(void);
     void timeSetup(void);
-
+    void initLanguage();
 protected slots:
     void editBtnPress(int);
     void keyPress(int value);

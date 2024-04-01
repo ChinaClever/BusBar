@@ -19,18 +19,18 @@ public:
 
 public slots:
     void busChangedSlot(int index);
-
 protected:
     void initData();
     bool chCheck(int i, QLineEdit *edit);
     bool repeatCheck(int index, QString str);
-
+    void initLanguage();
 private slots:
     void on_saveBtn_clicked();
 
 private:
     Ui::ChannelSettingDlg *ui;
     int mIndex;
+    QTimer *timer;
 };
 int getByCh(const QString &ch);
 void getHZ(int& key);

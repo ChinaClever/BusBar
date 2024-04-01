@@ -17,7 +17,7 @@ public:
     explicit EmailSetDlg(QWidget *parent = 0);
     ~EmailSetDlg();
     void setData(email_setInfo *);
-
+    void initLanguage();
 protected:
     void initWidget(void);
     bool dataCheck(void);

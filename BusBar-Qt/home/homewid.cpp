@@ -76,13 +76,24 @@ void HomeWid::timeoutDone()
         ui->powLcd->display(mBusData->box[0].tgBox.pow/COM_RATE_POW); //W
 
         //------------[交直流区分]-------------------By_MW 2018.3.30
-        QString name;
-        if(mBusData->box[0].dc){ //交流
-            name = "A";
+        QString name,name2;
+        if(gLanguage == 0){
+            if(mBusData->box[0].dc){ //交流
+                name = "交";
+             }else{
+                name = "直";
+             }
+            name2 = "流";
         }else{
-            name = "D";
+            if(mBusData->box[0].dc){ //交流
+                name = "A";
+            }else{
+                name = "D";
+            }
+            name2 = "C";
         }
         ui->name1->setText(name);
+        ui->name2->setText(name2);
         //-----------------------------------------
 
         if(mMaxNum != mBusData->boxNum) {

@@ -25,8 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
     mInitShm = new InitShm(this); //线程
     mInitShm->start(); //初始化共享内存 -- 单线程运行一次
     //startPage();
-
     mIndex = 0;
+    initLanguage();
     initWidget();
     updateTime();
 
@@ -181,7 +181,6 @@ void MainWindow::initWidget()
     //    set_background_color(ui->stackedWid,Qt::white);
     set_background_icon(ui->stackedWid,":/new/prefix1/image/background.png");
     initBackground(); //按钮图标
-
     mHomeWid = new HomeWid(ui->stackedWid); //主界面
     ui->stackedWid->addWidget(mHomeWid);
     connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), mHomeWid, SIGNAL(busChangedSig(int)));
@@ -277,7 +276,22 @@ void MainWindow::initBackground()
     setButtonImage(ui->logBtn,"data");
     setButtonImage(ui->setBtn,"setting");
 }
-
+void MainWindow::initLanguage()
+{
+    if(gLanguage == 0){
+        ui->homeLabBtn->setText("主界面");
+        ui->lineLabBtn->setText("主路信息");
+        ui->branchLabBtn->setText("支路信息");
+        ui->logLabBtn->setText("数据记录");
+        ui->setLabBtn->setText("参数设置");
+    }else{
+        ui->homeLabBtn->setText("Main interface");
+        ui->lineLabBtn->setText("Main road\ninformation");
+        ui->branchLabBtn->setText("Branch\ninformation");
+        ui->logLabBtn->setText("Data record");
+        ui->setLabBtn->setText("Parameter\nsetting");
+    }
+}
 void MainWindow::dialogClosed(bool ret)
 {
     if(ret)
@@ -286,8 +300,9 @@ void MainWindow::dialogClosed(bool ret)
         setButtonClickedImage(ui->setBtn,"setting_select");
         InterfaceChangeSig::get()->changeType(5);
     }
-    else
-        QMessageBox::information(this,"information","Sorry，the passward entered is incorrect.You do not have the permission！","Confirm");
+    else{
+        if(gLanguage == 0)QMessageBox::information(this,"information","对不起，密码输入不正确，您不具备该权限！","确认");
+        else QMessageBox::information(this,"information","Sorry，the passward entered is incorrect.You do not have the permission！","Confirm");}
     mCheckDlg->clear();
 }
 

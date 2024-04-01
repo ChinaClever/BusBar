@@ -7,7 +7,10 @@ ThdMainDlg::ThdMainDlg(QWidget *parent) :
 {
     ui->setupUi(this);
     com_setBackColour(tr("谐波分析"),this);
-
+    if(gLanguage == 0){ui->label->setText("单相谐波含量");
+        ui->quitBtn->setText("退出");}
+    else{ui->label->setText("Single phase harmonic content");
+        ui->quitBtn->setText("Quit");}
     mChartWid = new ThdChartWid(ui->chartwid);
     mTableWid = new ThdTableWid(ui->tablewid);
 

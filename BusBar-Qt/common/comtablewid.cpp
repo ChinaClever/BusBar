@@ -193,7 +193,6 @@ void ComTableWid::initTableWid(QStringList &header, int line, const QString &tit
         addInitRow();
     ui->groupBox->setTitle(title);
 }
-
 /**
  * @brief 修改表格Item
  * @param id  行号
@@ -210,7 +209,6 @@ void ComTableWid::setTableItem(int id, int column, const QString &str)
         item->setText(str);
     }
 }
-
 /**
  * @brief 设置一行数据
  * @param id 行号

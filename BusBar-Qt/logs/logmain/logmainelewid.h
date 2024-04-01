@@ -37,7 +37,6 @@ protected slots:
     void clearTableSlot();
     void refreshSlot();
     void exportSlot(int);
-
 private:
     Ui::LogMainEleWid *ui;
     int mid;

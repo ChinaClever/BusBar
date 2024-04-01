@@ -9,11 +9,10 @@
 #include <sys/types.h>
 
 #define SHM_KEY	1234
-
 /**
  * 获取共享内存
  */
-
+int gLanguage = 0;
 sDataPacket *share_mem_get()
 {
     static sDataPacket *ptr = nullptr;

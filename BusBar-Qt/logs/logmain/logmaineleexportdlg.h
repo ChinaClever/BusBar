@@ -17,7 +17,7 @@ public:
     ~LogMainEleExportDlg();
 
     void set(int id);
-
+    void initLanguage();
 protected slots:
      void readDbSlot(QString);
      void exportSlot(bool);

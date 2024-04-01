@@ -99,6 +99,25 @@ border-radius:15px
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="languageBtn">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+border:2px solid rgb(15,80,232);
+border-radius:15px
+}</string>
+        </property>
+        <property name="text">
+         <string>语言设置</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

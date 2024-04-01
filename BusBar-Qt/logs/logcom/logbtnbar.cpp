@@ -15,6 +15,7 @@ LogBtnBar::LogBtnBar(QWidget *parent) :
     ui(new Ui::LogBtnBar)
 {
     ui->setupUi(this);
+
     QPixmap pix(1,60);
     pix.fill(Qt::transparent);
     QIcon icon(pix);
@@ -22,8 +23,12 @@ LogBtnBar::LogBtnBar(QWidget *parent) :
     ui->comboBox->setItemIcon(0 , icon);
     ui->comboBox->setItemIcon(1 , icon);
     ui->comboBox->setItemIcon(2 , icon);
-    com_setBackColour(tr("日志操作"),this);
+
+    if(gLanguage == 0)com_setBackColour(tr("日志操作"),this);
+    else com_setBackColour(tr("Log operations"),this);
     ui->dateEdit->setDate(QDate::currentDate());
+    initLanguage();
+
     connect(ui->refreshBtn, SIGNAL(clicked()),this,SIGNAL(refreshSig()));
     connect(LogSignal::get(), SIGNAL(logTypeSig(int)), ui->comboBox,SLOT(setCurrentIndex(int)));
 
@@ -37,6 +42,26 @@ LogBtnBar::~LogBtnBar()
     delete ui;
 }
 
+void LogBtnBar::initLanguage()
+{
+    if(gLanguage == 0){
+        ui->dateBtn->setText("时间选择");
+        ui->comboBox->setItemText(0,"主路电能");
+        ui->comboBox->setItemText(1,"支路电能");
+        ui->comboBox->setItemText(2,"告警日志");
+        ui->clearBtn->setText("清空");
+        ui->queryBtn->setText("查询");
+        ui->refreshBtn->setText("刷新");
+    }else{
+        ui->dateBtn->setText("Time selection");
+        ui->comboBox->setItemText(0,"Main circuit power");
+        ui->comboBox->setItemText(1,"Branch power");
+        ui->comboBox->setItemText(2,"Alarm log");
+        ui->clearBtn->setText("Clear");
+        ui->queryBtn->setText("Inquire");
+        ui->refreshBtn->setText("Refresh");
+    }
+}
 void LogBtnBar::on_dateBtn_clicked()
 {
     BeepThread::bulid()->beep();
@@ -63,10 +88,16 @@ void LogBtnBar::on_exportBtn_clicked()
 
 void LogBtnBar::on_clearBtn_clicked()
 {
-    BeepThread::bulid()->beep();
-    QuMsgBox box(this, tr("确认清空数据?"));
-    if(box.Exec())
-        emit clearSig();
+    BeepThread::bulid()->beep();QuMsgBox box;
+    if(gLanguage == 0) {QuMsgBox box(this, tr("确认清空数据?"));
+        if(box.Exec())
+            emit clearSig();
+    }
+    else {QuMsgBox box(this, tr("Confirm to clear data?"));
+        if(box.Exec())
+            emit clearSig();
+    }
+
 }
 
 void LogBtnBar::on_comboBox_currentIndexChanged(int index)

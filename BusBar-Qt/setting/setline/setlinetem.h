@@ -16,7 +16,7 @@ public:
     ~SetLineTem();
 
     void indexChanged(int index);
-
+    void initLanguae();
 protected:
     void updateWid();
     void setTem(int id);

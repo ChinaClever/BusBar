@@ -18,14 +18,14 @@ public:
 
 private slots:
     void on_pushButton_2_clicked();
-
     void on_pushButton_3_clicked();
 
 private:
     bool checkJurisdiction();
-
+    void initLanguage();
 private:
     Ui::PassordSettingDlg *ui;
+
 };
 
 #endif // PASSORDSETTINGDLG_H

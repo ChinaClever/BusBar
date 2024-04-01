@@ -22,7 +22,8 @@ SetLineItem::SetLineItem(QWidget *parent, bool flag) :
         ui->label_14->hide();
         ui->volBar->hide();
         ui->volLab->hide();
-        ui->label_11->setText(tr("频率"));
+        if(gLanguage == 0) ui->label_11->setText(tr("频率"));
+        else ui->label_11->setText(tr("Frequency"));
         ui->nameLab->hide();
     }
 }
@@ -47,6 +48,8 @@ void SetLineItem::updateWidget(int bus, int line)
     QString str = "L ";
     sBusData *busData = &(mPacket->data[bus]);
     int dc = busData->box[0].dc;
+    if(gLanguage == 0){ui->label_11->setText("电流");ui->label_14->setText("电压");}
+    else {ui->label_11->setText("Current");ui->label_14->setText("Voltage");}
     if(!dc){
         int len = busData->box[0].rate ? busData->box[0].rate : 1;
         if(line>len) this->hide();

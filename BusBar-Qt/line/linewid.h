@@ -29,7 +29,7 @@ protected:
     void initTotalWid();
     void updateTotalWid();
     void updatePlot();
-
+    void initLanguage();
 protected slots:
     void timeoutDone();
     void indexChanged(int index);

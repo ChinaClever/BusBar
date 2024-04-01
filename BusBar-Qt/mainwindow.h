@@ -37,7 +37,7 @@ protected:
     void updateTime();
     //void seedWatchdog();
     //void clearCache();
-
+    void initLanguage();
 protected slots:
     void initFunSLot();
     void timeoutDone();

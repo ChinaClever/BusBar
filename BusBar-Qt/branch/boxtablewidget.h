@@ -42,13 +42,12 @@ protected:
 
 public slots:
     void busChangeSlot(int id);
-    void timeoutDone();
     void initFunSLot();
     void interfaceChangedSlot(int id);
 
 protected slots:
     void getItem(QTableWidgetItem*);
-
+    void timeoutDone();
 private:
     Ui::BoxTableWidget *ui;
 

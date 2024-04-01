@@ -8,15 +8,7 @@ SetLineTem::SetLineTem(QWidget *parent, bool flag) :
     ui->setupUi(this);
     mFlag = flag;
     indexChanged(0);
-    if(mFlag){
-        ui->label->setText(tr("温度1"));
-        ui->label_2->setText(tr("温度2"));
-        ui->label_3->setText(tr("温度3"));
-    }else{
-        ui->label->setText(tr("功率1"));
-        ui->label_2->setText(tr("功率2"));
-        ui->label_3->setText(tr("功率3"));
-    }
+    initLanguae();
     timer = new QTimer(this);
     timer->start(2000);
     connect(timer, SIGNAL(timeout()),this, SLOT(timeoutDone()));
@@ -27,6 +19,32 @@ SetLineTem::~SetLineTem()
     delete ui;
 }
 
+void SetLineTem::initLanguae()
+{
+    if(gLanguage == 0){
+        ui->label_4->setText("始端箱");
+        if(mFlag){
+            ui->label->setText(tr("温度1"));
+            ui->label_2->setText(tr("温度2"));
+            ui->label_3->setText(tr("温度3"));
+        }else{
+            ui->label->setText(tr("功率1"));
+            ui->label_2->setText(tr("功率2"));
+            ui->label_3->setText(tr("功率3"));
+        }
+    }else{
+        ui->label_4->setText("Start box");
+        if(mFlag){
+            ui->label->setText(tr("Temperature1"));
+            ui->label_2->setText(tr("Temperature2"));
+            ui->label_3->setText(tr("Temperature3"));
+        }else{
+            ui->label->setText(tr("Power1"));
+            ui->label_2->setText(tr("Power2"));
+            ui->label_3->setText(tr("Power3"));
+        }
+    }
+}
 
 void SetLineTem::updateWid()
 {

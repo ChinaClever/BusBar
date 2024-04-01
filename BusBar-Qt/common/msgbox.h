@@ -6,7 +6,7 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QInputDialog>
-
+#include "datapacket.h"
 class MsgBox
 {
 public:

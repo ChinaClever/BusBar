@@ -23,13 +23,26 @@ OtherSettingDlg::OtherSettingDlg(QWidget *parent) :
 
     ui->timeSetBtn->setHidden(true);
     ui->updateBtn->setHidden(true);
+
+    initLanguage();
 }
 
 OtherSettingDlg::~OtherSettingDlg()
 {
     delete ui;
 }
-
+void OtherSettingDlg::initLanguage()
+{
+    if(gLanguage == 0){
+        ui->pwdSetBtn->setText("密码修改");
+        ui->resetBtn->setText("系统重启");
+        ui->languageBtn->setText("语言设置");
+    }else{
+        ui->pwdSetBtn->setText("Password modifiction");
+        ui->resetBtn->setText("System restart");
+        ui->languageBtn->setText("Language settings");
+    }
+}
 static bool update_fun(const QString &str)
 {
     bool ret = true;
@@ -77,8 +90,9 @@ void OtherSettingDlg::on_updateBtn_clicked()
 
 void OtherSettingDlg::on_resetBtn_clicked()
 {
-    BeepThread::bulid()->beep();
-    bool ret = MsgBox::question(this, tr("是否重启系统?"));
+    BeepThread::bulid()->beep();bool ret;
+    if(gLanguage == 0) ret = MsgBox::question(this, tr("是否重启系统?"));
+    else ret = MsgBox::question(this, tr("Do you want to restart the system?"));
     if(ret) {
         system("reboot");
     }
@@ -98,3 +112,13 @@ void OtherSettingDlg::on_pwdSetBtn_clicked()
     passwordDlg->show();
     passwordDlg->move(0,0);
 }
+
+void OtherSettingDlg::on_languageBtn_clicked()
+{
+    BeepThread::bulid()->beep();
+     mlanguage = new Languagesetting(this);
+     mlanguage->show();
+     mlanguage->move(368,222);
+//     mlanguage->init();
+}
+

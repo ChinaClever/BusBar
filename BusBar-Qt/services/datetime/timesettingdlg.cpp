@@ -19,7 +19,7 @@ TimeSettingDlg::TimeSettingDlg(QWidget *parent) :
 {
     ui->setupUi(this);
 //    com_setBackColour(tr("时间设置"),this);
-
+    initLanguage();
     QDate date = QDate::currentDate();
     ui->yearSpin->setValue(date.year());
     ui->monSpin->setValue(date.month());
@@ -48,7 +48,46 @@ TimeSettingDlg::~TimeSettingDlg()
     delete ui;
 }
 
-
+void TimeSettingDlg::initLanguage()
+{
+    if(gLanguage == 0){
+        ui->label_11->setText("时间设置");
+        ui->yearBtn->setText("编辑");
+        ui->label_32->setText("年");
+        ui->monBtn->setText("编辑");
+        ui->label_33->setText("月");
+        ui->dayBtn->setText("编辑");
+        ui->label_34->setText("日");
+        ui->hourBtn->setText("编辑");
+        ui->label_35->setText("时");
+        ui->minBtn->setText("编辑");
+        ui->label_36->setText("分");
+        ui->secBtn->setText("编辑");
+        ui->label_37->setText("秒");
+        ui->label_7->setText("修改值");
+        ui->btn_enter->setText("输入");
+        ui->timeSet_but->setText("确定");
+        ui->quitBtn->setText("退出");
+    }else{
+        ui->label_11->setText("Time setting");
+        ui->yearBtn->setText("Edit");
+        ui->label_32->setText("year");
+        ui->monBtn->setText("Edit");
+        ui->label_33->setText("month");
+        ui->dayBtn->setText("Edit");
+        ui->label_34->setText("day");
+        ui->hourBtn->setText("Edit");
+        ui->label_35->setText("hour");
+        ui->minBtn->setText("Edit");
+        ui->label_36->setText("minute");
+        ui->secBtn->setText("Edit");
+        ui->label_37->setText("second");
+        ui->label_7->setText("Modify value");
+        ui->btn_enter->setText("Iuput");
+        ui->timeSet_but->setText("Confirm");
+        ui->quitBtn->setText("Quit");
+    }
+}
 
 /**
  * 功 能：验证日期合法性

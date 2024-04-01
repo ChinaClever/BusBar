@@ -32,13 +32,25 @@ ChannelSettingDlg::ChannelSettingDlg(QWidget *parent) :
     ui->setupUi(this);
 
     initData();
+    initLanguage();
 }
 
 ChannelSettingDlg::~ChannelSettingDlg()
 {
     delete ui;
 }
-
+void ChannelSettingDlg::initLanguage()
+{
+    if(gLanguage == 0){
+        ui->groupBox->setTitle("无线设置");
+        ui->label_5->setText("当前频道");
+        ui->saveBtn->setText("保存");
+    }else{
+        ui->groupBox->setTitle("Wireless settigs");
+        ui->label_5->setText("Current channel");
+        ui->saveBtn->setText("Save");
+    }
+}
 void ChannelSettingDlg::initData()
 {
     mIndex = 0;

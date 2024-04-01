@@ -8,6 +8,12 @@ Languagesetting::Languagesetting(QWidget *parent) :
 {
     ui->setupUi(this);
     com_setBackColour(tr("设置界面"), this);
+    QPixmap pix(1,60);
+    pix.fill(Qt::transparent);
+    QIcon icon(pix);
+    ui->comboBox->setIconSize(QSize(1,60));
+    ui->comboBox->setItemIcon(0 , icon);
+    ui->comboBox->setItemIcon(1 , icon);
     init();
 }
 

@@ -87,14 +87,12 @@ bool appendFile(const QString &msg)
 void initLanguage()
 {
     bool ret = sys_configFile_open();
+    ret = sys_configFile_contains("language");
     if(ret)
     {
-        int temp;
-        QString us = sys_configFile_readStr("language");
-        if(!us.isEmpty()){
-            temp = us.toInt();
-        }
-        gLanguage = temp;
+        gLanguage = sys_configFile_readInt("language");
+    }else{
+        sys_configFile_writeParam("language",QString::number(gLanguage));
     }
     sys_configFile_close();
 }

@@ -100,7 +100,8 @@ bool IpSettingDlg::ipCheck(int i, QLineEdit *edit)
             gBusIPMap[i] = str;
         } else {
             edit->setText(gBusIPMap[i]);
-            CriticalMsgBox box(this, tr("IP%1地址错误!").arg(i+1));
+            if(gLanguage == 0) CriticalMsgBox box(this, tr("IP%1地址错误!").arg(i+1));
+            else CriticalMsgBox box(this, tr("IP%1 address error!").arg(i+1));
             return false;
         }
     }

@@ -165,8 +165,8 @@ bool SetThresholdDlg::checkData()
         mItem.min = min;
         mItem.max = max;
     } else {
-        if(gLanguage == 0) QMessageBox::warning(this,tr("waring"),tr("最小值大于最大值！"),tr("OK"));
-        else QMessageBox::warning(this,tr("waring"),tr("The minimun value is greater than the maximum value!"),tr("OK"));
+        if(gLanguage == 0) QMessageBox::warning(this,tr("warning"),tr("最小值大于最大值！"),tr("OK"));
+        else QMessageBox::warning(this,tr("warning"),tr("The minimun value is greater than the maximum value!"),tr("OK"));
         ret = false;
     }
 

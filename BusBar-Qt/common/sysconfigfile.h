@@ -11,6 +11,6 @@ extern double sys_configFile_readDouble(QString, QString strGroup="System");
 extern void sys_configFile_write(QString, QString, QString strGroup="System");
 
 extern void sys_configFile_writeParam(QString, QString, QString strGroup="System");
-
+extern bool sys_configFile_contains(QString strParameterName, QString strGroup="System");
 #endif // SYSCONFIGFILE_H
 

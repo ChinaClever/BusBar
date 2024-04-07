@@ -107,3 +107,15 @@ void sys_configFile_writeParam(QString name, QString value, QString strGroup)
     sys_configFile_write(name, value, strGroup);
     sys_configFile_close();
 }
+/**
+ * 功 能：写入参数
+ * 开发人员：Lzy     2016 - 七夕
+ */
+bool sys_configFile_contains(QString strParameterName, QString strGroup)
+{
+    bool ret = false;
+    strParameterName = "/" + strGroup + "/" + strParameterName;
+    ret = pConfigIni->contains(strParameterName);
+
+    return ret;
+}

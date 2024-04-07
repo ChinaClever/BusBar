@@ -324,7 +324,7 @@ void SetNamesWid::on_saveBtn_clicked()
 
         BeepThread::bulid()->beep();
         if(gLanguage == 0) InfoMsgBox box(this, tr("保存成功！"));
-        else InfoMsgBox box(this, tr("Save successfull！"));
+        else InfoMsgBox box(this, tr("Save successfully！"));
     }
 }
 

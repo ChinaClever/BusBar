@@ -115,7 +115,7 @@ void DpAlarmSlave::unitAlarm(QString &typeStr, QString &msg, sDataUnit &unit, do
                         .arg(unit.value[i]/rate).arg(sym)
                         .arg(unit.crMin[i]/rate).arg(sym)
                         .arg(unit.crMax[i]/rate).arg(sym);}
-            else {tempStr = typeStr +  tr("Early waring");
+            else {tempStr = typeStr +  tr("Early warning");
                 str += tr("%1,,Current value: %2%3, Critical lower limit: %4%5, Critical upper limit: %6%7").arg(i+1)
                         .arg(unit.value[i]/rate).arg(sym)
                         .arg(unit.crMin[i]/rate).arg(sym)
@@ -161,7 +161,7 @@ void DpAlarmSlave::unitAlarm(QString &typeStr, QString &msg, sDataPowUnit &unit,
                         .arg(unit.value[i]/rate).arg(sym)
                         .arg(unit.crMin[i]/rate).arg(sym)
                         .arg(unit.crMax[i]/rate).arg(sym);}
-            else {tempStr = typeStr +  tr("Early waring");
+            else {tempStr = typeStr +  tr("Early warning");
                 str += tr("%1，Current value：%2%3, Critical lower limit：%4%5, Critical upper limit：%6%7").arg(i+1)
                         .arg(unit.value[i]/rate).arg(sym)
                         .arg(unit.crMin[i]/rate).arg(sym)
@@ -219,7 +219,7 @@ void DpAlarmSlave::unitAlarmVA(sBoxData &box, QString &typeStr, QString &msg, sD
                         .arg(unit.value[i]/rate).arg(sym)
                         .arg(unit.crMin[i]/rate).arg(sym)
                         .arg(unit.crMax[i]/rate).arg(sym);}
-            else {tempStr = typeStr +  tr("Early waring");
+            else {tempStr = typeStr +  tr("Early warning");
                 str += tr("%1，Current value：%2%3, Critical lower limit：%4%5, Critical upper limit：%6%7").arg(alarmStr)
                         .arg(unit.value[i]/rate).arg(sym)
                         .arg(unit.crMin[i]/rate).arg(sym)
@@ -277,7 +277,7 @@ void DpAlarmSlave::unitAlarmW(sBoxData &box, QString &typeStr, QString &msg, sDa
                         .arg(unit.value[i]/rate).arg(sym)
                         .arg(unit.crMin[i]/rate).arg(sym)
                         .arg(unit.crMax[i]/rate).arg(sym);}
-            else {tempStr = typeStr +  tr("Early waring");
+            else {tempStr = typeStr +  tr("Early warning");
                 str += tr("%1，Current value：%2%3, Critical lower limit：%4%5, Critical upper limit：%6%7").arg(alarmStr)
                         .arg(unit.value[i]/rate).arg(sym)
                         .arg(unit.crMin[i]/rate).arg(sym)

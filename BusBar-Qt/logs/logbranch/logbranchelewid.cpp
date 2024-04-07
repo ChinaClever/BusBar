@@ -183,8 +183,8 @@ void LogBranchEleWid::initTableSlot(int id)
     mHeadList << tr("A1/D1") << tr("B1/D2") << tr("C1/D3") << tr("A2/D4") << tr("B2")
               << tr("C2") << tr("A3") << tr("B3") << tr("C3");
     //---------------------------------------------------------------
-    mHeadList << tr("合计");
-
+    if(gLanguage == 0) mHeadList << tr("合计");
+    else mHeadList << tr("Total");
     model->setHeaders(mHeadList);
 
 }

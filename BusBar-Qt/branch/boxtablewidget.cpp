@@ -266,7 +266,7 @@ void BoxTableWidget::setAlarmStatus(int id, int column)
             item->setTextColor(QColor(Qt::red));
         } else  if((curAlarm == 1)  || (volAlarm == 1))  { // 预警
             if(gLanguage == 0) str = tr("预警");
-                else str = tr("Early waring");
+                else str = tr("Early warning");
             item->setTextColor(QColor("#CD7E80"));
         } else {
             if(gLanguage == 0) str = tr("正常");

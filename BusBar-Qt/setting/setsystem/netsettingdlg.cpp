@@ -22,12 +22,14 @@ void NetSettingDlg::initLanguage()
         ui->label_5->setText("IP地址：");
         ui->label_6->setText("子网掩码：");
         ui->label_7->setText("默认网关：");
+        ui->label_8->setText("DNS：");
         ui->pushButton_4->setText("保存");
     }else{
         ui->groupBox_4->setTitle("Network settings");
         ui->label_5->setText("IP address:");
         ui->label_6->setText("Subnet mask:");
-        ui->label_7->setText("Save");
+        ui->label_8->setText("DNS：");
+        ui->pushButton_4->setText("Save");
     }
 }
 void NetSettingDlg::on_pushButton_4_clicked()

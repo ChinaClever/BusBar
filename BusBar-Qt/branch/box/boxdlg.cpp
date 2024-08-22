@@ -43,7 +43,7 @@ void BoxDlg::initWid(int bus, int box)
     mLineWid = new BoxLoopTableWid(ui->tabWidget);
     mLineWid->initLine(bus, box);
     if(gLanguage == 0)ui->tabWidget->addTab(mLineWid, tr("各回路信息"));
-    else ui->tabWidget->addTab(mLineWid, tr("Information of each circuit"));
+    else ui->tabWidget->addTab(mLineWid, tr("Information about each circuit"));
 }
 
 void BoxDlg::on_pushButton_clicked()

@@ -38,11 +38,13 @@ protected:
     //void seedWatchdog();
     //void clearCache();
     void initLanguage();
+    void init();
 protected slots:
     void initFunSLot();
     void timeoutDone();
     void dialogClosed(bool ret);
     void initNetSLot();
+
     //void watchdogDone();
     //void clearCacheDone();
 

@@ -20,15 +20,15 @@ void SetThresholdDlg::timeoutDone()
 {
     if(gLanguage == 0){
         ui->titleLab->setText("阈值设置");
-        ui->label_2->setText("最大值：");
-        ui->label_3->setText("最小值：");
+        ui->label_3->setText("最大值：");
+        ui->label_2->setText("最小值：");
         ui->checkBox->setText("统一设置");
         ui->saveBtn->setText("保存");
         ui->cancelBtn->setText("取消");
     }else{
         ui->titleLab->setText("Threshold setting");
-        ui->label_2->setText("Maximum value:");
-        ui->label_3->setText("Minimum value:");
+        ui->label_3->setText("Maximum value:");
+        ui->label_2->setText("Minimum value:");
         ui->checkBox->setText("Unified settings");
         ui->saveBtn->setText("Save");
         ui->cancelBtn->setText("Cancel");

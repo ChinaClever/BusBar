@@ -44,6 +44,7 @@ void LineWid::initLanguage()
         ui->label_4->setText("温度:");
         ui->label_7->setText("电能:");
         ui->thdBtn->setText("谐波分析:");
+        ui->label->setText("频率：");
     }else{
         ui->label_10->setText("Lightning protection:");
         ui->label_2->setText("Version:");
@@ -52,10 +53,11 @@ void LineWid::initLanguage()
         ui->label_9->setText("Current:");
         ui->label_3->setText("Overload current:");
         ui->label_8->setText("Active power:");
-        ui->label_6->setText("Active power:");
+        ui->label_6->setText("Power factor:");
         ui->label_4->setText("Temperature :");
         ui->label_7->setText("Electric energy:");
         ui->thdBtn->setText("Harmonic analysis:");
+        ui->label->setText("Frequency：");
     }
 }
 
@@ -99,8 +101,7 @@ void LineWid::timeoutDone()
         if(mData->box[0].dc){ //交流
             str= QString::number(mData->box[0].rate) + "Hz";
             ui->rateLab->setText(str); //频率
-            if(gLanguage == 0)ui->label->setText("频率：");
-            else ui->label->setText("Frequency：");
+
             ui->thdBtn->setHidden(false);
             ui->widget->setHidden(false);
             mLineTable->updateData(mData->box[0]);

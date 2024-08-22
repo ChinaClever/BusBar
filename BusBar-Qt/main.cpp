@@ -84,7 +84,8 @@ bool appendFile(const QString &msg)
 
     return true;
 }
-void initLanguage()
+
+void init()
 {
     bool ret = sys_configFile_open();
     ret = sys_configFile_contains("language");
@@ -92,18 +93,17 @@ void initLanguage()
     {
         gLanguage = sys_configFile_readInt("language");
     }else{
-        sys_configFile_writeParam("language",QString::number(gLanguage));
+        sys_configFile_write("language",QString::number(gLanguage));
     }
     sys_configFile_close();
 }
-
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     checkPermission();
     appendFile("monitor");
+    init();
     addWatchdog();
-    initLanguage();
     MainWindow w;
     w.showFullScreen();
     //    w.show();
